@@ -12,7 +12,7 @@ Cabal-version:    >= 1.2
 Library
  Hs-Source-Dirs: src
  Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-data, happstack-authenticate >= 0.3,
-                   ixset, json, logic-classes >= 0.45, mtl >= 2, pretty, QuickCheck, safecopy, scaffolding, set-extra, stm, syb,
+                   ixset, json, logic-classes >= 0.45, mtl >= 2, pretty, QuickCheck, safecopy, happstack-scaffolding, set-extra, stm, syb,
                    syb-with-class, text, time, web-routes, web-routes-hsp, web-routes-th
  GHC-options: -threaded -Wall -Werror -O2 -fwarn-tabs
  Exposed-Modules:  GenI.URL

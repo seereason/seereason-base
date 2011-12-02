@@ -1,0 +1,41 @@
+Name:             seereason-base
+Version:          1.51
+License:          BSD3
+Author:           SeeReason Partners <partners@seereason.com>
+Maintainer:       SeeReason Partners <partners@seereason.com>
+Synopsis:         Seereason.com
+Description:      Basic types for the seereason logic system
+Build-Type:       Simple
+Category:         Web, Language
+Cabal-version:    >= 1.2
+
+Library
+ Hs-Source-Dirs: src
+ Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-data, happstack-authenticate >= 0.3,
+                   ixset, json, logic-classes >= 0.45, mtl >= 2, pretty, QuickCheck, safecopy, scaffolding, set-extra, stm, syb,
+                   syb-with-class, text, time, web-routes, web-routes-hsp, web-routes-th
+ GHC-options: -threaded -Wall -Werror -O2 -fwarn-tabs
+ Exposed-Modules:  GenI.URL
+                   JSON.Generic2
+                   Ontology.Comment
+                   Ontology.Extra
+                   Ontology.Types
+                   Ontology.Types.Description
+                   Ontology.Types.Document
+                   Ontology.Types.Formula
+                   Ontology.Types.Formula.AtomicFunction
+                   Ontology.Types.Formula.AtomicPredicate
+                   Ontology.Types.Formula.V
+                   Ontology.Types.GenI
+                   Ontology.Types.InsertMode
+                   Ontology.Types.PF
+                   Ontology.Types.UserData
+                   Ontology.URL
+                   Preferences.URL
+                   URL
+
+Executable geni-client
+ Hs-Source-Dirs: src
+ Main-Is: Main.hs
+ GHC-Options: -threaded -O2 -rtsopts
+ Build-Depends: http-enumerator, utf8-string

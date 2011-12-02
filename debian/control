@@ -1,0 +1,126 @@
+Source: haskell-seereason-base
+Priority: extra
+Section: haskell
+Maintainer: David Fox <dsf@seereason.com>
+Build-Depends: debhelper (>= 7.0),
+               haskell-devscripts (>= 0.8),
+               cdbs,
+               ghc,
+               ghc-prof,
+               libghc-quickcheck2-dev,
+               libghc-quickcheck2-prof,
+               libghc-acid-state-dev,
+               libghc-acid-state-prof,
+               libghc-fgl-dev,
+               libghc-fgl-prof,
+               libghc-happstack-authenticate-dev (>= 0.3),
+               libghc-happstack-authenticate-prof (>= 0.3),
+               libghc-happstack-data-dev,
+               libghc-happstack-data-prof,
+               libghc-http-enumerator-dev,
+               libghc-http-enumerator-prof,
+               libghc-ixset-dev,
+               libghc-ixset-prof,
+               libghc-json-dev,
+               libghc-json-prof,
+               libghc-logic-classes-dev (>= 0.45),
+               libghc-logic-classes-prof (>= 0.45),
+               libghc-mtl-dev (>= 2),
+               libghc-mtl-prof (>= 2),
+               libghc-safecopy-dev,
+               libghc-safecopy-prof,
+               libghc-scaffolding-dev,
+               libghc-scaffolding-prof,
+               libghc-set-extra-dev,
+               libghc-set-extra-prof,
+               libghc-stm-dev,
+               libghc-stm-prof,
+               libghc-syb-dev,
+               libghc-syb-prof,
+               libghc-syb-with-class-dev,
+               libghc-syb-with-class-prof,
+               libghc-text-dev,
+               libghc-text-prof,
+               libghc-utf8-string-dev,
+               libghc-utf8-string-prof,
+               libghc-web-routes-dev,
+               libghc-web-routes-prof,
+               libghc-web-routes-hsp-dev,
+               libghc-web-routes-hsp-prof,
+               libghc-web-routes-th-dev,
+               libghc-web-routes-th-prof
+Build-Depends-Indep: ghc-doc,
+                     libghc-quickcheck2-doc,
+                     libghc-acid-state-doc,
+                     libghc-fgl-doc,
+                     libghc-happstack-authenticate-doc (>= 0.3),
+                     libghc-happstack-data-doc,
+                     libghc-http-enumerator-doc,
+                     libghc-ixset-doc,
+                     libghc-json-doc,
+                     libghc-logic-classes-doc (>= 0.45),
+                     libghc-mtl-doc (>= 2),
+                     libghc-safecopy-doc,
+                     libghc-set-extra-doc,
+                     libghc-stm-doc,
+                     libghc-syb-doc,
+                     libghc-syb-with-class-doc,
+                     libghc-text-doc,
+                     libghc-utf8-string-doc,
+                     libghc-web-routes-doc,
+                     libghc-web-routes-hsp-doc,
+                     libghc-web-routes-th-doc
+Standards-Version: 3.9.1
+Homepage: http://hackage.haskell.org/package/seereason-base
+
+Package: libghc-seereason-base-dev
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${haskell:Depends},
+         ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Provides: ${haskell:Provides}
+Description: Seereason.com
+ Basic types for the seereason logic system
+ .
+  Author: SeeReason Partners <partners@seereason.com>
+  Upstream-Maintainer: SeeReason Partners <partners@seereason.com>
+ .
+ This package contains the normal library files.
+
+Package: libghc-seereason-base-prof
+Architecture: any
+Depends: ${haskell:Depends},
+         ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Provides: ${haskell:Provides}
+Description: Seereason.com
+ Basic types for the seereason logic system
+ .
+  Author: SeeReason Partners <partners@seereason.com>
+  Upstream-Maintainer: SeeReason Partners <partners@seereason.com>
+ .
+ This package contains the libraries compiled with profiling enabled.
+
+Package: libghc-seereason-base-doc
+Architecture: all
+Section: doc
+Depends: ${haskell:Depends},
+         ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Description: Seereason.com
+ Basic types for the seereason logic system
+ .
+  Author: SeeReason Partners <partners@seereason.com>
+  Upstream-Maintainer: SeeReason Partners <partners@seereason.com>
+ .
+ This package contains the documentation files.
+
+Package: geni-client
+Architecture: any
+Section: misc
+Depends: ${shlibs:Depends}, ${haskell:Depends}, ${misc:Depends}
+Description:  An executable built with the seereason-base-1.51 library.

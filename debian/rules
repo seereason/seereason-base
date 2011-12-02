@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+DEB_CABAL_PACKAGE = seereason-base
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/hlibrary.mk
+
+build/geni-client:: build-ghc-stamp
+binary-fixup/geni-client::
+	install -m 755 -s -D dist-ghc/build/geni-client/geni-client debian/geni-client/usr/bin/geni-client || true
+
+# How to install an extra file into the documentation package
+#binary-fixup/libghc-seereason-base-doc::
+#	echo "Some informative text" > debian/libghc-seereason-base-doc/usr/share/doc/libghc-seereason-base-doc/AnExtraDocFile

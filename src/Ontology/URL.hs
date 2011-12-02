@@ -42,6 +42,7 @@ data URL
     | AssociateSubjectAndDocument DocumentId SubjectId
     | Search
     | SearchSubjects DocumentId
+    | SearchSubjectsAutocomplete DocumentId
     | Preferences Preferences.URL
     deriving (Eq, Ord, Typeable, Data)
 

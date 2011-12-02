@@ -31,7 +31,7 @@ run :: RouteT GenIURL m a -> m a
 run route =
   unRouteT route showFn
   where
-    showFn url params = (Text.pack "http://gene.local:8000/web") `Text.append` (toPathInfoParams (W_GenI url) params)
+    showFn url params = (Text.pack "http://seereason.com/web") `Text.append` (toPathInfoParams (W_GenI url) params)
     
 test1 :: RouteT GenIURL IO ()
 test1 = 

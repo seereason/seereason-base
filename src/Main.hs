@@ -9,12 +9,13 @@ import qualified Codec.Binary.UTF8.String as UTF8
 import "mtl" Control.Monad.Trans (liftIO)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy as L
+import Data.Generics (gshow)
 import qualified Data.Text as Text
 import GenI.URL (GenIURL(..))
 import Happstack.Auth.Core.Profile (UserId(UserId))
 import JSON.Generic2 (decodeJSON)
 import Network.HTTP.Enumerator (simpleHttp)
-import Ontology.Types (SubjectId(..), unsafeSubjectId, unsafeAssertionId, SubjectNode(..))
+import Ontology.Types (SubjectId(..), unsafeSubjectId, unsafeAssertionId, SubjectNode(..), Assertion(..), AssertionId)
 import Ontology.Types.GenI (LSubject(..))
 import Ontology.Types.PF (FormulaPF)
 import System.IO (putStrLn)
@@ -45,3 +46,11 @@ test2 =
      let subj = decodeJSON .  UTF8.decode . L.unpack $ resp :: LSubject FormulaPF
      liftIO $ print (map unSubjectNode . subjectIds $ subj)
      return ()
+
+-- | Usage examples of the other requests:
+tests :: IO ()
+tests =
+   do run (Text.unpack <$> showURL GenI_Subjects) >>= simpleHttp >>= putStrLn . gshow . (decodeJSON :: String -> [SubjectId]) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL GenI_Assertions) >>= simpleHttp >>= putStrLn . show . (decodeJSON :: String -> [Assertion FormulaPF]) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL (GenI_Assertion (unsafeAssertionId 1))) >>= simpleHttp >>= putStrLn . show . (decodeJSON :: String -> Assertion FormulaPF) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL (GenI_Subject (UserId 1) (unsafeSubjectId 52))) >>= simpleHttp >>=  putStrLn . show . subjectArity . (decodeJSON :: String -> LSubject FormulaPF) . UTF8.decode . L.unpack

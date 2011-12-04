@@ -39,3 +39,8 @@ Executable geni-client
  Main-Is: Main.hs
  GHC-Options: -threaded -O2 -rtsopts
  Build-Depends: http-enumerator, utf8-string
+
+Executable tests
+ Hs-Source-Dirs: src
+ Main-Is: Test/Main.hs
+ Build-Depends: HUnit

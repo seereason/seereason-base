@@ -16,7 +16,9 @@ import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Data.IxSet (inferIxSet, noCalcs)
 import Happstack.Auth.Core.Profile   (UserId(..))
-import Ontology.Types (SubjectId, HasDocumentId(documentId), DocumentId, PrivacyState)
+import Ontology.Types.Assertion (PrivacyState)
+import Ontology.Types.DocumentId (HasDocumentId(documentId), DocumentId)
+import Ontology.Types.Subject (SubjectId)
 
 -- |An Document is a piece of information which resides in our database
 -- and therefore the fact that this content is associated with a

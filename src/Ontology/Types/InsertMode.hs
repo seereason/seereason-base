@@ -4,7 +4,7 @@ module Ontology.Types.InsertMode where
 import Data.Generics (Typeable)
 import Data.SafeCopy (deriveSafeCopy, base)
 import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
-import Ontology.Types (PredForm)
+import Ontology.Types.PredForm (PredForm)
 
 data InsertMode formula
     = NoOpinion

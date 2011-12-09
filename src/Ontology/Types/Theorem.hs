@@ -1,0 +1,102 @@
+{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, TemplateHaskell, TypeFamilies, UndecidableInstances #-}
+{-# OPTIONS -Wall #-}
+module Ontology.Types.Theorem
+    (
+    -- * TheoremId, Theorem
+      Theorem(Theorem, theoremOwner, theoremId, argument, theoremPrivacy)
+    , TheoremId(unTheoremId)
+    , findTheoremIds
+    , unsafeTheoremId
+    , prettyTheoremId
+    , Theorems
+    ) where
+
+import Control.Applicative((<$>))
+import Data.Data (Data(..))
+import Data.Function (on)
+import qualified Data.Generics.SYB.WithClass.Basics as New
+import Data.IxSet (inferIxSet, noCalcs)
+import Data.SafeCopy -- (base, extension, deriveSafeCopy)
+import qualified Data.Set.Extra as Set
+import Data.Typeable (Typeable)
+import Happstack.Data (Default(defaultValue), DefaultD, gFind, deriveNewDataNoDefault, gFind)
+import Happstack.Auth.Core.Profile   (UserId(..))
+import Ontology.Types.Assertion (AssertionId, PrivacyState(Proposed))
+import Test.QuickCheck (Arbitrary(arbitrary))
+import Text.PrettyPrint (Doc, text)
+import Web.Routes.TH (derivePathInfo)
+
+-- |A Theorem is a list of assertions.  These are passed to
+-- the theorem prover.
+data Theorem =
+    Theorem { theoremOwner :: UserId
+            , theoremId :: TheoremId
+            , argument :: [AssertionId]
+            , theoremPrivacy :: PrivacyState
+            } deriving (Data, Typeable, Show)
+
+-- |Only one theorem including a given list of assertions can be
+-- entered into the system.  (Should this be a set?  Or a set and
+-- a conclusion assertion?)
+instance Ord Theorem where
+    compare = compare `on` argument
+
+instance Eq Theorem where
+    a == b = compare a b == EQ
+
+data TheoremId = TheoremId {unTheoremId :: Integer} deriving (Read, Eq, Ord, Data, Typeable)
+
+instance Show TheoremId where
+    show x = "(unsafeTheoremId " ++ show (unTheoremId x) ++ ")"
+
+$(derivePathInfo ''TheoremId)
+
+prettyTheoremId :: TheoremId -> Doc
+prettyTheoremId x = text ("T" ++ show (unTheoremId x))
+
+unsafeTheoremId :: Integer -> TheoremId
+unsafeTheoremId = TheoremId
+
+findTheoremIds :: Data a => a -> Set.Set TheoremId
+findTheoremIds a = Set.fromList (gFind a :: [TheoremId])
+
+instance Arbitrary TheoremId where
+    arbitrary = (TheoremId <$> arbitrary)
+
+$(deriveSafeCopy 2 'extension ''Theorem)
+$(deriveSafeCopy 1 'base ''TheoremId)
+
+instance (New.Data DefaultD Theorem) where 
+    toConstr = error "toConstr Ontology.Types.Theorem"
+
+instance Default Theorem where
+    defaultValue = Theorem { theoremOwner = UserId 0
+                           , theoremId    = defaultValue
+                           , argument     = defaultValue
+                           , theoremPrivacy = Proposed
+                           }
+
+-- It would be better not to have a Default instance for the Id types
+$(deriveNewDataNoDefault [''TheoremId])
+
+instance Default TheoremId where
+    defaultValue = TheoremId 1
+
+$(inferIxSet "Theorems" ''Theorem 'noCalcs [''TheoremId, ''AssertionId])
+
+-- Migration
+
+data Theorem_v1 =
+    Theorem_v1 { theoremOwner_v1 :: UserId
+               , theoremId_v1 :: TheoremId
+               , argument_v1 :: [AssertionId]
+               } deriving (Data, Typeable)
+
+$(deriveSafeCopy 1 'base ''Theorem_v1)
+
+instance Migrate Theorem where
+    type MigrateFrom Theorem = Theorem_v1
+    migrate x@(Theorem_v1 {}) = Theorem { theoremOwner = theoremOwner_v1 x,
+                                          theoremId = theoremId_v1 x,
+                                          argument = argument_v1 x,
+                                          theoremPrivacy = Proposed }

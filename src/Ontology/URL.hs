@@ -48,6 +48,17 @@ data URL
 
 class MkURL url where
     mkURL :: URL -> url
+    mkAssertionIdURL :: AssertionId -> url
+    mkSubjectIdURL :: SubjectId -> url
+    mkDocumentIdURL :: DocumentId -> url
+    mkUserIdURL :: UserId -> url
+
+instance MkURL URL where
+    mkURL = id
+    mkAssertionIdURL = Assertion
+    mkSubjectIdURL = Subject
+    mkDocumentIdURL = Document
+    mkUserIdURL = Account
 
 $(derivePathInfo ''TheoremEditorURL)
 $(derivePathInfo ''URL)

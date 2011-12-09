@@ -1,3 +1,10 @@
+haskell-seereason-base (1.53) unstable; urgency=low
+
+  * Split up Ontology.Types into several modules.
+  * Replace function parameters for building urls with a class in Ontology.Types
+
+ -- David Fox <dsf@seereason.com>  Thu, 08 Dec 2011 09:18:57 -0800
+
 haskell-seereason-base (1.52) unstable; urgency=low
 
   * Add an URL for Search with AutoComplete

@@ -1,5 +1,5 @@
 Name:             seereason-base
-Version:          1.52
+Version:          1.53
 License:          BSD3
 Author:           SeeReason Partners <partners@seereason.com>
 Maintainer:       SeeReason Partners <partners@seereason.com>
@@ -20,15 +20,22 @@ Library
                    Ontology.Comment
                    Ontology.Extra
                    Ontology.Types
+                   Ontology.Types.Assertion
+                   Ontology.Types.Belief
                    Ontology.Types.Description
                    Ontology.Types.Document
+                   Ontology.Types.DocumentId
                    Ontology.Types.Formula
                    Ontology.Types.Formula.AtomicFunction
                    Ontology.Types.Formula.AtomicPredicate
                    Ontology.Types.Formula.V
+                   Ontology.Types.FunctionId
                    Ontology.Types.GenI
                    Ontology.Types.InsertMode
                    Ontology.Types.PF
+                   Ontology.Types.PredForm
+                   Ontology.Types.Subject
+                   Ontology.Types.Theorem
                    Ontology.Types.UserData
                    Ontology.URL
                    Preferences.URL

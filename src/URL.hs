@@ -60,6 +60,10 @@ instance Comment.MkURL Topic WebURL where
 
 instance Ontology.MkURL WebURL where
   mkURL = W_Ontology
+  mkAssertionIdURL = mkURL . Ontology.Assertion
+  mkSubjectIdURL = mkURL . Ontology.Subject
+  mkDocumentIdURL = mkURL . Ontology.Document
+  mkUserIdURL = mkURL . Ontology.Account
 
 instance Preferences.MkURL WebURL where
   mkURL = W_Ontology . Ontology.Preferences

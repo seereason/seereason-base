@@ -9,6 +9,7 @@ module Ontology.Types.Subject
     , prettySubjectId
     -- * SubjectNode
     , SubjectNode(..)
+    , subjectIds'
     , prettySubjectNode
     , SubjectEdge
     , prettyEdge
@@ -148,6 +149,9 @@ data Subject formula
       -- ^ If the subject has any definitions, the arity of all
       -- definitions must match, and this will hold that value.
       } deriving (Data, Typeable, Show)
+
+subjectIds' :: Subject formula -> Set.Set SubjectId
+subjectIds' subj = Set.map unSubjectNode (subjectIds subj)
 
 unsafeSubject :: Set.Set (Assertion formula)
               -> Set.Set SubjectNode

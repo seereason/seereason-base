@@ -120,6 +120,7 @@ type NewDescription =
     , related :: [NounPhraseFragment] }
 -}
 
+-- | This type represents a description of a subject.
 type Description = (LinguisticHint, [NounPhraseFragment])
 
 $(deriveSafeCopy 1 'base ''SubDocument)

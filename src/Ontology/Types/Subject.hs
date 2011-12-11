@@ -134,8 +134,8 @@ instance Ord SubjectNode where
 data Subject formula
     = Subject
       { subjectEquivalenceSet :: Set.Set (Assertion formula)
-      -- ^ The assertions which formed the equivalance set,
-      -- i.e. the edges of the SCC.
+      -- ^ The assertions which formed the equivalance set, i.e. the
+      -- edges of the SCC.  A better name would be subjectNodes.
       , subjectIds :: Set.Set SubjectNode
       -- ^ The collection of Ids which comprise the subject,
       -- i.e. the nodes of the SCC.  Note that the keys are SubjectId rather

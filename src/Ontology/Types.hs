@@ -31,7 +31,6 @@ import Ontology.Types.Subject
 import Ontology.Types.Theorem
 
 import Data.Data (Data(..))
-import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Typeable (Typeable)
 
 data DB_Error formula
@@ -44,5 +43,3 @@ data DB_Error formula
     | FailureToDelete AssertionId
     | FailureToCombine AssertionId
       deriving (Eq, Ord, Data, Typeable)
-
-$(deriveSafeCopy 1 'base ''DB_Error)

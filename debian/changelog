@@ -1,3 +1,10 @@
+haskell-seereason-base (1.54) unstable; urgency=low
+
+  * Add GenI API requests for getting subject descriptions
+  * Provide API request versions with and without a user id parameter
+
+ -- David Fox <dsf@seereason.com>  Sun, 11 Dec 2011 16:01:44 -0800
+
 haskell-seereason-base (1.53) unstable; urgency=low
 
   * Split up Ontology.Types into several modules.

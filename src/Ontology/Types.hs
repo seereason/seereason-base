@@ -42,4 +42,5 @@ data DB_Error formula
     | FailureToClose [AssertionId]
     | FailureToDelete AssertionId
     | FailureToCombine AssertionId
+    | SubjectDefinitionCycle SubjectId
       deriving (Eq, Ord, Data, Typeable)

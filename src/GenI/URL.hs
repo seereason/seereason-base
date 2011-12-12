@@ -15,8 +15,11 @@ import Web.Routes.TH (derivePathInfo)
 data GenIURL
     = GenI_Assertion AssertionId
     | GenI_Assertions
-    | GenI_Subject UserId SubjectId
+    | GenI_UserSubject UserId SubjectId
+    | GenI_Subject SubjectId
     | GenI_Subjects
+    | GenI_Descriptions SubjectId
+    | GenI_UserDescriptions UserId SubjectId
     deriving (Eq, Ord, Typeable, Data)
 
 $(derivePathInfo ''GenIURL)

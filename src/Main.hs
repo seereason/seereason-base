@@ -36,12 +36,12 @@ run route =
     
 test1 :: RouteT GenIURL IO ()
 test1 = 
-  do url  <- Text.unpack <$> showURL (GenI_Subject (UserId 1) (unsafeSubjectId 52))
+  do url  <- Text.unpack <$> showURL (GenI_UserSubject (UserId 1) (unsafeSubjectId 52))
      liftIO $ putStrLn url
 
 test2 :: RouteT GenIURL IO ()
 test2 =
-  do url  <- Text.unpack <$> showURL (GenI_Subject (UserId 1) (unsafeSubjectId 52))
+  do url  <- Text.unpack <$> showURL (GenI_UserSubject (UserId 1) (unsafeSubjectId 52))
      resp <- liftIO $ simpleHttp url
      let subj = decodeJSON .  UTF8.decode . L.unpack $ resp :: LSubject FormulaPF
      liftIO $ print (map unSubjectNode . subjectIds $ subj)
@@ -53,4 +53,4 @@ tests =
    do run (Text.unpack <$> showURL GenI_Subjects) >>= simpleHttp >>= putStrLn . gshow . (decodeJSON :: String -> [SubjectId]) . UTF8.decode . L.unpack
       run (Text.unpack <$> showURL GenI_Assertions) >>= simpleHttp >>= putStrLn . show . (decodeJSON :: String -> [Assertion FormulaPF]) . UTF8.decode . L.unpack
       run (Text.unpack <$> showURL (GenI_Assertion (unsafeAssertionId 1))) >>= simpleHttp >>= putStrLn . show . (decodeJSON :: String -> Assertion FormulaPF) . UTF8.decode . L.unpack
-      run (Text.unpack <$> showURL (GenI_Subject (UserId 1) (unsafeSubjectId 52))) >>= simpleHttp >>=  putStrLn . show . subjectArity . (decodeJSON :: String -> LSubject FormulaPF) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL (GenI_UserSubject (UserId 1) (unsafeSubjectId 52))) >>= simpleHttp >>=  putStrLn . show . subjectArity . (decodeJSON :: String -> LSubject FormulaPF) . UTF8.decode . L.unpack

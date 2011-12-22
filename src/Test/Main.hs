@@ -1,14 +1,16 @@
-{-# LANGUAGE PackageImports #-}
+{-# LANGUAGE FlexibleInstances, PackageImports #-}
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Data.Logic.Classes.Pred (Pred(pApp1, pApp2, (.=.)))
+import Data.Logic.Classes.Constants (Boolean(..))
+import Data.Logic.Classes.FirstOrder (Pred(pApp0, pApp1, pApp2, (.=.)))
 import Data.Logic.Classes.Term (Term(..))
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos))
 import Data.Logic.Resolution (SetOfSupport, prove)
+import Data.Logic.Types.FirstOrder (Formula)
 import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)

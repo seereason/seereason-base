@@ -11,8 +11,8 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
+import Data.Logic.Classes.Combine (Combine(..), BinOp(..))
 import Data.Logic.Classes.FirstOrder (foldFirstOrder, Quant(..), Predicate(..))
-import Data.Logic.Classes.Propositional (Combine(..), BinOp(..))
 import Data.Logic.Classes.Term (foldTerm)
 import qualified Data.Text as Text
 import GenI.URL (GenIURL(..))

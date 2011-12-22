@@ -2,11 +2,12 @@
 {-# OPTIONS -fno-warn-orphans #-}
 module Ontology.Types.PF where
 
-import Data.Logic.KnowledgeBase      (Proof(..))
-import Data.Logic.Classes.FirstOrder (prettyFirstOrder, for_all)
+import Data.Logic.KnowledgeBase (Proof(..))
+import Data.Logic.Classes.Constants (Boolean(..))
+import Data.Logic.Classes.FirstOrder (prettyFirstOrder, for_all, pApp)
 import Data.Logic.Classes.Literal (prettyLit)
-import Data.Logic.Classes.Pred (pApp)
 import Data.Logic.Classes.Term (Term(var), prettyTerm)
+import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
                                       AtomicFunction, prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)

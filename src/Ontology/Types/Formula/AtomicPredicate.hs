@@ -9,7 +9,7 @@ module Ontology.Types.Formula.AtomicPredicate
     ) where
 
 import Data.Data (Data)
-import Data.Logic (Boolean(..), Arity(arity))
+import Data.Logic (Constants(..), Arity(arity))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
@@ -70,7 +70,7 @@ instance (Eq description, Ord description, Show description) => Arity (AtomicPre
           arity' Ratio = 3
           arity' PercentOf = 3
 
-instance Boolean (AtomicPredicate description) where
+instance Constants (AtomicPredicate description) where
     fromBool True = U
     fromBool False = Empty
 

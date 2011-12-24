@@ -7,8 +7,9 @@ module Ontology.Types.Formula.V
 
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
-import Data.Logic (Variable(one, next))
+import Data.Logic.Classes.Variable (Variable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
+import qualified Data.Set as Set
 import Data.String (IsString(..))
 import Happstack.Data (Default(..), deriveNewDataNoDefault)
 import Text.PrettyPrint (Doc, text)
@@ -18,12 +19,20 @@ newtype V = V String
     deriving (Eq, Ord, Typeable, Data, Show) -- Monoid,IsString
 
 instance Variable V where
-    one = V "x"
-    next (V s) =
-        V (case break (not . isDigit) (reverse s) of
-             (_, "") -> "x"
-             ("", nondigits) -> nondigits ++ "2"
-             (digits, nondigits) -> nondigits ++ show (1 + read (reverse digits) :: Int))
+    variant x xs =
+        if Set.member x xs
+        then variant (next x) xs
+        else x
+        where
+          next :: V -> V
+          next (V s) =
+              V (case break (not . isDigit) (reverse s) of
+                   (_, "") -> "x"
+                   ("", nondigits) -> nondigits ++ "2"
+                   (digits, nondigits) -> nondigits ++ show (1 + read (reverse digits) :: Int))
+    prefix p (V s) = V (p ++ s)
+    fromString = V
+    prettyVariable (V s) = text s
 
 -- instance Show V where
     -- It looks more like logic with out the quotes, but you can't

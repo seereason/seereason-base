@@ -8,7 +8,10 @@ module Ontology.Types.PredForm
     ) where
 
 import Data.Data (Data(..))
-import Data.Logic (FirstOrderFormula(foldFirstOrder), Term(var), Variable(one, next), pApp, Predicate(Apply), Arity(arity))
+import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic (Term(var), pApp, Predicate(Apply))
+import Data.Logic.Classes.FirstOrder (FirstOrderFormula(foldFirstOrder))
+import Data.Logic.Classes.Variable (Variable(..), variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Happstack.Data (deriveNewData)
@@ -38,7 +41,7 @@ makePred :: FirstOrderFormula formula term v p f => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
-                 Just n -> take n (map var (iterate next one))
+                 Just n -> take n (map var (variants (fromString "x")))
 
 instance FirstOrderFormula formula term v p f => Arity (PredForm formula) where
     arity = foldPred arity

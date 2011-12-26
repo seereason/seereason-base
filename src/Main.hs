@@ -70,7 +70,7 @@ geni :: FormulaPF -> RouteT GenIURL IO String
 geni f =
     foldFirstOrder q c p f
     where
-      q All v f =
+      q Forall v f =
           do text <- geni f
              return $ "for all " ++ show v ++ " " ++ text
       q Exists v f =

@@ -9,7 +9,8 @@ module Ontology.Types.Formula.AtomicPredicate
     ) where
 
 import Data.Data (Data)
-import Data.Logic (Constants(..), Arity(arity))
+import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic.Classes.Constants (Constants(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)

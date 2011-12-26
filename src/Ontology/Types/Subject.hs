@@ -30,7 +30,10 @@ module Ontology.Types.Subject
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import Data.Logic (FirstOrderFormula, Arity(arity), Negatable(..), ProofResult(..))
+import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic.Classes.Negate (Negatable(..))
+import Data.Logic.Classes.FirstOrder (FirstOrderFormula)
+import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set

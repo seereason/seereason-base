@@ -9,8 +9,8 @@ module Ontology.Types.PredForm
 
 import Data.Data (Data(..))
 import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic (Term(vt), pApp, Predicate(Apply))
-import Data.Logic.Classes.FirstOrder (FirstOrderFormula(foldFirstOrder))
+import Data.Logic.Classes.FirstOrder (FirstOrderFormula(foldFirstOrder), pApp, Predicate(Apply))
+import Data.Logic.Classes.Term (Term(vt))
 import Data.Logic.Classes.Variable (Variable(..), variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Typeable (Typeable)

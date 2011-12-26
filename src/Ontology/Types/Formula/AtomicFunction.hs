@@ -6,7 +6,8 @@ module Ontology.Types.Formula.AtomicFunction
     ) where
 
 import Data.Data (Data)
-import Data.Logic (Skolem(..), Arity(arity))
+import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic.Classes.Skolem (Skolem(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))

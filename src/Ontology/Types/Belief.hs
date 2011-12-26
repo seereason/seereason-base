@@ -7,7 +7,7 @@
 
 import Data.Data (Data(..))
 import Data.Function (on)
-import Data.Logic (ProofResult(..))
+import Data.Logic.KnowledgeBase (ProofResult(..))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Time.Clock (UTCTime(..))
 import Data.Typeable (Typeable)

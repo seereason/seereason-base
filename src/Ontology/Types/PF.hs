@@ -5,7 +5,7 @@ module Ontology.Types.PF where
 import Data.Logic.KnowledgeBase (Proof(..))
 import Data.Logic.Classes.FirstOrder (prettyFirstOrder, for_all, pApp)
 import Data.Logic.Classes.Literal (prettyLit)
-import Data.Logic.Classes.Term (Term(var), prettyTerm)
+import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
                                       AtomicFunction, prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)
@@ -47,4 +47,4 @@ desc2 :: String -> AtomicPredicatePF
 desc2 = desc 2
 
 defaultFormula :: FormulaPF
-defaultFormula = (for_all (V "x") (pApp (Empty) [var (V "x")])) :: FormulaPF
+defaultFormula = (for_all (V "x") (pApp (Empty) [vt (V "x")])) :: FormulaPF

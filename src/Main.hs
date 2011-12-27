@@ -12,8 +12,9 @@ import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
 import Data.Logic.Classes.Combine (Combination(..), BinOp(..))
-import Data.Logic.Classes.FirstOrder (foldFirstOrder, Quant(..), Predicate(..))
+import Data.Logic.Classes.FirstOrder (foldFirstOrder, Quant(..))
 import Data.Logic.Classes.Term (foldTerm)
+import Data.Logic.Types.FirstOrder (Predicate(..))
 import qualified Data.Text as Text
 import GenI.URL (GenIURL(..))
 import Happstack.Auth.Core.Profile (UserId(UserId))

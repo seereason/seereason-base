@@ -31,6 +31,7 @@ import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic.Classes.Equals (AtomEq)
 import Data.Logic.Classes.Negate (Negatable(..))
 import Data.Logic.Classes.FirstOrder (FirstOrderFormula)
 import Data.Logic.KnowledgeBase (ProofResult(..))
@@ -199,7 +200,7 @@ subjectDefinitionIds = Set.map assertionId . subjectAssertions
 subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula)
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
-instance FirstOrderFormula formula term v p f => Arity (SubjectTuple formula) where
+instance (FirstOrderFormula formula atom v, AtomEq atom p term) => Arity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-

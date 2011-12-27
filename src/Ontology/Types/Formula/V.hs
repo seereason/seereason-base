@@ -31,7 +31,6 @@ instance Variable V where
                    ("", nondigits) -> nondigits ++ "2"
                    (digits, nondigits) -> nondigits ++ show (1 + read (reverse digits) :: Int))
     prefix p (V s) = V (p ++ s)
-    fromString = V
     prettyVariable (V s) = text s
 
 -- instance Show V where

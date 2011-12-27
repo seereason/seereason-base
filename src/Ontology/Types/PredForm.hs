@@ -9,10 +9,13 @@ module Ontology.Types.PredForm
 
 import Data.Data (Data(..))
 import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.FirstOrder (FirstOrderFormula(foldFirstOrder), pApp, Predicate(Apply))
+import Data.Logic.Classes.Constants (fromBool)
+import Data.Logic.Classes.Equals (AtomEq(foldAtomEq), pApp)
+import Data.Logic.Classes.FirstOrder (FirstOrderFormula(foldFirstOrder))
 import Data.Logic.Classes.Term (Term(vt))
-import Data.Logic.Classes.Variable (Variable(..), variants)
+import Data.Logic.Classes.Variable (variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
+import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
 import Happstack.Data (deriveNewData)
 
@@ -24,26 +27,24 @@ newtype PredForm formula = PredForm formula
 -- ^ This function is used to access the predicate in a PredForm.
 -- Note that the type "a" might be a function such as "[term] -> b",
 -- which means you can simulate the pApp function.
-foldPred :: FirstOrderFormula formula term v p f => (p -> a) -> PredForm formula -> a
+foldPred :: (FirstOrderFormula formula atom v, AtomEq atom p term) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
-    foldFirstOrder q c p form
+    foldFirstOrder qu co at form
     where
-      -- 
-      p (Apply ap _) = fn ap
       -- We don't have to implement anything else, because we know
       -- this first case will match.
-      p _ = undefined
-      q = undefined
-      c = undefined
+      at = foldAtomEq (\ p _ -> fn p) (fn . fromBool) (\ _ _ -> undefined)
+      qu = undefined
+      co = undefined
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
-makePred :: FirstOrderFormula formula term v p f => p -> PredForm formula
+makePred :: (FirstOrderFormula formula atom v, AtomEq atom p term, Term term v f) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
                  Just n -> take n (map vt (variants (fromString "x")))
 
-instance FirstOrderFormula formula term v p f => Arity (PredForm formula) where
+instance (FirstOrderFormula formula atom v, AtomEq atom p term) => Arity (PredForm formula) where
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)

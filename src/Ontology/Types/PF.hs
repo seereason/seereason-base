@@ -3,8 +3,9 @@
 module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
-import Data.Logic.Classes.FirstOrder (prettyFirstOrder, for_all, pApp)
-import Data.Logic.Classes.Literal (prettyLit)
+import Data.Logic.Classes.Equals (pApp)
+import Data.Logic.Classes.FirstOrder (for_all)
+import Data.Logic.Classes.FirstOrderEq (prettyLitEq, prettyFirstOrderEq)
 import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
@@ -26,10 +27,10 @@ type SubjectPF = Subject FormulaPF
 type ProofPF = Proof LiteralPF
 
 prettyLitPF :: Int -> LiteralPF -> Doc
-prettyLitPF = prettyLit prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
+prettyLitPF = prettyLitEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
 
 prettyFormulaPF :: Int -> FormulaPF -> Doc
-prettyFormulaPF = prettyFirstOrder prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
+prettyFormulaPF = prettyFirstOrderEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
 
 prettyTermPF :: TermPF -> Doc
 prettyTermPF = prettyTerm prettyV prettyAtomicFunction
@@ -47,4 +48,4 @@ desc2 :: String -> AtomicPredicatePF
 desc2 = desc 2
 
 defaultFormula :: FormulaPF
-defaultFormula = (for_all (V "x") (pApp (Empty) [vt (V "x")])) :: FormulaPF
+defaultFormula = (for_all (V "x") (pApp (Empty) [vt (V "x") :: TermPF])) :: FormulaPF

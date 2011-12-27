@@ -5,7 +5,7 @@ module Main where
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Logic.Classes.Constants (Constants(..))
-import Data.Logic.Classes.FirstOrder (Pred(pApp0, pApp1, pApp2, (.=.)))
+import Data.Logic.Classes.Equals (pApp0, pApp1, pApp2, (.=.))
 import Data.Logic.Classes.Term (Term(..))
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos))

@@ -11,6 +11,7 @@ module Ontology.Types.Formula.AtomicPredicate
 import Data.Data (Data)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
+import Data.Logic.Types.FirstOrder (Predicate(Apply))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
@@ -74,6 +75,9 @@ instance (Eq description, Ord description, Show description) => Arity (AtomicPre
 instance Constants (AtomicPredicate description) where
     fromBool True = U
     fromBool False = Empty
+
+instance Constants (Predicate (AtomicPredicate description) term) where
+    fromBool x = Apply (fromBool x) []
 
 {-
 instance IsString AtomicPredicate where

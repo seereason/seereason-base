@@ -69,15 +69,15 @@ askDescriptions u i =
 
 geni :: FormulaPF -> RouteT GenIURL IO String
 geni f =
-    foldFirstOrder q c p f
+    foldFirstOrder qu co tf at f
     where
-      q Forall v f =
+      qu Forall v f =
           do text <- geni f
              return $ "for all " ++ show v ++ " " ++ text
-      q Exists v f =
+      qu Exists v f =
           do text <- geni f
              return $ "for all " ++ show v ++ " " ++ text
-      c (BinOp f1 op f2) =
+      co (BinOp f1 op f2) =
           do t1 <- geni f1
              t2 <- geni f2
              let op' = case op of
@@ -86,20 +86,22 @@ geni f =
                          (:&:) -> "and"
                          (:|:) -> "or"
              return $ t1 ++ " " ++ op' ++ " " ++ t2
-      c ((:~:) f) =
+      co ((:~:) f) =
           do text <- geni f
              return $ "not " ++ text
-      p (Equal t1 t2) =
+      tf True = return "true"
+      tf False = return "false"
+      at (Equal t1 t2) =
           do text1 <- geniTerm t1
              text2 <- geniTerm t2
              return $ text1 ++ " equals " ++ text2
-      p (NotEqual t1 t2) =
+      at (NotEqual t1 t2) =
           do text1 <- geniTerm t1
              text2 <- geniTerm t2
              return $ text1 ++ " does not equal " ++ text2
-      p (Constant b) =
+      at (Constant b) =
           error "unexpected"
-      p (Apply pr ts) =
+      at (Apply pr ts) =
           do prtext <- geniPred pr
              termTexts <- mapM geniTerm ts
              return $ "apply " ++ prtext ++ " to (" ++ intercalate ", " termTexts ++ ")"

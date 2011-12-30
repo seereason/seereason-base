@@ -29,11 +29,10 @@ newtype PredForm formula = PredForm formula
 -- which means you can simulate the pApp function.
 foldPred :: (FirstOrderFormula formula atom v, AtomEq atom p term) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
-    foldFirstOrder qu co at form
+    foldFirstOrder qu co tf at form
     where
-      -- We don't have to implement anything else, because we know
-      -- this first case will match.
-      at = foldAtomEq (\ p _ -> fn p) (fn . fromBool) (\ _ _ -> undefined)
+      at = foldAtomEq (\ p _ -> fn p) tf (\ _ _ -> undefined)
+      tf = fn . fromBool
       qu = undefined
       co = undefined
 

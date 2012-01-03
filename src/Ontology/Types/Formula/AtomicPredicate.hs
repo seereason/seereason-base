@@ -10,7 +10,6 @@ module Ontology.Types.Formula.AtomicPredicate
     ) where
 
 import Data.Data (Data)
-import Data.Logic (Boolean(..), Arity(arity))
 import Data.List (isSuffixOf)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))

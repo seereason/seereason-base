@@ -11,7 +11,7 @@ import Data.Logic.Classes.Skolem (Skolem(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
-import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate)
+import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate, prettyNumberLit)
 import Text.PrettyPrint (Doc, text)
 
 -- |The atomic function used as a parameter to the
@@ -36,6 +36,7 @@ prettyAtomicFunction :: (Eq description, Ord description, Show description) => A
 prettyAtomicFunction x =
     case x of
       Function (Reference _ ident) -> prettySubjectId AsFunction ident
+      Function (NumberLit d) -> prettyNumberLit d
       Function p -> prettyAtomicPredicate AsFunction p
       _ -> text . show $ x
 

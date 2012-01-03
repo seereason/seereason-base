@@ -5,10 +5,13 @@ module Ontology.Types.Formula.AtomicPredicate
     ( AtomicPredicate(..)
     , prettyAtomicPredicate
     , prettyUserId
+    , prettyNumberLit
     , specificity
     ) where
 
 import Data.Data (Data)
+import Data.Logic (Boolean(..), Arity(arity))
+import Data.List (isSuffixOf)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
 import Data.Logic.Types.FirstOrder (Predicate(Apply))
@@ -18,7 +21,8 @@ import Data.Typeable (Typeable)
 import Happstack.Auth.Core.Profile   (UserId(..))
 import Ontology.Types (Belief(..), SubjectId, AssertionId, DocumentId, TheoremId, PredicateStyle,
                        prettyAssertionId, prettyDocumentId, prettySubjectId, prettyTheoremId)
-import Text.PrettyPrint (Doc, text)
+import Text.PrettyPrint (Doc, text, cat)
+import Text.Printf (printf)
 
 -- |The atomic predicate used as a parameter to the logic formula
 -- type.  A formula is created from one of these using PredApp: @let x
@@ -92,11 +96,15 @@ prettyAtomicPredicate style x =
       DocumentRef ident -> prettyDocumentId ident
       TheoremRef ident -> prettyTheoremId ident
       Somebody u -> prettyUserId u
+      NumberLit d -> cat [text "=", prettyNumberLit d]
       _ -> text $ show x
 
 prettyUserId :: UserId -> Doc
 prettyUserId u = text ("U" ++ show (unUserId u))
- 
+
+prettyNumberLit :: Double -> Doc
+prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s
+
 -- |Order AtomicPredicate from most to least "descriptive", meaning
 -- hopefully that if you sort a list of them the one that comes first
 -- best sums up the meaning of the whole list.

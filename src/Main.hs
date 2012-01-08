@@ -95,12 +95,6 @@ geni f =
           do text1 <- geniTerm t1
              text2 <- geniTerm t2
              return $ text1 ++ " equals " ++ text2
-      at (NotEqual t1 t2) =
-          do text1 <- geniTerm t1
-             text2 <- geniTerm t2
-             return $ text1 ++ " does not equal " ++ text2
-      at (Constant b) =
-          error "unexpected"
       at (Apply pr ts) =
           do prtext <- geniPred pr
              termTexts <- mapM geniTerm ts

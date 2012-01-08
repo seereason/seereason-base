@@ -79,9 +79,6 @@ instance Constants (AtomicPredicate description) where
     fromBool True = U
     fromBool False = Empty
 
-instance Constants (Predicate (AtomicPredicate description) term) where
-    fromBool x = Apply (fromBool x) []
-
 {-
 instance IsString AtomicPredicate where
     fromString s = error ("IsString AtomicPredicate " ++ show s)

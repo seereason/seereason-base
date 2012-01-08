@@ -117,10 +117,10 @@ prettyEdge :: PredicateStyle -> SubjectEdge formula -> Doc
 prettyEdge style (s1, s2, _) = cat [prettySubjectNode style s1, text "->", prettySubjectNode style s2]
 
 instance Negatable SubjectNode where
-    negated (Normal _) = False
-    negated _ = True
-    (.~.) (Complement x) = Normal x
-    (.~.) (Normal x) = Complement x
+    negatePrivate (Complement x) = Normal x
+    negatePrivate (Normal x) = Complement x
+    foldNegation _ inverted (Complement x) = inverted (Normal x)
+    foldNegation normal _ (Normal x) = normal (Normal x)
 
 -- |We want Normal nodes to come before Complement nodes, because normally
 -- a Subject will have at least one Normal node so we can expect minId to

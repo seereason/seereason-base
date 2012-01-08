@@ -3,9 +3,8 @@
 module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
-import Data.Logic.Classes.Equals (pApp)
+import Data.Logic.Classes.Equals (pApp, prettyAtomEq)
 import Data.Logic.Classes.FirstOrder (for_all, prettyFirstOrder)
-import Data.Logic.Classes.FirstOrderEq (prettyAtomEq)
 import Data.Logic.Classes.Literal (prettyLit)
 import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T

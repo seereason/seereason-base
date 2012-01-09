@@ -13,7 +13,6 @@ import Data.Data (Data)
 import Data.List (isSuffixOf)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
-import Data.Logic.Types.FirstOrder (Predicate(Apply))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)

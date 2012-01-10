@@ -6,7 +6,8 @@ module Ontology.Types.Formula.AtomicPredicate
     , prettyAtomicPredicate
     , prettyUserId
     , prettyNumberLit
-    -- , specificity
+    , compare2
+    , Ordering2(..)
     ) where
 
 import Data.Data (Data)
@@ -110,101 +111,100 @@ instance Pretty UserId where
 prettyNumberLit :: Double -> Doc
 prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s
 
+-- | An Ordering2 represents two levels of comparison, comparison of
+-- | just the constructor and comparison of the whole value.
+data Ordering2 = EQ2 Ordering | LT2 | GT2
+
+-- | Return two measures of ordering, on the constructor only and on
+-- the entire value.
+compare2 :: (Show description, Ord description) => AtomicPredicate description -> AtomicPredicate description -> Ordering2
+compare2 p1 p2 =
+    case (p1, p2) of
+      (NumberLit a, NumberLit b) -> EQ2 (compare a b)
+      (NumberLit _, _) -> LT2
+      (_, NumberLit _) -> GT2
+
+      (You, You) -> EQ2 EQ
+      (You, _) -> LT2
+      (_, You) -> GT2
+
+      (Ratio, Ratio) -> EQ2 EQ
+      (Ratio, _) -> LT2
+      (_, Ratio) -> GT2
+
+      (PercentOf, PercentOf) -> EQ2 EQ
+      (PercentOf, _) -> LT2
+      (_, PercentOf) -> GT2
+
+      (Somebody _, Somebody b) -> EQ2 EQ
+      (Somebody _, _) -> LT2
+      (_, Somebody _) -> GT2
+
+      (Reference _ a, Reference _ b) -> EQ2 $ compare a b
+      (Reference _ _, _) -> LT2
+      (_, Reference _ _) -> GT2
+
+      (AssertionRef a, AssertionRef b) -> EQ2 $ compare a b
+      (AssertionRef _, _) -> LT2
+      (_, AssertionRef _) -> GT2
+
+      (TheoremRef a, TheoremRef b) -> EQ2 $ compare a b
+      (TheoremRef _, _) -> LT2
+      (_, TheoremRef _) -> GT2
+
+      (Nickname _ a, Nickname _ b) -> EQ2 $ compare a b
+      (Nickname _ _, _) -> LT2
+      (_, Nickname _ _) -> GT2
+
+      (Description _ a, Description _ b) -> EQ2 $ compare a b
+      (Description _ _, _) -> LT2
+      (_, Description _ _) -> GT2
+
+      (Persons, Persons) -> EQ2 EQ
+      (Persons, _) -> LT2
+      (_, Persons) -> GT2
+
+      (Users, Users) -> EQ2 EQ
+      (Users, _) -> LT2
+      (_, Users) -> GT2
+
+      (DocumentRef a, DocumentRef b) -> EQ2 $ compare a b
+      (DocumentRef _, _) -> LT2
+      (_, DocumentRef _) -> GT2
+
+      (NumberOf a, NumberOf b) -> EQ2 $ compare a b
+      (NumberOf _, _) -> LT2
+      (_, NumberOf _) -> GT2
+
+      (Empty, Empty) -> EQ2 EQ
+      (Empty, _) -> LT2
+      (_, Empty) -> GT2
+
+      (Singleton, Singleton) -> EQ2 EQ
+      (Singleton, _) -> LT2
+      (_, Singleton) -> GT2
+
+      (U, U) -> EQ2 EQ
+      (U, _) -> LT2
+      (_, U) -> GT2
+
+      (Commentary _ a, Commentary _ b) -> EQ2 $ compare a b
+      (Commentary _ _, _) -> LT2
+      (_, Commentary _ _) -> GT2
+
+      (Believers a, Believers b) -> EQ2 $ compare a b
+      (Believers _, _) -> LT2
+      (_, Believers _) -> GT2
+      
+
 -- |Order AtomicPredicate from most to least "descriptive", meaning
 -- hopefully that if you sort a list of them the one that comes first
 -- best sums up the meaning of the whole list.
 instance (Ord description, Show description) => Ord (AtomicPredicate description) where
-    compare (NumberLit a) (NumberLit b) = compare a b
-    compare (NumberLit _) _ = LT
-
-    compare You You = EQ
-    compare You _ = LT
-
-    compare Ratio Ratio = EQ
-    compare Ratio _ = LT
-
-    compare PercentOf PercentOf = EQ
-    compare PercentOf _ = LT
-
-    compare (Somebody a) (Somebody b) = compare a b
-    compare (Somebody _) _ = LT
-
-    compare (Reference _ a) (Reference _ b) = compare a b
-    compare (Reference _ _) _ = LT
-
-    compare (AssertionRef a) (AssertionRef b) = compare a b
-    compare (AssertionRef _) _ = LT
-
-    compare (TheoremRef a) (TheoremRef b) = compare a b
-    compare (TheoremRef _) _ = LT
-
-    compare (Nickname _ a) (Nickname _ b) = compare a b
-    compare (Nickname _ _) _ = LT
-
-    compare (Description _ a) (Description _ b) = compare a b
-    compare (Description _ _) _ = LT
-
-    compare Persons Persons = EQ
-    compare Persons _ = LT
-
-    compare Users Users = EQ
-    compare Users _ = LT
-
-    compare (DocumentRef a) (DocumentRef b) = compare a b
-    compare (DocumentRef _) _ = LT
-
-    compare (NumberOf a) (NumberOf b) = compare a b
-    compare (NumberOf _) _ = LT
-
-    compare Empty Empty = EQ
-    compare Empty _ = LT
-
-    compare Singleton Singleton = EQ
-    compare Singleton _ = LT
-
-    compare U U = EQ
-    compare U _ = LT
-
-    compare (Commentary _ a) (Commentary _ b) = compare a b
-    compare (Commentary _ _) _ = LT
-
-    compare (Believers a) (Believers b) = compare a b
-    compare (Believers _) _ = LT
-{-
-    compare (Somebody a) (Somebody b) = compare a b
-    compare (Reference _ a) (Reference _ b) = compare a b
-    compare (AssertionRef a) (AssertionRef b) = compare a b
-    compare (DocumentRef a) (DocumentRef b) = compare a b
-    compare (TheoremRef a) (TheoremRef b) = compare a b
-    compare (Nickname _ a) (Nickname _ b) = compare a b
-    compare (Description _ a) (Description _ b) = compare a b
-    compare (NumberOf a) (NumberOf b) = compare a b
-    compare (Commentary _ a) (Commentary _ b) = compare a b
-    compare (Believers a) (Believers b) = compare a b
-    compare a b = compare (specificity a) (specificity b)
-
--- |Classify how useful a predicate is in characterizing a subject,
--- with 1 being the most useful and higher numbers less so.
-specificity :: (Eq description, Ord description, Show description) => AtomicPredicate description -> Int
-specificity (NumberLit _) = 1
-specificity You = 2
-specificity Ratio = 3
-specificity PercentOf = 4
-specificity (Somebody _) = 5
-specificity (Reference _ _) = 6
-specificity (AssertionRef _) = 7
-specificity (TheoremRef _) = 8
-specificity (Nickname _ _) = 9
-specificity (Description _ _) = 10
-specificity Persons = 11
-specificity Users = 12
-specificity (DocumentRef _) = 13
-specificity (NumberOf _) = 14
-specificity Empty = 15
-specificity Singleton = 16
-specificity U = 17
-specificity (Commentary _ _) = 18
-specificity (Believers _) = 19
--}
+    compare a b =
+        case compare2 a b of
+          LT2 -> LT
+          GT2 -> GT
+          EQ2 x -> x
 
 $(deriveSafeCopy 1 'base ''AtomicPredicate)

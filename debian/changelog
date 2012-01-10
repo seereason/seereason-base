@@ -1,3 +1,11 @@
+haskell-seereason-base (1.56) unstable; urgency=low
+
+  * New compare2 function that returns both whether the constructors of
+    two AtomicPredicates match and whether the values match exactly.
+    Replaces the specificity function.
+
+ -- David Fox <dsf@seereason.com>  Tue, 10 Jan 2012 12:16:35 -0800
+
 haskell-seereason-base (1.55) unstable; urgency=low
 
   * Add prettyNumberLit.

@@ -4,11 +4,15 @@ module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals (pApp1, pApp2, (.=.))
 import Data.Logic.Classes.Term (Term(..))
+import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
-import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos))
+import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm, runNormal)
 import Data.Logic.Resolution (SetOfSupport, prove)
+import Data.Logic.Types.FirstOrderPublic
+import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
@@ -16,13 +20,14 @@ import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
 import Ontology.Types.Formula.V (V(V))
+import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Prelude hiding (negate)
 import System.Exit
 import Test.HUnit
 
 main :: IO ()
 main =
-    runTestTT (TestList [prove1, prove2]) >>= doCounts
+    runTestTT (TestList [prove1, prove2, atomic2, atomic3, atomic4, atomic5]) >>= doCounts
     where
       doCounts counts' = exitWith (if errors counts' /= 0 || failures counts' /= 0 then ExitFailure 1 else ExitSuccess)
     
@@ -156,3 +161,44 @@ prove2 =
                                         (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "y")))],
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))])])
+
+atomic2 :: Test
+atomic2 =
+    TestCase (assertEqual "Atom test 2" expected input)
+    where
+      input = runSkolem (implicativeNormalForm (unFormula (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF))) :: Set.Set (ImplicativeForm LiteralPF)
+      expected = Set.fromList [INF {neg = Set.fromList [],
+                                    pos = Set.fromList [N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])]}]
+
+atomic3 :: Test
+atomic3 =
+    TestCase (assertEqual "Atom test 3" expected input)
+    where
+      input = compare f0 f1
+      f0 = runSkolem (skolemNormalForm (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []))) :: FormulaPF
+      f1 = runSkolem (skolemNormalForm (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []))) :: FormulaPF
+      expected = LT
+
+atomic4 :: Test
+atomic4 =
+    TestCase (assertEqual "Atom test 4" expected input)
+    where
+      input = compare f0 f1
+      f0 = Formula (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []])) :: FormulaPF
+      f1 = Formula (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]))
+      expected = LT
+
+atomic5 :: Test
+atomic5 =
+    TestCase (assertEqual "Atom test 5" expected input)
+    where
+      input = compare f0 f1
+      f0 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description)
+      f1 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description)
+      -- f0 = N.FunApp (Function (NumberLit 0.0)) [] :: N.PTerm V (AtomicFunction Description)
+      -- f1 = N.FunApp (Function (NumberLit 1.0)) [] :: N.PTerm V (AtomicFunction Description)
+      -- f0 = Function (NumberLit 0.0) :: AtomicFunction Description
+      -- f1 = Function (NumberLit 1.0) :: AtomicFunction Description
+      -- f0 = NumberLit 0.0 :: AtomicPredicate Description
+      -- f1 = NumberLit 1.0 :: AtomicPredicate Description
+      expected = LT

@@ -6,7 +6,7 @@ module Ontology.Types.Formula.AtomicPredicate
     , prettyAtomicPredicate
     , prettyUserId
     , prettyNumberLit
-    , specificity
+    -- , specificity
     ) where
 
 import Data.Data (Data)
@@ -114,6 +114,63 @@ prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then ta
 -- hopefully that if you sort a list of them the one that comes first
 -- best sums up the meaning of the whole list.
 instance (Ord description, Show description) => Ord (AtomicPredicate description) where
+    compare (NumberLit a) (NumberLit b) = compare a b
+    compare (NumberLit _) _ = LT
+
+    compare You You = EQ
+    compare You _ = LT
+
+    compare Ratio Ratio = EQ
+    compare Ratio _ = LT
+
+    compare PercentOf PercentOf = EQ
+    compare PercentOf _ = LT
+
+    compare (Somebody a) (Somebody b) = compare a b
+    compare (Somebody _) _ = LT
+
+    compare (Reference _ a) (Reference _ b) = compare a b
+    compare (Reference _ _) _ = LT
+
+    compare (AssertionRef a) (AssertionRef b) = compare a b
+    compare (AssertionRef _) _ = LT
+
+    compare (TheoremRef a) (TheoremRef b) = compare a b
+    compare (TheoremRef _) _ = LT
+
+    compare (Nickname _ a) (Nickname _ b) = compare a b
+    compare (Nickname _ _) _ = LT
+
+    compare (Description _ a) (Description _ b) = compare a b
+    compare (Description _ _) _ = LT
+
+    compare Persons Persons = EQ
+    compare Persons _ = LT
+
+    compare Users Users = EQ
+    compare Users _ = LT
+
+    compare (DocumentRef a) (DocumentRef b) = compare a b
+    compare (DocumentRef _) _ = LT
+
+    compare (NumberOf a) (NumberOf b) = compare a b
+    compare (NumberOf _) _ = LT
+
+    compare Empty Empty = EQ
+    compare Empty _ = LT
+
+    compare Singleton Singleton = EQ
+    compare Singleton _ = LT
+
+    compare U U = EQ
+    compare U _ = LT
+
+    compare (Commentary _ a) (Commentary _ b) = compare a b
+    compare (Commentary _ _) _ = LT
+
+    compare (Believers a) (Believers b) = compare a b
+    compare (Believers _) _ = LT
+{-
     compare (Somebody a) (Somebody b) = compare a b
     compare (Reference _ a) (Reference _ b) = compare a b
     compare (AssertionRef a) (AssertionRef b) = compare a b
@@ -148,5 +205,6 @@ specificity Singleton = 16
 specificity U = 17
 specificity (Commentary _ _) = 18
 specificity (Believers _) = 19
+-}
 
 $(deriveSafeCopy 1 'base ''AtomicPredicate)

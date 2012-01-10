@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses,
-             StandaloneDeriving, TemplateHaskell, UndecidableInstances #-}
+             StandaloneDeriving, TemplateHaskell, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS -Wall -Werror #-}
 module Ontology.Types.Description
     ( LinguisticHint(..)
@@ -13,6 +13,7 @@ module Ontology.Types.Description
     ) where
 
 import Data.Data (Data(..))
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
@@ -20,6 +21,9 @@ import Happstack.Data (Default(defaultValue), deriveNewData, deriveNewDataNoDefa
 import Data.IxSet (toList, (@=))
 import Ontology.Types (DocumentId(..), prettyDocumentId, SubjectId(..))
 import Ontology.Types.Document (Document(text), Documents)
+import Ontology.Types.Formula.AtomicPredicate (prettyNumberLit)
+import Text.PrettyPrint (hsep, (<>))
+import qualified Text.PrettyPrint as P
 
 -- |Hints used to combine descriptions, they should be presented in
 -- the order given here.
@@ -56,6 +60,10 @@ getSubDocument (TextRanges {textRanges = ranges}) doc =
       get (TextRange s e) = T.take (e - s + 1) (T.drop s (text doc))
 getSubDocument (Quotation t _) d =
     Just (d {text = t})
+
+instance Pretty SubDocument where
+    pretty x@(Quotation {}) = P.text (T.unpack (quotation x))
+    pretty x@(TextRanges {}) = P.text (show (textRanges x))
 
 -- | A free form text description of a set.
 data NounPhraseFragment =
@@ -122,6 +130,16 @@ type NewDescription =
 
 -- | This type represents a description of a subject.
 type Description = (LinguisticHint, [NounPhraseFragment])
+
+instance Pretty Description where
+    pretty (_, xs) = hsep (map pretty xs)
+
+instance Pretty NounPhraseFragment where
+    pretty (T x) = P.text (T.unpack x)
+    pretty (S x) = pretty x
+    pretty (D x) = pretty x
+    pretty (Number n) = prettyNumberLit n
+    pretty (Percentage n) = prettyNumberLit n <> P.text "%"
 
 $(deriveSafeCopy 1 'base ''SubDocument)
 $(deriveSafeCopy 1 'base ''TextRange)

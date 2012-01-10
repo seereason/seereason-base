@@ -9,7 +9,7 @@ import Data.Logic.Classes.Literal (prettyLit)
 import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
-                                      AtomicFunction, prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)
+                                      AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)
 import Ontology.Types                (Assertion, Subject, PredicateStyle(AsPredicate))
 import Ontology.Types.Description   (Description, LinguisticHint(..), NounPhraseFragment(..))
 import Ontology.Types.UserData      (UserData)

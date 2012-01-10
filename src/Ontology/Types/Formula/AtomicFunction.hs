@@ -7,6 +7,7 @@ module Ontology.Types.Formula.AtomicFunction
 
 import Data.Data (Data)
 import Data.Logic.Classes.Arity (Arity(arity))
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Skolem (Skolem(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
@@ -39,6 +40,9 @@ prettyAtomicFunction x =
       Function (NumberLit d) -> prettyNumberLit d
       Function p -> prettyAtomicPredicate AsFunction p
       _ -> text . show $ x
+
+instance (Pretty description, Show description, Ord description) => Pretty (AtomicFunction description) where
+    pretty = prettyAtomicFunction
 
 instance (Ord description, Show description) => Arity (AtomicFunction description) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)

@@ -7,6 +7,7 @@ module Ontology.Types.Formula.V
 
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Variable (Variable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Set as Set
@@ -40,6 +41,9 @@ instance Variable V where
 
 prettyV :: V -> Doc
 prettyV (V s) = text s
+
+instance Pretty V where
+    pretty = prettyV
 
 instance IsString V where
     fromString = V

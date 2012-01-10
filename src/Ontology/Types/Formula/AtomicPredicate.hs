@@ -13,12 +13,16 @@ import Data.Data (Data)
 import Data.List (isSuffixOf)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Happstack.Auth.Core.Profile   (UserId(..))
-import Ontology.Types (Belief(..), SubjectId, AssertionId, DocumentId, TheoremId, PredicateStyle,
-                       prettyAssertionId, prettyDocumentId, prettySubjectId, prettyTheoremId)
+import Ontology.Types.Assertion (AssertionId, prettyAssertionId)
+import Ontology.Types.Belief (Belief(..))
+import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
+import Ontology.Types.Subject (SubjectId, PredicateStyle(AsPredicate), prettySubjectId)
+import Ontology.Types.Theorem (TheoremId, prettyTheoremId)
 import Text.PrettyPrint (Doc, text, cat)
 import Text.Printf (printf)
 
@@ -94,8 +98,14 @@ prettyAtomicPredicate style x =
       NumberLit d -> cat [text "=", prettyNumberLit d]
       _ -> text $ show x
 
+instance (Show description, Ord description) => Pretty (AtomicPredicate description) where
+    pretty = prettyAtomicPredicate AsPredicate
+
 prettyUserId :: UserId -> Doc
 prettyUserId u = text ("U" ++ show (unUserId u))
+
+instance Pretty UserId where
+    pretty = prettyUserId
 
 prettyNumberLit :: Double -> Doc
 prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s

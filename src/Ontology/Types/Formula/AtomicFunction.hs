@@ -9,6 +9,7 @@ import Data.Data (Data)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Skolem (Skolem(..))
+import Data.Logic.Classes.Term (Function)
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
@@ -33,18 +34,20 @@ instance Skolem (AtomicFunction description) where
     fromSkolem (Skolem n) = Just n
     fromSkolem _ = Nothing
 
-prettyAtomicFunction :: (Eq description, Ord description, Show description) => AtomicFunction description -> Doc
+instance (Pretty description, Ord description, Data description) => Function (AtomicFunction description)
+
+prettyAtomicFunction :: (Eq description, Ord description, Pretty description) => AtomicFunction description -> Doc
 prettyAtomicFunction x =
     case x of
       Function (Reference _ ident) -> prettySubjectId AsFunction ident
       Function (NumberLit d) -> prettyNumberLit d
       Function p -> prettyAtomicPredicate AsFunction p
-      _ -> text . show $ x
+      Skolem n -> text ("Sk" ++ show n)
 
-instance (Pretty description, Show description, Ord description) => Pretty (AtomicFunction description) where
+instance (Pretty description, Ord description) => Pretty (AtomicFunction description) where
     pretty = prettyAtomicFunction
 
-instance (Ord description, Show description) => Arity (AtomicFunction description) where
+instance (Ord description, Pretty description) => Arity (AtomicFunction description) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)
     arity (Skolem _) = Nothing
 

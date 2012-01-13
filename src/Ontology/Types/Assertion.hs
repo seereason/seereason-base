@@ -18,6 +18,7 @@ import Data.Data (Data(..))
 import Data.Function (on)
 import qualified Data.Generics.SYB.WithClass.Basics as New
 import Data.IxSet (IxSet)
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Time (Day(..))
@@ -26,7 +27,7 @@ import Data.Typeable (Typeable)
 import Happstack.Auth.Core.Profile (UserId(..))
 import Happstack.Data (Default(defaultValue), DefaultD, gFind, deriveNewData, deriveNewDataNoDefault, gFind)
 import Test.QuickCheck (Arbitrary(arbitrary))
-import Text.PrettyPrint (Doc, text)
+import Text.PrettyPrint (Doc, text, (<>))
 import Web.Routes.TH (derivePathInfo)
 
 -- |The advantage of making this a newtype is that we can build an
@@ -49,6 +50,9 @@ unsafeAssertionId = AssertionId
 
 prettyAssertionId :: AssertionId -> Doc
 prettyAssertionId x = text ("A" ++ show (unAssertionId x))
+
+instance Pretty AssertionId where
+    pretty = prettyAssertionId
 
 -- |Find assertions directly referenced by identifier
 successorAssertionIds :: Data a => a -> Set.Set AssertionId
@@ -75,7 +79,7 @@ data Assertion formula
     -- For example, when we create an Object which assigns a Id
     -- to a Document, the proposition which asserts that that Id
     -- is that document is a tautology.
-    deriving (Data, Typeable, Show)
+    deriving (Data, Typeable)
 
 type MUser = Maybe UserId
 
@@ -91,6 +95,9 @@ instance Eq (Assertion formula) where
 
 instance Ord (Assertion formula) where
     compare = compare `on` assertionId
+
+instance Pretty formula => Pretty (Assertion formula) where
+    pretty a = pretty (assertionId a) <> text ":" <> pretty (proposition a)
 
 type Assertions formula = IxSet (Assertion formula)
 

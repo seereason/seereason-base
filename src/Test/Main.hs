@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, PackageImports #-}
+{-# LANGUAGE FlexibleInstances, PackageImports, StandaloneDeriving, TypeSynonymInstances #-}
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
@@ -6,6 +6,7 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals (pApp1, pApp2, (.=.))
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Term (Term(..))
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
@@ -16,6 +17,7 @@ import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
+import qualified Ontology.Types.Description as O
 import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -24,13 +26,24 @@ import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Prelude hiding (negate)
 import System.Exit
 import Test.HUnit
+import Text.PrettyPrint (text) 
 
 main :: IO ()
 main =
     runTestTT (TestList [prove1, prove2, atomic2, atomic3, atomic4, atomic5]) >>= doCounts
     where
       doCounts counts' = exitWith (if errors counts' /= 0 || failures counts' /= 0 then ExitFailure 1 else ExitSuccess)
-    
+
+-- Whoa, it must be wrong to need all of these.
+deriving instance Show (N.Formula V (AtomicPredicate O.Description) (AtomicFunction O.Description))
+deriving instance Show (N.Predicate (AtomicPredicate O.Description) (N.PTerm V (AtomicFunction O.Description)))
+deriving instance Show (N.Formula V (AtomicPredicate String) (AtomicFunction String))
+deriving instance Show (N.Predicate (AtomicPredicate String) (N.PTerm V (AtomicFunction String)))
+deriving instance Show (N.PTerm V (AtomicFunction String))
+deriving instance Show (N.PTerm V (AtomicFunction O.Description))
+
+instance Pretty String where
+    pretty = text
 
 -- prove :: Literal lit term v p f => SetOfSupport lit v term -> SetOfSupport lit v term -> S.Set (ImplicativeForm lit) -> (Bool, SetOfSupport lit v term)
 

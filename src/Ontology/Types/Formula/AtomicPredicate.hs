@@ -12,6 +12,7 @@ module Ontology.Types.Formula.AtomicPredicate
 
 import Data.Data (Data)
 import Data.List (isSuffixOf)
+import Data.Logic.Classes.Apply (Predicate)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
 import Data.Logic.Classes.Pretty (Pretty(pretty))
@@ -24,7 +25,7 @@ import Ontology.Types.Belief (Belief(..))
 import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
 import Ontology.Types.Subject (SubjectId, PredicateStyle(AsPredicate), prettySubjectId)
 import Ontology.Types.Theorem (TheoremId, prettyTheoremId)
-import Text.PrettyPrint (Doc, text, cat)
+import Text.PrettyPrint (Doc, text, (<>))
 import Text.Printf (printf)
 
 -- |The atomic predicate used as a parameter to the logic formula
@@ -55,7 +56,7 @@ data AtomicPredicate description
     | PercentOf                                       -- ^ for triple a, b, c, true if a * b equals 100 * c
     deriving (Eq, Data, Typeable, Show)
 
-instance (Eq description, Ord description, Show description) => Arity (AtomicPredicate description) where
+instance (Eq description, Ord description, Pretty description) => Arity (AtomicPredicate description) where
     arity =
         Just . arity'
         where
@@ -88,18 +89,30 @@ instance IsString AtomicPredicate where
     fromString s = error ("IsString AtomicPredicate " ++ show s)
 -}
 
-prettyAtomicPredicate :: (Eq description, Ord description, Show description) => PredicateStyle -> AtomicPredicate description -> Doc
+prettyAtomicPredicate :: (Eq description, Ord description, Pretty description) => PredicateStyle -> AtomicPredicate description -> Doc
 prettyAtomicPredicate style x =
     case x of
       Reference _ ident -> prettySubjectId style ident
+      Description _ d -> pretty d
       AssertionRef ident -> prettyAssertionId ident
       DocumentRef ident -> prettyDocumentId ident
       TheoremRef ident -> prettyTheoremId ident
       Somebody u -> prettyUserId u
-      NumberLit d -> cat [text "=", prettyNumberLit d]
-      _ -> text $ show x
+      NumberLit d -> text "=" <> prettyNumberLit d
+      You -> text "You"
+      Users -> text "Users"
+      Persons -> text "Persons"
+      Believers b -> text "Those who believe " <> pretty b
+      Nickname _ t -> text ("Nickname: " ++ T.unpack t)
+      NumberOf p -> text "Cardinality of " <> pretty p
+      Commentary _ t -> text  ("Commentary: " ++ T.unpack t)
+      Singleton -> text "Singleton"
+      Empty -> text "∅"
+      U -> text "U"
+      Ratio -> text ":"
+      PercentOf -> text "%"
 
-instance (Show description, Ord description) => Pretty (AtomicPredicate description) where
+instance (Pretty description, Ord description) => Pretty (AtomicPredicate description) where
     pretty = prettyAtomicPredicate AsPredicate
 
 prettyUserId :: UserId -> Doc
@@ -107,6 +120,8 @@ prettyUserId u = text ("U" ++ show (unUserId u))
 
 instance Pretty UserId where
     pretty = prettyUserId
+
+instance (Pretty description, Ord description, Data description) => Predicate (AtomicPredicate description)
 
 prettyNumberLit :: Double -> Doc
 prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s
@@ -117,7 +132,7 @@ data Ordering2 = EQ2 Ordering | LT2 | GT2
 
 -- | Return two measures of ordering, on the constructor only and on
 -- the entire value.
-compare2 :: (Show description, Ord description) => AtomicPredicate description -> AtomicPredicate description -> Ordering2
+compare2 :: (Pretty description, Ord description) => AtomicPredicate description -> AtomicPredicate description -> Ordering2
 compare2 p1 p2 =
     case (p1, p2) of
       (NumberLit a, NumberLit b) -> EQ2 (compare a b)
@@ -136,7 +151,7 @@ compare2 p1 p2 =
       (PercentOf, _) -> LT2
       (_, PercentOf) -> GT2
 
-      (Somebody _, Somebody b) -> EQ2 EQ
+      (Somebody a, Somebody b) -> EQ2 (compare a b)
       (Somebody _, _) -> LT2
       (_, Somebody _) -> GT2
 
@@ -193,14 +208,14 @@ compare2 p1 p2 =
       (_, Commentary _ _) -> GT2
 
       (Believers a, Believers b) -> EQ2 $ compare a b
-      (Believers _, _) -> LT2
-      (_, Believers _) -> GT2
+      -- (Believers _, _) -> LT2
+      -- (_, Believers _) -> GT2
       
 
 -- |Order AtomicPredicate from most to least "descriptive", meaning
 -- hopefully that if you sort a list of them the one that comes first
 -- best sums up the meaning of the whole list.
-instance (Ord description, Show description) => Ord (AtomicPredicate description) where
+instance (Ord description, Pretty description) => Ord (AtomicPredicate description) where
     compare a b =
         case compare2 a b of
           LT2 -> LT

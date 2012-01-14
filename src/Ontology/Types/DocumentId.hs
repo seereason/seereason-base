@@ -10,6 +10,7 @@ module Ontology.Types.DocumentId
 
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
+import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
@@ -30,6 +31,9 @@ data DocumentId = DocumentId {unDocumentId :: Integer} deriving (Read, Eq, Ord, 
 
 prettyDocumentId :: DocumentId -> Doc
 prettyDocumentId x = text ("D" ++ show (unDocumentId x))
+
+instance Pretty DocumentId where
+    pretty = prettyDocumentId
 
 instance Show DocumentId where
     show x = "(unsafeDocumentId " ++ show (unDocumentId x) ++ ")"

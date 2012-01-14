@@ -79,7 +79,7 @@ data Assertion formula
     -- For example, when we create an Object which assigns a Id
     -- to a Document, the proposition which asserts that that Id
     -- is that document is a tautology.
-    deriving (Data, Typeable)
+    deriving (Data, Typeable, Show)
 
 type MUser = Maybe UserId
 

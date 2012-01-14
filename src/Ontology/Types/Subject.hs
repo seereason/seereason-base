@@ -86,7 +86,7 @@ data SubjectTuple formula =
     , theSubject :: SubjectId                -- ^ The subject being defined
     , thePredicate :: PredForm formula       -- ^ The predicate which describes what the subject includes
     , theBelief :: ProofResult               -- ^ Whether the user explicitly accepts or rejects the assertion, or neither
-    } deriving (Data, Typeable)
+    } deriving (Data, Typeable, Show)
 
 -- |This Ord instance gives us the most interesting predicates first,
 -- rather than sorting by subject number.
@@ -156,7 +156,7 @@ data Subject formula
       , subjectArity :: Maybe Int
       -- ^ If the subject has any definitions, the arity of all
       -- definitions must match, and this will hold that value.
-      } deriving (Data, Typeable)
+      } deriving (Data, Typeable, Show)
 
 subjectIds' :: Subject formula -> Set.Set SubjectId
 subjectIds' subj = Set.map unSubjectNode (subjectIds subj)

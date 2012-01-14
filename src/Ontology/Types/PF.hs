@@ -12,6 +12,7 @@ import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate
                                       AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)
 import Ontology.Types                (Assertion, Subject, PredicateStyle(AsPredicate))
 import Ontology.Types.Description   (Description, LinguisticHint(..), NounPhraseFragment(..))
+import Ontology.Types.Subject (SubjectTuple(..))
 import Ontology.Types.UserData      (UserData)
 import Text.PrettyPrint (Doc)
 

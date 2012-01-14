@@ -34,14 +34,6 @@ main =
     where
       doCounts counts' = exitWith (if errors counts' /= 0 || failures counts' /= 0 then ExitFailure 1 else ExitSuccess)
 
--- Whoa, it must be wrong to need all of these.
-deriving instance Show (N.Formula V (AtomicPredicate O.Description) (AtomicFunction O.Description))
-deriving instance Show (N.Predicate (AtomicPredicate O.Description) (N.PTerm V (AtomicFunction O.Description)))
-deriving instance Show (N.Formula V (AtomicPredicate String) (AtomicFunction String))
-deriving instance Show (N.Predicate (AtomicPredicate String) (N.PTerm V (AtomicFunction String)))
-deriving instance Show (N.PTerm V (AtomicFunction String))
-deriving instance Show (N.PTerm V (AtomicFunction O.Description))
-
 instance Pretty String where
     pretty = text
 

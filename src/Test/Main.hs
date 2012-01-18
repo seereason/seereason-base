@@ -180,8 +180,8 @@ atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)
     where
       input = compare f0 f1
-      f0 = runSkolem (skolemNormalForm (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []))) :: FormulaPF
-      f1 = runSkolem (skolemNormalForm (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []))) :: FormulaPF
+      f0 = runSkolem (skolemNormalForm id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: FormulaPF)) :: FormulaPF
+      f1 = runSkolem (skolemNormalForm id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF)) :: FormulaPF
       expected = LT
 
 atomic4 :: Test

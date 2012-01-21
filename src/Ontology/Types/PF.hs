@@ -38,6 +38,9 @@ prettyFormulaPF :: Int -> FormulaPF -> Doc
 prettyFormulaPF = prettyFirstOrder pa prettyV
     where pa = prettyAtomEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
 
+-- instance Pretty FormulaPF where
+--     pretty = prettyFormulaPF 0
+
 prettyTermPF :: TermPF -> Doc
 prettyTermPF = prettyTerm prettyV prettyAtomicFunction
 

@@ -16,6 +16,6 @@ import Ontology.Types.Formula.V
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
 
-type FormulaF description = P.Formula V (AtomicPredicate description) (AtomicFunction description)
-type LiteralF description = N.Formula V (AtomicPredicate description) (AtomicFunction description)
-type TermF description = N.PTerm V (AtomicFunction description)
+type FormulaF description = P.Formula V (AtomicPredicate description) (AtomicFunction description V)
+type LiteralF description = N.Formula V (AtomicPredicate description) (AtomicFunction description V)
+type TermF description = N.PTerm V (AtomicFunction description V)

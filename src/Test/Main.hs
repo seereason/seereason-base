@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, PackageImports, StandaloneDeriving, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances, OverloadedStrings, PackageImports, StandaloneDeriving, TypeSynonymInstances #-}
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
@@ -34,9 +34,6 @@ main =
     where
       doCounts counts' = exitWith (if errors counts' /= 0 || failures counts' /= 0 then ExitFailure 1 else ExitSuccess)
 
-instance Pretty String where
-    pretty = text
-
 -- prove :: Literal lit term v p f => SetOfSupport lit v term -> SetOfSupport lit v term -> S.Set (ImplicativeForm lit) -> (Bool, SetOfSupport lit v term)
 
 type Description = String
@@ -53,7 +50,7 @@ prove1 =
       s58 = pApp1 (Reference 1 (unsafeSubjectId 58))
       f53 = fApp (Function (Reference 3 (unsafeSubjectId 53)))
       a155 = pApp1 (AssertionRef (unsafeAssertionId 155))
-      sk1 = fApp (Skolem 1)
+      sk1 = fApp (Skolem "1")
       n1 = fApp (Function (NumberLit 1.0))
       n2 = fApp (Function (NumberLit 2.0))
       sos :: SetOfSupport (LiteralF String) V (TermF String)
@@ -117,21 +114,21 @@ prove2 =
       sos = Set.fromList [(INF {neg = Set.fromList [],
                                 pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))]),
                           (INF {neg = Set.fromList [],
-                                pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "x")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))]),
+                                pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "x")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))]),
                           (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y"))),(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x")))],
                                 pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "y")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
                           (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x")))],
                                 pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "y")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
                           (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x")))],
-                                pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "x")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
-                          (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x"))),(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "y")))],
+                                pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "x")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
+                          (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x"))),(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "y")))],
                                 pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "y")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
-                          (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "y")))],
+                          (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "y")))],
                                 pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]}, Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))])]
       kb :: S.Set (WithId (ImplicativeForm (LiteralF String)))
-      kb = Set.fromList [WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 51)) (fApp (Skolem 1) [vt (V "x")]) (vt (V "x")))]}, wiIdent = 1},
-                         WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp1 (Reference 1 (unsafeSubjectId 52)) (fApp (Function (Reference 3 (unsafeSubjectId 53))) [fApp (Skolem 1) [vt (V "x")],fApp (Function (NumberLit 2.0)) []]))]}, wiIdent = 1},
-                         WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp1 (Reference 1 (unsafeSubjectId 52)) (fApp (Skolem 1) [vt (V "x")]))]}, wiIdent = 1},
+      kb = Set.fromList [WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 51)) (fApp (Skolem "1") [vt (V "x")]) (vt (V "x")))]}, wiIdent = 1},
+                         WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp1 (Reference 1 (unsafeSubjectId 52)) (fApp (Function (Reference 3 (unsafeSubjectId 53))) [fApp (Skolem "1") [vt (V "x")],fApp (Function (NumberLit 2.0)) []]))]}, wiIdent = 1},
+                         WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp1 (Reference 1 (unsafeSubjectId 52)) (fApp (Skolem "1") [vt (V "x")]))]}, wiIdent = 1},
                          WithId {wiItem = INF {neg = Set.fromList [], pos = Set.fromList [(pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []))]}, wiIdent = 4},
                          WithId {wiItem = INF {neg = Set.fromList [((vt (V "y")) .=. (fApp (Function (Reference 3 (unsafeSubjectId 53))) [vt (V "x"),fApp (Function (NumberLit 1.0)) []]))], pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 59)) (vt (V "y")) (vt (V "x")))]}, wiIdent = 6},
                          WithId {wiItem = INF {neg = Set.fromList [((fApp (Function (Reference 2 (unsafeSubjectId 59))) [vt (V "x")]) .=. (fApp (Function (Reference 2 (unsafeSubjectId 59))) [vt (V "y")]))], pos = Set.fromList [((vt (V "x")) .=. (vt (V "y")))]}, wiIdent = 8},
@@ -147,7 +144,7 @@ prove2 =
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))]),
                                         (INF {neg = Set.fromList [],
-                                              pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "x")))]},
+                                              pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "x")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))]),
                                         (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y"))),
                                                                   (pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x")))],
@@ -157,13 +154,13 @@ prove2 =
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
                                         (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x")))],
-                                              pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "x")))]},
+                                              pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "x")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
                                         (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "x"))),
-                                                                  (pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "y")))],
+                                                                  (pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "y")))],
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (vt (V "z")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y")),(V "z",vt (V "z"))]),
-                                        (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem 16) [vt (V "x"),vt (V "y")]) (vt (V "y")))],
+                                        (INF {neg = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 61)) (fApp (Skolem "16") [vt (V "x"),vt (V "y")]) (vt (V "y")))],
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))])])
 

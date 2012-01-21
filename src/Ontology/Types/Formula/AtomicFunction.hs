@@ -10,6 +10,7 @@ import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Skolem (Skolem(..))
 import Data.Logic.Classes.Term (Function)
+import Data.Logic.Classes.Variable (Variable)
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
@@ -18,7 +19,7 @@ import Text.PrettyPrint (Doc, text)
 
 -- |The atomic function used as a parameter to the
 -- 'Logic.Predicate.Formula' type.
-data AtomicFunction description
+data AtomicFunction description v
     = Function (AtomicPredicate description)
     -- ^ If the argument is an n-ary predicate, this is an (n-1)-ary
     -- function.  The pairs of the function are formed by decomposing
@@ -26,28 +27,28 @@ data AtomicFunction description
     -- The value of the function is the union of the singletons for a
     -- given (n-1)-tuple.  So a unary predicate like Somebody UserId
     -- turns in a constant function whose value is that user.
-    | Skolem Int                    -- ^ A temporary value used by the automatic theorem prover
+    | Skolem v                    -- ^ A temporary value used by the automatic theorem prover
     deriving (Eq, Ord, Data, Typeable, Show)
 
-instance Skolem (AtomicFunction description) where
+instance Variable v => Skolem (AtomicFunction description v) v where
     toSkolem = Skolem
-    fromSkolem (Skolem n) = Just n
-    fromSkolem _ = Nothing
+    isSkolem (Skolem _) = True
+    isSkolem _ = False
 
-instance (Pretty description, Ord description, Data description) => Function (AtomicFunction description)
+instance (Pretty description, Ord description, Data description, Variable v) => Function (AtomicFunction description v) v
 
-prettyAtomicFunction :: (Eq description, Ord description, Pretty description) => AtomicFunction description -> Doc
+prettyAtomicFunction :: (Eq description, Ord description, Pretty description, Variable v) => AtomicFunction description v -> Doc
 prettyAtomicFunction x =
     case x of
       Function (Reference _ ident) -> prettySubjectId AsFunction ident
       Function (NumberLit d) -> prettyNumberLit d
       Function p -> prettyAtomicPredicate AsFunction p
-      Skolem n -> text ("Sk" ++ show n)
+      Skolem v -> text ("Sk" ++ show (pretty v))
 
-instance (Pretty description, Ord description) => Pretty (AtomicFunction description) where
+instance (Pretty description, Ord description, Variable v) => Pretty (AtomicFunction description v) where
     pretty = prettyAtomicFunction
 
-instance (Ord description, Pretty description) => Arity (AtomicFunction description) where
+instance (Ord description, Pretty description, Variable v) => Arity (AtomicFunction description v) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)
     arity (Skolem _) = Nothing
 

@@ -4,10 +4,12 @@ module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import Data.Logic.Classes.Apply (Predicate)
 import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals (pApp1, pApp2, (.=.))
-import Data.Logic.Classes.Pretty (Pretty(pretty))
-import Data.Logic.Classes.Term (Term(..))
+import Data.Logic.Classes.FirstOrder (fixityFirstOrder)
+import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
+import Data.Logic.Classes.Term (Term(..), Function)
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm, runNormal)
@@ -172,6 +174,9 @@ atomic2 =
       expected = Set.fromList [INF {neg = Set.fromList [],
                                     pos = Set.fromList [N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])]}]
 
+instance (Predicate p, Function f v) => HasFixity (Formula v p f) where
+    fixity = fixityFirstOrder
+
 atomic3 :: Test
 atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)
@@ -195,8 +200,8 @@ atomic5 =
     TestCase (assertEqual "Atom test 5" expected input)
     where
       input = compare f0 f1
-      f0 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description)
-      f1 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description)
+      f0 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description V)
+      f1 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description V)
       -- f0 = N.FunApp (Function (NumberLit 0.0)) [] :: N.PTerm V (AtomicFunction Description)
       -- f1 = N.FunApp (Function (NumberLit 1.0)) [] :: N.PTerm V (AtomicFunction Description)
       -- f0 = Function (NumberLit 0.0) :: AtomicFunction Description

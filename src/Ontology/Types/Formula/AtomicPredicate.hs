@@ -83,6 +83,9 @@ instance (Eq description, Ord description, Pretty description) => Arity (AtomicP
 instance Constants (AtomicPredicate description) where
     fromBool True = U
     fromBool False = Empty
+    asBool U = Just True
+    asBool Empty = Just False
+    asBool _ = Nothing           
 
 {-
 instance IsString AtomicPredicate where

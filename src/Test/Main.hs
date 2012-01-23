@@ -174,9 +174,6 @@ atomic2 =
       expected = Set.fromList [INF {neg = Set.fromList [],
                                     pos = Set.fromList [N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])]}]
 
-instance (Predicate p, Function f v) => HasFixity (Formula v p f) where
-    fixity = fixityFirstOrder
-
 atomic3 :: Test
 atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)

@@ -17,7 +17,7 @@ import Ontology.Types.UserData      (UserData)
 import Text.PrettyPrint (Doc)
 
 type AtomicPredicatePF = AtomicPredicate Description
-type AtomicFunctionPF = AtomicFunction Description
+type AtomicFunctionPF = AtomicFunction Description V
 type LiteralPF = LiteralF Description
 type FormulaPF = FormulaF Description
 type TermPF = TermF Description

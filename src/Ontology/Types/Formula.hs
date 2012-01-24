@@ -7,6 +7,7 @@ module Ontology.Types.Formula
     , module Ontology.Types.Formula.AtomicFunction
     , FormulaF
     , LiteralF
+    , AtomF
     , TermF
     ) where
 
@@ -19,3 +20,4 @@ import Ontology.Types.Formula.AtomicFunction
 type FormulaF description = P.Formula V (AtomicPredicate description) (AtomicFunction description V)
 type LiteralF description = N.Formula V (AtomicPredicate description) (AtomicFunction description V)
 type TermF description = N.PTerm V (AtomicFunction description V)
+type AtomF description = N.Predicate (AtomicPredicate description) (TermF description)

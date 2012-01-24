@@ -10,7 +10,7 @@ import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
-                                      AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, TermF)
+                                      AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, AtomF, TermF)
 import Ontology.Types                (Assertion, Subject, PredicateStyle(AsPredicate))
 import Ontology.Types.Description   (Description, LinguisticHint(..), NounPhraseFragment(..))
 import Ontology.Types.UserData      (UserData)
@@ -20,6 +20,7 @@ type AtomicPredicatePF = AtomicPredicate Description
 type AtomicFunctionPF = AtomicFunction Description V
 type LiteralPF = LiteralF Description
 type FormulaPF = FormulaF Description
+type AtomPF = AtomF Description
 type TermPF = TermF Description
 type AssertionPF = Assertion FormulaPF
 type UserDataPF = UserData FormulaPF

@@ -31,9 +31,6 @@ prettyLitPF :: Int -> LiteralPF -> Doc
 prettyLitPF = prettyLit pa prettyV
     where pa = prettyAtomEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
 
-instance Pretty LiteralPF where
-    pretty = prettyLitPF 0
-
 prettyFormulaPF :: Int -> FormulaPF -> Doc
 prettyFormulaPF = prettyFirstOrder pa prettyV
     where pa = prettyAtomEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction

@@ -1,3 +1,9 @@
+haskell-seereason-base (1.57) unstable; urgency=low
+
+  * Changes for logic-classes 1.4.
+
+ -- David Fox <dsf@seereason.com>  Mon, 23 Jan 2012 21:18:59 -0800
+
 haskell-seereason-base (1.56) unstable; urgency=low
 
   * New compare2 function that returns both whether the constructors of

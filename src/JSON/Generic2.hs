@@ -40,11 +40,6 @@ import qualified Data.Text as T
 -- FIXME: The JSON library treats this specially, needs ext2Q
 -- import qualified Data.Map as M
 
-instance JSON T.Text where
-    showJSON txt = showJSON (T.unpack txt)
-    readJSON (JSString str) = Ok $ T.pack (fromJSString str)
-    readJSON j = Error $ "Expected a string but got: " ++ show j
-
 type T a = a -> JSValue
 
 -- |Convert anything to a JSON value.

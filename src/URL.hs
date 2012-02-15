@@ -12,7 +12,7 @@ import Ontology.Comment (Topic(..))
 import qualified Ontology.URL as Ontology
 import qualified Preferences.URL as Preferences
 import qualified Scaffolding.Comment.URL as Comment
-import qualified Scaffolding.ProfileData.URL as ProfileData
+import qualified Scaffolding.MkURL as MkURL
 import Test.QuickCheck (Arbitrary(arbitrary), oneof {-, Property, property-})
 import Web.Routes.TH (derivePathInfo)
 
@@ -20,7 +20,7 @@ data WebURL
     = W_Homepage
     | W_Auth AuthURL
     | W_Profile ProfileURL
-    | W_ProfileData ProfileData.URL
+    | W_ProfileData MkURL.URL
     | W_Comment (Comment.URL Topic)
     | W_Ontology Ontology.URL
     | W_GenI GenIURL
@@ -38,7 +38,7 @@ instance Arbitrary WebURL where
                       -- , return W_Reload
                       ]
 
-instance ProfileData.MkURL WebURL where
+instance MkURL.MkURL WebURL where
     mkURL = W_ProfileData
     authURL = W_Auth
     userURL = W_Ontology . Ontology.Account

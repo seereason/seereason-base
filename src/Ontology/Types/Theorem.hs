@@ -14,12 +14,11 @@ module Ontology.Types.Theorem
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import qualified Data.Generics.SYB.WithClass.Basics as New
 import Data.IxSet (inferIxSet, noCalcs)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import Happstack.Data (Default(defaultValue), DefaultD, gFind, deriveNewDataNoDefault, gFind)
+import Happstack.Data (gFind {-, Default(defaultValue), DefaultD, deriveNewDataNoDefault, gFind-})
 import Happstack.Auth.Core.Profile   (UserId(..))
 import Ontology.Types.Assertion (AssertionId, PrivacyState(Proposed))
 import Test.QuickCheck (Arbitrary(arbitrary))
@@ -66,6 +65,7 @@ instance Arbitrary TheoremId where
 $(deriveSafeCopy 2 'extension ''Theorem)
 $(deriveSafeCopy 1 'base ''TheoremId)
 
+{-
 instance (New.Data DefaultD Theorem) where 
     toConstr = error "toConstr Ontology.Types.Theorem"
 
@@ -81,6 +81,7 @@ $(deriveNewDataNoDefault [''TheoremId])
 
 instance Default TheoremId where
     defaultValue = TheoremId 1
+-}
 
 $(inferIxSet "Theorems" ''Theorem 'noCalcs [''TheoremId, ''AssertionId])
 

@@ -16,16 +16,15 @@ module Ontology.Types.Assertion
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import qualified Data.Generics.SYB.WithClass.Basics as New
 import Data.IxSet (IxSet)
 import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
-import Data.Time (Day(..))
-import Data.Time.Clock (UTCTime(..), secondsToDiffTime)
+--import Data.Time (Day(..))
+import Data.Time.Clock (UTCTime(..) {-, secondsToDiffTime-})
 import Data.Typeable (Typeable)
 import Happstack.Auth.Core.Profile (UserId(..))
-import Happstack.Data (Default(defaultValue), DefaultD, gFind, deriveNewData, deriveNewDataNoDefault, gFind)
+import Happstack.Data (gFind {-, Default(defaultValue), DefaultD, deriveNewData, deriveNewDataNoDefault-})
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text, (<>))
 import Web.Routes.TH (derivePathInfo)
@@ -105,6 +104,7 @@ $(deriveSafeCopy 1 'base ''Assertion)
 $(deriveSafeCopy 1 'base ''AssertionId)
 $(deriveSafeCopy 1 'base ''PrivacyState)
 
+{-
 instance (New.Data DefaultD f, Default f) => New.Data DefaultD (Assertion f) where
     toConstr = error "toConstr Ontology.Types.Assertion"
 
@@ -121,3 +121,4 @@ $(deriveNewData [''PrivacyState])
 
 instance Default AssertionId where
     defaultValue = AssertionId 1
+-}

@@ -10,9 +10,9 @@ Category:         Web, Language
 Cabal-version:    >= 1.2
 
 Library
- Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-data, happstack-authenticate >= 0.3,
+ Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-data, happstack-authenticate >= 0.7.5,
                    ixset, json, logic-classes >= 1.4, mtl >= 2, pretty, QuickCheck, safecopy, happstack-scaffolding >= 0.23, set-extra, stm, syb,
-                   syb-with-class, text, time, web-routes, web-routes-hsp, web-routes-th
+                   text, time, web-routes, web-routes-hsp, web-routes-th
  Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
  -- Build-Depends: applicative-extras, template-haskell

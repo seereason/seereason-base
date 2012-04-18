@@ -13,7 +13,7 @@ import Data.Logic.KnowledgeBase (ProofResult(..))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Time.Clock (UTCTime(..))
 import Data.Typeable (Typeable)
-import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
+--import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
 import Ontology.Types.Assertion (AssertionId)
 import Text.PrettyPrint (text, (<>))
 
@@ -58,10 +58,10 @@ instance Pretty Answer where
 $(deriveSafeCopy 2 'extension ''Belief)
 $(deriveSafeCopy 1 'base ''Answer)
 
-$(deriveNewDataNoDefault [''Belief, ''Answer])
+-- $(deriveNewDataNoDefault [''Belief, ''Answer])
 
-instance Default Answer where
-    defaultValue = Answer defaultValue
+-- instance Default Answer where
+--     defaultValue = Answer defaultValue
 
 -- Migration
 

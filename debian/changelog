@@ -1,3 +1,10 @@
+haskell-seereason-base (1.58) unstable; urgency=low
+
+  * Remove uses of the Default class
+  * Switch from using http-enumerator to http-conduit
+
+ -- David Fox <dsf@seereason.com>  Sat, 24 Nov 2012 22:37:34 -0800
+
 haskell-seereason-base (1.57) unstable; urgency=low
 
   * Changes for logic-classes 1.4.

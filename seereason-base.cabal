@@ -1,5 +1,5 @@
 Name:             seereason-base
-Version:          1.57
+Version:          1.58
 License:          BSD3
 Author:           SeeReason Partners <partners@seereason.com>
 Maintainer:       SeeReason Partners <partners@seereason.com>
@@ -48,7 +48,7 @@ Executable geni-client
  -- Hs-Source-Dirs: src, ../logic-classes
  Main-Is: Main.hs
  GHC-Options: -threaded -O2 -rtsopts
- Build-Depends: http-enumerator, utf8-string
+ Build-Depends: http-conduit, utf8-string
 
 Executable tests
  Hs-Source-Dirs: src

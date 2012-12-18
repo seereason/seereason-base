@@ -3,7 +3,6 @@ module Ontology.Types.InsertMode where
 
 import Data.Generics (Typeable)
 import Data.SafeCopy (deriveSafeCopy, base)
-import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
 import Ontology.Types.PredForm (PredForm)
 
 data InsertMode formula
@@ -26,8 +25,3 @@ data InsertMode formula
     deriving (Typeable, Show)
 
 $(deriveSafeCopy 1 'base ''InsertMode)
-
-$(deriveNewDataNoDefault [''InsertMode])
-
-instance (Default formula) => Default (InsertMode formula) where
-    defaultValue = Accepting

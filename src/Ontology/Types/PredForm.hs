@@ -17,7 +17,6 @@ import Data.Logic.Classes.Variable (variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
-import Happstack.Data (deriveNewData)
 
 -- |A PredForm is a wrapper around a formula that indicates that
 -- the formula is of the form Apply p [term].
@@ -47,5 +46,3 @@ instance (FirstOrderFormula formula atom v, AtomEq atom p term) => Arity (PredFo
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)
-
-$(deriveNewData [''PredForm])

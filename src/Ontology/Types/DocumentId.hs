@@ -14,7 +14,7 @@ import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault, gFind)
+import Data.Generics.Extra (gFind)
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text)
 import Web.Routes.TH (derivePathInfo)
@@ -63,7 +63,3 @@ class HasDocumentId a where
 
 $(derivePathInfo ''DocumentId)
 $(deriveSafeCopy 1 'base ''DocumentId)
-$(deriveNewDataNoDefault [''DocumentId])
-
-instance Default DocumentId where
-    defaultValue = DocumentId 1

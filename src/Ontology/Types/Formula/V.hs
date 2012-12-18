@@ -12,7 +12,6 @@ import Data.Logic.Classes.Variable (Variable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Set as Set
 import Data.String (IsString(..))
-import Happstack.Data (Default(..), deriveNewDataNoDefault)
 import Text.PrettyPrint (Doc, text)
 
 -- | Variable names
@@ -53,8 +52,3 @@ $(deriveSafeCopy 1 'base ''V)
 -- |We need a Default instance here because we use this in a generic formlet.
 -- When we eliminate g-f we can remove this.
 -- $(deriveNewData [''AtomicPredicate, ''AtomicFunction])
-
-$(deriveNewDataNoDefault [''V])
-
-instance Default V where
-    defaultValue = V "x"

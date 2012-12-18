@@ -17,7 +17,6 @@ import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
-import Happstack.Data (Default(defaultValue), deriveNewData, deriveNewDataNoDefault)
 import Data.IxSet (toList, (@=))
 import Ontology.Types (DocumentId(..), prettyDocumentId, SubjectId(..))
 import Ontology.Types.Document (Document(text), Documents)
@@ -145,9 +144,3 @@ $(deriveSafeCopy 1 'base ''SubDocument)
 $(deriveSafeCopy 1 'base ''TextRange)
 $(deriveSafeCopy 1 'base ''LinguisticHint)
 $(deriveSafeCopy 1 'base ''NounPhraseFragment)
-
-$(deriveNewData [''LinguisticHint, ''SubDocument, ''TextRange])
-$(deriveNewDataNoDefault [''NounPhraseFragment])
-
-instance Default NounPhraseFragment where
-    defaultValue = T (T.empty)

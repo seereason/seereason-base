@@ -40,7 +40,6 @@ import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
 import Ontology.Types.Assertion (Assertion(assertionId), AssertionId)
 import Ontology.Types.PredForm (PredForm, foldPred)
 import Test.QuickCheck (Arbitrary(arbitrary), oneof)
@@ -227,11 +226,3 @@ instance Arbitrary SubjectNode where
     arbitrary = oneof [ Normal <$> arbitrary, Complement <$> arbitrary ]
 $(deriveSafeCopy 1 'base ''SubjectId)
 $(deriveSafeCopy 1 'base ''SubjectNode)
-
-$(deriveNewDataNoDefault [''SubjectId, ''SubjectNode])
-
-instance Default SubjectId where
-    defaultValue = SubjectId 1
-
-instance Default SubjectNode where
-    defaultValue = Normal defaultValue

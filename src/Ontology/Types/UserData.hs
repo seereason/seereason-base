@@ -9,7 +9,6 @@ import qualified Data.Map as Map
 import Data.SafeCopy (SafeCopy, base, extension, deriveSafeCopy, Migrate(..))
 import qualified Data.Set as Set
 import qualified Data.Text as T
-import Happstack.Data (Default(..), deriveNewDataNoDefault)
 import Ontology.Types (SubjectId, DocumentId)
 import Ontology.Types.InsertMode (InsertMode)
 
@@ -31,16 +30,6 @@ data Theme = DefaultTheme | IPadTheme deriving (Typeable)
 $(deriveSafeCopy 2 'extension ''UserData)
 $(deriveSafeCopy 1 'base ''Theme)
 
-$(deriveNewDataNoDefault [''UserData, ''Theme])
-
-instance Default formula => Default (UserData formula) where
-    defaultValue = UserData { insertMode = defaultValue
-                            , subjectSet = defaultValue
-                            , theme = defaultValue }
-
-instance Default Theme where
-    defaultValue = IPadTheme -- This theme works everywhere, make it default until we can look at the user agent 
-
 -- Migration
 
 data UserData_v1 formula
@@ -60,4 +49,4 @@ instance SafeCopy formula => Migrate (UserData formula) where
     migrate x@(UserData_v1 {}) = UserData { insertMode = insertMode_v1 x
                                           , subjectSet = subjectSet_v1 x
                                           -- Discarding old remarks field, not a big loss
-                                          , theme = defaultValue }
+                                          , theme = IPadTheme }

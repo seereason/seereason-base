@@ -16,7 +16,6 @@ module Ontology.Types.Assertion
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import Data.Generics.Extra (gFind {-, Default(defaultValue), DefaultD, deriveNewData, deriveNewDataNoDefault-})
 import Data.IxSet (IxSet)
 import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
@@ -42,7 +41,7 @@ instance Show AssertionId where
 $(derivePathInfo ''AssertionId)
 
 findAssertionIds :: Data a => a -> Set.Set AssertionId
-findAssertionIds a = Set.fromList (gFind a :: [AssertionId])
+findAssertionIds a = Set.gFind a
 
 unsafeAssertionId :: Integer -> AssertionId
 unsafeAssertionId = AssertionId

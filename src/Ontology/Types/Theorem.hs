@@ -14,7 +14,6 @@ module Ontology.Types.Theorem
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import Data.Generics.Extra (gFind {-, Default(defaultValue), DefaultD, deriveNewDataNoDefault, gFind-})
 import Data.IxSet (inferIxSet, noCalcs)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
@@ -57,7 +56,7 @@ unsafeTheoremId :: Integer -> TheoremId
 unsafeTheoremId = TheoremId
 
 findTheoremIds :: Data a => a -> Set.Set TheoremId
-findTheoremIds a = Set.fromList (gFind a :: [TheoremId])
+findTheoremIds a = Set.gFind a
 
 instance Arbitrary TheoremId where
     arbitrary = (TheoremId <$> arbitrary)

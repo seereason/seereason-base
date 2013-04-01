@@ -14,7 +14,6 @@ import Data.Logic.Classes.Pretty (Pretty(pretty))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import Data.Generics.Extra (gFind)
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text)
 import Web.Routes.TH (derivePathInfo)
@@ -43,7 +42,7 @@ instance Show DocumentId where
 -- result gets immediately turned back into a list, but we still want
 -- to avoid duplicates.
 findDocumentIds :: Data a => a -> Set.Set DocumentId
-findDocumentIds a = Set.fromList (gFind a :: [DocumentId])
+findDocumentIds a = Set.gFind a
 
 instance Arbitrary DocumentId where
     arbitrary = (DocumentId <$> arbitrary)

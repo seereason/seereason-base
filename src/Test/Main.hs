@@ -4,22 +4,22 @@ module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Data.Logic.Classes.Apply (Predicate)
-import Data.Logic.Classes.Constants (fromBool)
+--import Data.Logic.Classes.Apply (Predicate)
+--import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals (pApp1, pApp2, (.=.))
-import Data.Logic.Classes.FirstOrder (fixityFirstOrder)
-import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
-import Data.Logic.Classes.Term (Term(..), Function)
+--import Data.Logic.Classes.FirstOrder (fixityFirstOrder)
+--import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
+import Data.Logic.Classes.Term (Term(..) {-, Function-})
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
-import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm, runNormal)
+import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm {-, runNormal-})
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrderPublic
 import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
-import qualified Ontology.Types.Description as O
+--import qualified Ontology.Types.Description as O
 import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -28,7 +28,7 @@ import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Prelude hiding (negate)
 import System.Exit
 import Test.HUnit
-import Text.PrettyPrint (text) 
+--import Text.PrettyPrint (text)
 
 main :: IO ()
 main =

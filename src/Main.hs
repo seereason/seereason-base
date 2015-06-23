@@ -1,7 +1,7 @@
 -- | This is a program which demonstrates pulling data out of the
 -- database in JSON format, converting it back to haskell types, and
 -- doing something with it.
-{-# LANGUAGE PackageImports, ScopedTypeVariables #-}
+{-# LANGUAGE FlexibleContexts, PackageImports, ScopedTypeVariables #-}
 module Main where
 
 import Control.Applicative ((<$>))

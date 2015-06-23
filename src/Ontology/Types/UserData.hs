@@ -4,7 +4,7 @@ module Ontology.Types.UserData
     , Theme(..)
     ) where
 
-import Data.Generics (Typeable)
+import Data.Generics (Data, Typeable)
 import qualified Data.Map as Map
 import Data.SafeCopy (SafeCopy, base, extension, deriveSafeCopy, Migrate(..))
 import qualified Data.Set as Set
@@ -44,7 +44,7 @@ data UserData_v1 formula
 
 $(deriveSafeCopy 1 'base ''UserData_v1)
 
-instance SafeCopy formula => Migrate (UserData formula) where
+instance (SafeCopy formula, Data formula, Typeable formula, Ord formula) => Migrate (UserData formula) where
     type MigrateFrom (UserData formula) = UserData_v1 formula
     migrate x@(UserData_v1 {}) = UserData { insertMode = insertMode_v1 x
                                           , subjectSet = subjectSet_v1 x

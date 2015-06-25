@@ -15,7 +15,7 @@ import Ontology.Types.InsertMode (InsertMode)
 -- | This data should be moved out of the SeeReason ixset and into the
 -- Preferences ixset.  This might let us remove the userdata type
 -- parameter from the SeeReason type in the ontology package.
-data UserData formula
+data (Data formula, Ord formula) => UserData formula
     = UserData
       { insertMode :: InsertMode formula
       -- ^ The mode under which new assertions are added to the database.

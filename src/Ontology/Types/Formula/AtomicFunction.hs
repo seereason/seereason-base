@@ -7,7 +7,7 @@ module Ontology.Types.Formula.AtomicFunction
 
 import Data.Data (Data)
 import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Skolem (Skolem(..))
 import Data.Logic.Classes.Term (Function)
 import Data.Logic.Classes.Variable (Variable)
@@ -32,8 +32,8 @@ data AtomicFunction description v
 
 instance Variable v => Skolem (AtomicFunction description v) v where
     toSkolem = Skolem
-    isSkolem (Skolem _) = True
-    isSkolem _ = False
+    fromSkolem (Skolem v) = Just v
+    fromSkolem _ = Nothing
 
 instance (Pretty description, Ord description, Data description, Variable v) => Function (AtomicFunction description v) v
 
@@ -43,10 +43,10 @@ prettyAtomicFunction x =
       Function (Reference _ ident) -> prettySubjectId AsFunction ident
       Function (NumberLit d) -> prettyNumberLit d
       Function p -> prettyAtomicPredicate AsFunction p
-      Skolem v -> text ("Sk" ++ show (pretty v))
+      Skolem v -> text ("Sk" ++ show (pPrint v))
 
 instance (Pretty description, Ord description, Variable v) => Pretty (AtomicFunction description v) where
-    pretty = prettyAtomicFunction
+    pPrint = prettyAtomicFunction
 
 instance (Ord description, Pretty description, Variable v) => Arity (AtomicFunction description v) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)

@@ -6,13 +6,13 @@ import Data.Logic.KnowledgeBase (Proof(..))
 import Data.Logic.Classes.Equals (pApp, prettyAtomEq)
 import Data.Logic.Classes.FirstOrder (for_all, prettyFirstOrder)
 import Data.Logic.Classes.Literal (prettyLit)
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Term (Term(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
                                       AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, AtomF, TermF)
 import Ontology.Types                (Assertion, Subject, PredicateStyle(AsPredicate))
-import Ontology.Types.Description   (Description, LinguisticHint(..), NounPhraseFragment(..))
+import Ontology.Types.Description   (Description(Description'), LinguisticHint(..), NounPhraseFragment(..))
 import Ontology.Types.UserData      (UserData)
 import Text.PrettyPrint (Doc)
 
@@ -37,17 +37,17 @@ prettyFormulaPF = prettyFirstOrder pa prettyV
     where pa = prettyAtomEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
 
 -- instance Pretty FormulaPF where
---     pretty = prettyFormulaPF 0
+--     pPrint = prettyFormulaPF 0
 
 prettyTermPF :: TermPF -> Doc
 prettyTermPF = prettyTerm prettyV prettyAtomicFunction
 
 instance Pretty TermPF where
-    pretty = prettyTermPF
+    pPrint = prettyTermPF
 
 -- |Quick way to turn a string into a description.
 desc :: Int -> String -> AtomicPredicatePF
-desc a s = Description a (NounPhrase, [T (T.pack s)])
+desc a s = Description a (Description' NounPhrase [T (T.pack s)])
 
 -- |Arity 1 description
 desc1 :: String -> AtomicPredicatePF

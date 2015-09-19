@@ -8,7 +8,7 @@
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.Logic.Classes.Constants (prettyBool)
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.Time.Clock (UTCTime(..))
@@ -47,13 +47,13 @@ instance Eq Belief where
     a == b = compare a b == EQ
 
 instance Pretty Belief where
-    pretty b = pretty (theQuestion b) <> text " is " <> pretty (theAnswer b) <> text " as of " <> text (show (startTime b))
+    pPrint b = pPrint (theQuestion b) <> text " is " <> pPrint (theAnswer b) <> text " as of " <> text (show (startTime b))
 
 instance Pretty Answer where
-    pretty (Answer Proved) = prettyBool True
-    pretty (Answer Disproved) = prettyBool False
-    pretty (Answer Invalid) = text "Contingent"
-    pretty Nonsense = text "Nonsense"
+    pPrint (Answer Proved) = prettyBool True
+    pPrint (Answer Disproved) = prettyBool False
+    pPrint (Answer Invalid) = text "Contingent"
+    pPrint Nonsense = text "Nonsense"
 
 $(deriveSafeCopy 2 'extension ''Belief)
 $(deriveSafeCopy 1 'base ''Answer)

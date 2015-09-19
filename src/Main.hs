@@ -13,7 +13,7 @@ import Data.Generics (gshow)
 import Data.List (intercalate)
 import Data.Logic.Classes.Combine (Combination(..), BinOp(..))
 import Data.Logic.Classes.FirstOrder (foldFirstOrder, Quant(..))
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Term (foldTerm)
 import Data.Logic.Types.FirstOrder (Predicate(..))
 import qualified Data.Text as Text
@@ -74,10 +74,10 @@ geni f =
     where
       qu Forall v f =
           do text <- geni f
-             return $ "for all " ++ show (pretty v) ++ " " ++ text
+             return $ "for all " ++ show (pPrint v) ++ " " ++ text
       qu Exists v f =
           do text <- geni f
-             return $ "for all " ++ show (pretty v) ++ " " ++ text
+             return $ "for all " ++ show (pPrint v) ++ " " ++ text
       co (BinOp f1 op f2) =
           do t1 <- geni f1
              t2 <- geni f2
@@ -104,7 +104,7 @@ geni f =
 geniTerm t =
     foldTerm var fn t
     where
-      var v = return $ "variable " ++ show (pretty v)
+      var v = return $ "variable " ++ show (pPrint v)
       fn f ts =
           do termTexts <- mapM geniTerm ts
              ftext <- geniFunction f
@@ -115,7 +115,7 @@ geniPred (Reference arity i) =
        case descs of
          [] -> return $ show $ prettySubjectId AsPredicate i
          (desc : _) -> return desc
-geniPred x = return $ show . pretty $ x
+geniPred x = return $ show . pPrint $ x
 
 -- | Not exactly
 geniFunction (Function (Reference arity i)) =
@@ -145,7 +145,7 @@ test2 =
 -- | Usage examples of the other requests:
 tests :: IO ()
 tests =
-   do run (Text.unpack <$> showURL GenI_Subjects) >>= simpleHttp >>= putStrLn . show . map pretty . (decodeJSON :: String -> [SubjectId]) . UTF8.decode . L.unpack
-      run (Text.unpack <$> showURL GenI_Assertions) >>= simpleHttp >>= putStrLn . show . map pretty . (decodeJSON :: String -> [Assertion FormulaPF]) . UTF8.decode . L.unpack
-      run (Text.unpack <$> showURL (GenI_Assertion (unsafeAssertionId 1))) >>= simpleHttp >>= putStrLn . show . pretty . (decodeJSON :: String -> Assertion FormulaPF) . UTF8.decode . L.unpack
+   do run (Text.unpack <$> showURL GenI_Subjects) >>= simpleHttp >>= putStrLn . show . map pPrint . (decodeJSON :: String -> [SubjectId]) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL GenI_Assertions) >>= simpleHttp >>= putStrLn . show . map pPrint . (decodeJSON :: String -> [Assertion FormulaPF]) . UTF8.decode . L.unpack
+      run (Text.unpack <$> showURL (GenI_Assertion (unsafeAssertionId 1))) >>= simpleHttp >>= putStrLn . show . pPrint . (decodeJSON :: String -> Assertion FormulaPF) . UTF8.decode . L.unpack
       run (Text.unpack <$> showURL (GenI_UserSubject (UserId 1) (unsafeSubjectId 52))) >>= simpleHttp >>=  putStrLn . show . subjectArity . (decodeJSON :: String -> LSubject FormulaPF) . UTF8.decode . L.unpack

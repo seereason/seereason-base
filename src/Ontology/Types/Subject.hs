@@ -32,7 +32,7 @@ import Data.Data (Data(..))
 import Data.Function (on)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Equals (AtomEq)
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Negate (Negatable(..))
 import Data.Logic.Classes.FirstOrder (FirstOrderFormula)
 import Data.Logic.KnowledgeBase (ProofResult(..))
@@ -60,7 +60,7 @@ prettySubjectId AsPredicate x = text ("S" ++ show (unSubjectId x))
 prettySubjectId AsFunction x = text ("F" ++ show (unSubjectId x))
 
 instance Pretty SubjectId where
-    pretty = prettySubjectId AsPredicate
+    pPrint = prettySubjectId AsPredicate
 
 instance JSON SubjectId where
     showJSON sid = makeObj [ ("subjectId", showJSON (unSubjectId sid)) ]

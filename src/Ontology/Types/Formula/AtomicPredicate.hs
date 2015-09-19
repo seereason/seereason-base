@@ -15,7 +15,7 @@ import Data.List (isSuffixOf)
 import Data.Logic.Classes.Apply (Predicate)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Constants (Constants(..))
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
@@ -96,7 +96,7 @@ prettyAtomicPredicate :: (Eq description, Ord description, Pretty description) =
 prettyAtomicPredicate style x =
     case x of
       Reference _ ident -> prettySubjectId style ident
-      Description _ d -> pretty d
+      Description _ d -> pPrint d
       AssertionRef ident -> prettyAssertionId ident
       DocumentRef ident -> prettyDocumentId ident
       TheoremRef ident -> prettyTheoremId ident
@@ -105,9 +105,9 @@ prettyAtomicPredicate style x =
       You -> text "You"
       Users -> text "Users"
       Persons -> text "Persons"
-      Believers b -> text "Those who believe " <> pretty b
+      Believers b -> text "Those who believe " <> pPrint b
       Nickname _ t -> text ("Nickname: " ++ T.unpack t)
-      NumberOf p -> text "Cardinality of " <> pretty p
+      NumberOf p -> text "Cardinality of " <> pPrint p
       Commentary _ t -> text  ("Commentary: " ++ T.unpack t)
       Singleton -> text "Singleton"
       Empty -> text "∅"
@@ -116,13 +116,13 @@ prettyAtomicPredicate style x =
       PercentOf -> text "%"
 
 instance (Pretty description, Ord description) => Pretty (AtomicPredicate description) where
-    pretty = prettyAtomicPredicate AsPredicate
+    pPrint = prettyAtomicPredicate AsPredicate
 
 prettyUserId :: UserId -> Doc
 prettyUserId u = text ("U" ++ show (unUserId u))
 
 instance Pretty UserId where
-    pretty = prettyUserId
+    pPrint = prettyUserId
 
 instance (Pretty description, Ord description, Data description) => Predicate (AtomicPredicate description)
 

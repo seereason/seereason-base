@@ -7,12 +7,12 @@ module Ontology.Types.Formula.V
 
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Variable (Variable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Set as Set
 import Data.String (IsString(..))
-import Text.PrettyPrint (Doc, text)
+import Text.PrettyPrint.HughesPJClass (Doc, text)
 
 -- | Variable names
 newtype V = V String
@@ -42,7 +42,7 @@ prettyV :: V -> Doc
 prettyV (V s) = text s
 
 instance Pretty V where
-    pretty = prettyV
+    pPrint = prettyV
 
 instance IsString V where
     fromString = V

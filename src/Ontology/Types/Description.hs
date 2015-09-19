@@ -8,12 +8,12 @@ module Ontology.Types.Description
     , TextRange(..)
     , NounPhraseFragment(..)
     , textOfNounPhraseFragment
-    , Description
+    , Description(Description')
     , np, ap, asp
     ) where
 
 import Data.Data (Data(..))
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
@@ -61,8 +61,8 @@ getSubDocument (Quotation t _) d =
     Just (d {text = t})
 
 instance Pretty SubDocument where
-    pretty x@(Quotation {}) = P.text (T.unpack (quotation x))
-    pretty x@(TextRanges {}) = P.text (show (textRanges x))
+    pPrint x@(Quotation {}) = P.text (T.unpack (quotation x))
+    pPrint x@(TextRanges {}) = P.text (show (textRanges x))
 
 -- | A free form text description of a set.
 data NounPhraseFragment =
@@ -128,19 +128,20 @@ type NewDescription =
 -}
 
 -- | This type represents a description of a subject.
-type Description = (LinguisticHint, [NounPhraseFragment])
+data Description = Description' LinguisticHint [NounPhraseFragment] deriving (Eq, Ord, Show, Data, Typeable)
 
 instance Pretty Description where
-    pretty (_, xs) = hsep (map pretty xs)
+    pPrint (Description' _ xs) = hsep (map pPrint xs)
 
 instance Pretty NounPhraseFragment where
-    pretty (T x) = P.text (T.unpack x)
-    pretty (S x) = pretty x
-    pretty (D x) = pretty x
-    pretty (Number n) = prettyNumberLit n
-    pretty (Percentage n) = prettyNumberLit n <> P.text "%"
+    pPrint (T x) = P.text (T.unpack x)
+    pPrint (S x) = pPrint x
+    pPrint (D x) = pPrint x
+    pPrint (Number n) = prettyNumberLit n
+    pPrint (Percentage n) = prettyNumberLit n <> P.text "%"
 
 $(deriveSafeCopy 1 'base ''SubDocument)
 $(deriveSafeCopy 1 'base ''TextRange)
 $(deriveSafeCopy 1 'base ''LinguisticHint)
 $(deriveSafeCopy 1 'base ''NounPhraseFragment)
+$(deriveSafeCopy 1 'base ''Description)

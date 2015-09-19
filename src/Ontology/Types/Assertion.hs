@@ -17,7 +17,7 @@ import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (IxSet)
-import Data.Logic.Classes.Pretty (Pretty(pretty))
+import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 --import Data.Time (Day(..))
@@ -50,7 +50,7 @@ prettyAssertionId :: AssertionId -> Doc
 prettyAssertionId x = text ("A" ++ show (unAssertionId x))
 
 instance Pretty AssertionId where
-    pretty = prettyAssertionId
+    pPrint = prettyAssertionId
 
 -- |Find assertions directly referenced by identifier
 successorAssertionIds :: Data a => a -> Set.Set AssertionId
@@ -95,7 +95,7 @@ instance Ord (Assertion formula) where
     compare = compare `on` assertionId
 
 instance Pretty formula => Pretty (Assertion formula) where
-    pretty a = pretty (assertionId a) <> text ":" <> pretty (proposition a)
+    pPrint a = pPrint (assertionId a) <> text ":" <> pPrint (proposition a)
 
 type Assertions formula = IxSet (Assertion formula)
 

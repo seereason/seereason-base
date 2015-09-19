@@ -7,7 +7,7 @@ Synopsis:         Seereason.com
 Description:      Basic types for the seereason logic system
 Build-Type:       Simple
 Category:         Web, Language
-Cabal-version:    >= 1.2
+Cabal-version:    >= 1.10
 
 Library
  Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-authenticate < 2, happstack-scaffolding,
@@ -51,10 +51,47 @@ Executable geni-client
  -- Hs-Source-Dirs: src, ../logic-classes
  Main-Is: Main.hs
  GHC-Options: -threaded -O2 -rtsopts
- Build-Depends: http-conduit, utf8-string
+ Build-Depends:
+  base,
+  bytestring,
+  containers,
+  happstack-authenticate,
+  happstack-scaffolding,
+  http-conduit,
+  ixset,
+  json,
+  logic-classes,
+  mtl,
+  pretty,
+  QuickCheck,
+  safecopy,
+  set-extra,
+  syb,
+  text,
+  time,
+  utf8-string,
+  web-routes,
+  web-routes-th
 
-Executable tests
+Test-Suite seereason-base-tests
+ Default-Language: Haskell2010
+ Type: exitcode-stdio-1.0
  Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
  Main-Is: Test/Main.hs
- Build-Depends: HUnit
+ Build-Depends:
+  base,
+  containers,
+  happstack-authenticate,
+  HUnit,
+  ixset,
+  json,
+  logic-classes,
+  pretty,
+  QuickCheck,
+  safecopy,
+  set-extra,
+  syb,
+  text,
+  time,
+  web-routes-th

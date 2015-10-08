@@ -5,7 +5,7 @@ module GenI.URL
     ) where
 
 import Data.Generics (Typeable, Data)
-import Happstack.Auth.Core.Profile (UserId)
+import Data.UserId (UserId)
 import Ontology.Types (AssertionId, SubjectId)
 import Web.Routes.TH (derivePathInfo)
 

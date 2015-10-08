@@ -6,7 +6,7 @@ module Preferences.URL
 
 import Control.Applicative ((<$>))
 import Data.Data
-import Happstack.Auth.Core.Profile (UserId(..))
+import Data.UserId (UserId(..))
 import Test.QuickCheck     (Arbitrary(..),oneof)
 import Web.Routes.TH       (derivePathInfo)
 

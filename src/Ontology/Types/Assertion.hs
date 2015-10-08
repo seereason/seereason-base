@@ -23,7 +23,7 @@ import qualified Data.Set.Extra as Set
 --import Data.Time (Day(..))
 import Data.Time.Clock (UTCTime(..) {-, secondsToDiffTime-})
 import Data.Typeable (Typeable)
-import Happstack.Auth.Core.Profile (UserId(..))
+import Data.UserId (UserId(..))
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text, (<>))
 import Web.Routes.TH (derivePathInfo)

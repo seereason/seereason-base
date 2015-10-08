@@ -19,7 +19,7 @@ import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
-import Happstack.Auth.Core.Profile   (UserId(..))
+import Data.UserId (UserId(..))
 import Ontology.Types.Assertion (AssertionId, prettyAssertionId)
 import Ontology.Types.Belief (Belief(..))
 import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
@@ -119,7 +119,7 @@ instance (Pretty description, Ord description) => Pretty (AtomicPredicate descri
     pPrint = prettyAtomicPredicate AsPredicate
 
 prettyUserId :: UserId -> Doc
-prettyUserId u = text ("U" ++ show (unUserId u))
+prettyUserId u = text ("U" ++ show (_unUserId u))
 
 instance Pretty UserId where
     pPrint = prettyUserId

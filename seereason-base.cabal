@@ -10,7 +10,7 @@ Category:         Web, Language
 Cabal-version:    >= 1.10
 
 Library
- Build-Depends:    acid-state, base, bytestring, containers, fgl, happstack-authenticate < 2, happstack-scaffolding,
+ Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-authenticate < 2, happstack-scaffolding,
                    ixset, json, logic-classes >= 1.4, mtl >= 2, pretty, QuickCheck, safecopy, set-extra, stm, syb,
                    text, time, web-routes, web-routes-hsp, web-routes-th
  Hs-Source-Dirs: src
@@ -69,6 +69,7 @@ Executable geni-client
   syb,
   text,
   time,
+  userid,
   utf8-string,
   web-routes,
   web-routes-th
@@ -94,4 +95,5 @@ Test-Suite seereason-base-tests
   syb,
   text,
   time,
+  userid,
   web-routes-th

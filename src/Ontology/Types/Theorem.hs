@@ -18,7 +18,7 @@ import Data.IxSet (inferIxSet, noCalcs)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import Happstack.Auth.Core.Profile   (UserId(..))
+import Data.UserId (UserId(..))
 import Ontology.Types.Assertion (AssertionId, PrivacyState(Proposed))
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text)

@@ -18,7 +18,7 @@ import Data.Logic.Classes.Term (foldTerm)
 import Data.Logic.Types.FirstOrder (Predicate(..))
 import qualified Data.Text as Text
 import GenI.URL (GenIURL(..))
-import Happstack.Auth.Core.Profile (UserId(UserId))
+import Data.UserId (UserId(UserId))
 import JSON.Generic2 (decodeJSON)
 import Network.HTTP.Conduit (simpleHttp)
 import Ontology.Types (SubjectId(..), prettySubjectId, unsafeSubjectId, unsafeAssertionId, SubjectNode(..), Assertion(..), AssertionId(..),

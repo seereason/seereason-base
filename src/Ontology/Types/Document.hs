@@ -15,7 +15,7 @@ import Data.String
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Data.IxSet (inferIxSet, noCalcs)
-import Happstack.Auth.Core.Profile   (UserId(..))
+import Data.UserId   (UserId(..))
 import Ontology.Types.Assertion (PrivacyState)
 import Ontology.Types.DocumentId (HasDocumentId(documentId), DocumentId)
 import Ontology.Types.Subject (SubjectId)

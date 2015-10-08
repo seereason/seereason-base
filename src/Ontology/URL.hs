@@ -8,7 +8,7 @@ module Ontology.URL
 
 import Control.Applicative ((<$>))
 import Data.Data
-import Happstack.Auth.Core.Profile (UserId)
+import Data.UserId (UserId)
 import Ontology.Extra ()
 import Ontology.Types (AssertionId, DocumentId, SubjectId, TheoremId)
 import qualified Preferences.URL as Preferences

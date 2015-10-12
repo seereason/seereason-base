@@ -9,9 +9,14 @@ Build-Type:       Simple
 Category:         Web, Language
 Cabal-version:    >= 1.10
 
+flag local-logic-classes
+  Description: use local source for logic-classes
+  Manual: True
+  Default: True
+
 Library
  Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-authenticate < 2, happstack-scaffolding,
-                   ixset, json, logic-classes >= 1.4, mtl >= 2, pretty, QuickCheck, safecopy, set-extra, stm, syb,
+                   ixset, json, mtl >= 2, pretty, QuickCheck, safecopy, set-extra, stm, syb,
                    text, time, web-routes, web-routes-hsp, web-routes-th
  Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
@@ -45,6 +50,68 @@ Library
                    MkURL
                    Comment
                    CommentTypes
+ if flag(local-logic-classes)
+   Hs-Source-Dirs: ../logic-classes
+   Build-Depends: applicative-extras, template-haskell, HUnit, PropLogic
+   Exposed-Modules:
+     Data.Logic
+     Data.Logic.Classes.Apply
+     Data.Logic.Classes.Arity
+     Data.Logic.Classes.Atom
+     Data.Logic.Classes.ClauseNormalForm
+     Data.Logic.Classes.Combine
+     Data.Logic.Classes.Constants
+     Data.Logic.Classes.Equals
+     Data.Logic.Classes.FirstOrder
+     Data.Logic.Classes.Formula
+     Data.Logic.Classes.Literal
+     Data.Logic.Classes.Negate
+     Data.Logic.Classes.Pretty
+     Data.Logic.Classes.Propositional
+     Data.Logic.Classes.Skolem
+     Data.Logic.Classes.Term
+     Data.Logic.Classes.Variable
+     Data.Logic.Failing
+     Data.Logic.Harrison.DefCNF
+     Data.Logic.Harrison.DP
+     Data.Logic.Harrison.Equal
+     Data.Logic.Harrison.FOL
+     Data.Logic.Harrison.Formulas.FirstOrder
+     Data.Logic.Harrison.Formulas.Propositional
+     Data.Logic.Harrison.Herbrand
+     Data.Logic.Harrison.Lib
+     Data.Logic.Harrison.Meson
+     Data.Logic.Harrison.Normal
+     Data.Logic.Harrison.Prolog
+     Data.Logic.Harrison.Prop
+     Data.Logic.Harrison.PropExamples
+     Data.Logic.Harrison.Resolution
+     Data.Logic.Harrison.Skolem
+     Data.Logic.Harrison.Tableaux
+     Data.Logic.Harrison.Unif
+     Data.Logic.Instances.Chiou
+     Data.Logic.Instances.PropLogic
+     Data.Logic.Instances.SatSolver
+     Data.Logic.Instances.Test
+     -- Data.Logic.Instances.TPTP
+     Data.Logic.KnowledgeBase
+     Data.Logic.Normal.Clause
+     Data.Logic.Normal.Implicative
+     Data.Logic.Resolution
+     Data.Logic.Satisfiable
+     Data.Logic.Types.Common
+     Data.Logic.Types.FirstOrder
+     Data.Logic.Types.FirstOrderPublic
+     Data.Logic.Types.Harrison.Equal
+     Data.Logic.Types.Harrison.FOL
+     Data.Logic.Types.Harrison.Formulas.FirstOrder
+     Data.Logic.Types.Harrison.Formulas.Propositional
+     Data.Logic.Types.Harrison.Prop
+     Data.Logic.Types.Propositional
+     Data.Boolean
+     Data.Boolean.SatSolver
+ else
+   Build-Depends: logic-classes
 
 Executable geni-client
  Hs-Source-Dirs: src
@@ -60,11 +127,11 @@ Executable geni-client
   http-conduit,
   ixset,
   json,
-  logic-classes,
   mtl,
   pretty,
   QuickCheck,
   safecopy,
+  seereason-base,
   set-extra,
   syb,
   text,
@@ -73,6 +140,8 @@ Executable geni-client
   utf8-string,
   web-routes,
   web-routes-th
+ if !flag(local-logic-classes)
+   Build-Depends: logic-classes
 
 Test-Suite seereason-base-tests
  Default-Language: Haskell2010
@@ -87,13 +156,15 @@ Test-Suite seereason-base-tests
   HUnit,
   ixset,
   json,
-  logic-classes,
   pretty,
   QuickCheck,
   safecopy,
+  seereason-base,
   set-extra,
   syb,
   text,
   time,
   userid,
   web-routes-th
+ if !flag(local-logic-classes)
+  Build-Depends: logic-classes

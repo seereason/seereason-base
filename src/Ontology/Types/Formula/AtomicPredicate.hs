@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, GeneralizedNewtypeDeriving,
-             MultiParamTypeClasses, StandaloneDeriving, TemplateHaskell, TypeSynonymInstances, UndecidableInstances #-}
+             MultiParamTypeClasses, StandaloneDeriving, TemplateHaskell, TypeFamilies, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS -Wall -Wwarn #-}
 module Ontology.Types.Formula.AtomicPredicate
     ( AtomicPredicate(..)
@@ -12,9 +12,10 @@ module Ontology.Types.Formula.AtomicPredicate
 
 import Data.Data (Data)
 import Data.List (isSuffixOf)
-import Data.Logic.Classes.Apply (Predicate)
+import Data.Logic.Classes.Apply (IsPredicate)
 import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Constants (Constants(..))
+import Data.Logic.Classes.Constants (HasBoolean(..))
+import Data.Logic.Classes.Equals (HasEquals(isEquals))
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
@@ -80,7 +81,7 @@ instance (Eq description, Ord description, Pretty description) => Arity (AtomicP
           arity' Ratio = 3
           arity' PercentOf = 3
 
-instance Constants (AtomicPredicate description) where
+instance HasBoolean (AtomicPredicate description) where
     fromBool True = U
     fromBool False = Empty
     asBool U = Just True
@@ -124,7 +125,10 @@ prettyUserId u = text ("U" ++ show (_unUserId u))
 instance Pretty UserId where
     pPrint = prettyUserId
 
-instance (Pretty description, Ord description, Data description) => Predicate (AtomicPredicate description)
+instance (Pretty description, Ord description, Data description) => IsPredicate (AtomicPredicate description)
+
+instance IsPredicate (AtomicPredicate description) => HasEquals (AtomicPredicate description) where
+    isEquals _ = error "instance HasEquals (AtomicPredicate description)"
 
 prettyNumberLit :: Double -> Doc
 prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s

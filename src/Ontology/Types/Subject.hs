@@ -31,10 +31,10 @@ import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Equals (AtomEq)
+import Data.Logic.Classes.Equals (HasEquality)
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Negate (Negatable(..))
-import Data.Logic.Classes.FirstOrder (FirstOrderFormula)
+import Data.Logic.Classes.Negate (IsNegatable(..))
+import Data.Logic.Classes.FirstOrder (IsQuantified)
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
@@ -119,9 +119,9 @@ prettySubjectNode style (Normal s) = prettySubjectId style s
 prettyEdge :: PredicateStyle -> SubjectEdge formula -> Doc
 prettyEdge style (s1, s2, _) = cat [prettySubjectNode style s1, text "->", prettySubjectNode style s2]
 
-instance Negatable SubjectNode where
-    negatePrivate (Complement x) = Normal x
-    negatePrivate (Normal x) = Complement x
+instance IsNegatable SubjectNode where
+    naiveNegate (Complement x) = Normal x
+    naiveNegate (Normal x) = Complement x
     foldNegation _ inverted (Complement x) = inverted (Normal x)
     foldNegation normal _ (Normal x) = normal (Normal x)
 
@@ -203,11 +203,11 @@ subjectDefinitionIds = Set.map assertionId . subjectAssertions
 subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula)
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
-instance (FirstOrderFormula formula atom v, AtomEq atom p term) => Arity (SubjectTuple formula) where
+instance (IsQuantified formula atom v, HasEquality atom p term) => Arity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-
-instance FirstOrderFormula formula term v p f => Arity (Subject formula) where
+instance IsQuantified formula term v p f => Arity (Subject formula) where
     arity = pairsArity . Map.toList . subjectDefinitionMap
         where
           pairsArity [] = Nothing

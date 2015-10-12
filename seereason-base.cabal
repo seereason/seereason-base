@@ -12,7 +12,7 @@ Cabal-version:    >= 1.10
 flag local-logic-classes
   Description: use local source for logic-classes
   Manual: True
-  Default: True
+  Default: False
 
 Library
  Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-authenticate < 2, happstack-scaffolding,
@@ -114,9 +114,8 @@ Library
    Build-Depends: logic-classes
 
 Executable geni-client
- Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
- Main-Is: Main.hs
+ Main-Is: src/GenIClient.hs
  GHC-Options: -threaded -O2 -rtsopts
  Build-Depends:
   base,
@@ -146,9 +145,8 @@ Executable geni-client
 Test-Suite seereason-base-tests
  Default-Language: Haskell2010
  Type: exitcode-stdio-1.0
- Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
- Main-Is: Test/Main.hs
+ Main-Is: src/Test/Main.hs
  Build-Depends:
   base,
   containers,

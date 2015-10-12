@@ -3,11 +3,12 @@
 module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
-import Data.Logic.Classes.Equals (pApp, prettyAtomEq)
+import Data.Logic.Classes.Apply (pApp)
+import Data.Logic.Classes.Equals (prettyAtomEq)
 import Data.Logic.Classes.FirstOrder (for_all, prettyFirstOrder)
 import Data.Logic.Classes.Literal (prettyLit)
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Term (Term(vt), prettyTerm)
+import Data.Logic.Classes.Term (IsTerm(vt), prettyTerm)
 import qualified Data.Text as T
 import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
                                       AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, AtomF, TermF)

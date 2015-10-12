@@ -12,7 +12,7 @@ import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
 import Data.Logic.Classes.Combine (Combination(..), BinOp(..))
-import Data.Logic.Classes.FirstOrder (foldFirstOrder, Quant(..))
+import Data.Logic.Classes.FirstOrder (foldQuantified, Quant(..))
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
 import Data.Logic.Classes.Term (foldTerm)
 import Data.Logic.Types.FirstOrder (Predicate(..))
@@ -70,12 +70,12 @@ askDescriptions u i =
 
 geni :: FormulaPF -> RouteT GenIURL IO String
 geni f =
-    foldFirstOrder qu co tf at f
+    foldQuantified qu co tf at f
     where
-      qu Forall v f =
+      qu (:!:) v f =
           do text <- geni f
              return $ "for all " ++ show (pPrint v) ++ " " ++ text
-      qu Exists v f =
+      qu (:?:) v f =
           do text <- geni f
              return $ "for all " ++ show (pPrint v) ++ " " ++ text
       co (BinOp f1 op f2) =

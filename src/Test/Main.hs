@@ -4,12 +4,12 @@ module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
---import Data.Logic.Classes.Apply (Predicate)
+import Data.Logic.Classes.Apply (HasPredicate, pApp, pApp1, pApp2)
 --import Data.Logic.Classes.Constants (fromBool)
-import Data.Logic.Classes.Equals (pApp1, pApp2, (.=.))
---import Data.Logic.Classes.FirstOrder (fixityFirstOrder)
+import Data.Logic.Classes.Equals ((.=.))
+import Data.Logic.Classes.Formula (IsFormula)
 --import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
-import Data.Logic.Classes.Term (Term(..) {-, Function-})
+import Data.Logic.Classes.Term (IsTerm(..) {-, Function-})
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm {-, runNormal-})

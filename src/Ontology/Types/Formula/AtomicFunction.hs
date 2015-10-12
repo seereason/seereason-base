@@ -8,9 +8,9 @@ module Ontology.Types.Formula.AtomicFunction
 import Data.Data (Data)
 import Data.Logic.Classes.Arity (Arity(arity))
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Skolem (Skolem(..))
+import Data.Logic.Classes.Skolem (HasSkolem(..))
 import Data.Logic.Classes.Term (Function)
-import Data.Logic.Classes.Variable (Variable)
+import Data.Logic.Classes.Variable (IsVariable)
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
@@ -30,14 +30,14 @@ data AtomicFunction description v
     | Skolem v                    -- ^ A temporary value used by the automatic theorem prover
     deriving (Eq, Ord, Data, Typeable, Show)
 
-instance Variable v => Skolem (AtomicFunction description v) v where
+instance IsVariable v => HasSkolem (AtomicFunction description v) v where
     toSkolem = Skolem
     fromSkolem (Skolem v) = Just v
     fromSkolem _ = Nothing
 
-instance (Pretty description, Ord description, Data description, Variable v) => Function (AtomicFunction description v) v
+instance (Pretty description, Ord description, Data description, IsVariable v) => Function (AtomicFunction description v) v
 
-prettyAtomicFunction :: (Eq description, Ord description, Pretty description, Variable v) => AtomicFunction description v -> Doc
+prettyAtomicFunction :: (Eq description, Ord description, Pretty description, IsVariable v) => AtomicFunction description v -> Doc
 prettyAtomicFunction x =
     case x of
       Function (Reference _ ident) -> prettySubjectId AsFunction ident
@@ -45,10 +45,10 @@ prettyAtomicFunction x =
       Function p -> prettyAtomicPredicate AsFunction p
       Skolem v -> text ("Sk" ++ show (pPrint v))
 
-instance (Pretty description, Ord description, Variable v) => Pretty (AtomicFunction description v) where
+instance (Pretty description, Ord description, IsVariable v) => Pretty (AtomicFunction description v) where
     pPrint = prettyAtomicFunction
 
-instance (Ord description, Pretty description, Variable v) => Arity (AtomicFunction description v) where
+instance (Ord description, Pretty description, IsVariable v) => Arity (AtomicFunction description v) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)
     arity (Skolem _) = Nothing
 

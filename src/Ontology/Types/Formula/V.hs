@@ -8,7 +8,7 @@ module Ontology.Types.Formula.V
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
 import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Variable (Variable(..))
+import Data.Logic.Classes.Variable (IsVariable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Set as Set
 import Data.String (IsString(..))
@@ -18,7 +18,7 @@ import Text.PrettyPrint.HughesPJClass (Doc, text)
 newtype V = V String
     deriving (Eq, Ord, Typeable, Data, Show) -- Monoid,IsString
 
-instance Variable V where
+instance IsVariable V where
     variant x xs =
         if Set.member x xs
         then variant (next x) xs

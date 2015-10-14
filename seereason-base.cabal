@@ -51,7 +51,7 @@ Library
                    Comment
                    CommentTypes
  if flag(local-logic-classes)
-   Hs-Source-Dirs: ../logic-classes
+   Hs-Source-Dirs: ../logic-classes, ../atp-haskell/src
    Build-Depends: applicative-extras, template-haskell, HUnit, PropLogic
    Exposed-Modules:
      Data.Logic
@@ -110,6 +110,10 @@ Library
      Data.Logic.Types.Propositional
      Data.Boolean
      Data.Boolean.SatSolver
+     ATP
+     Lib
+     Pretty
+     Formulas
  else
    Build-Depends: logic-classes
 

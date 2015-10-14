@@ -4,10 +4,9 @@ module Main where
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Data.Logic.Classes.Apply (HasPredicate, pApp, pApp1, pApp2)
+import Data.Logic.Classes.Apply (pApp1, pApp2)
 --import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals ((.=.))
-import Data.Logic.Classes.Formula (IsFormula)
 --import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
 import Data.Logic.Classes.Term (IsTerm(..) {-, Function-})
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)

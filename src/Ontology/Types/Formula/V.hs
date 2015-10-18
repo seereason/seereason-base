@@ -7,8 +7,8 @@ module Ontology.Types.Formula.V
 
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Variable (IsVariable(..))
+import Pretty (Pretty(pPrint))
+import FOL (IsVariable(..))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Set as Set
 import Data.String (IsString(..))

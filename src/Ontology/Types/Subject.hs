@@ -30,11 +30,11 @@ module Ontology.Types.Subject
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
-import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Equals (HasEquality)
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Negate (IsNegatable(..))
-import Data.Logic.Classes.FirstOrder (IsQuantified)
+import Ontology.Arity (Arity(arity))
+import FOL (HasEquality)
+import Pretty (Pretty(pPrint))
+import Formulas (HasBoolean, IsNegatable(..))
+import FOL (IsQuantified)
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
@@ -122,8 +122,8 @@ prettyEdge style (s1, s2, _) = cat [prettySubjectNode style s1, text "->", prett
 instance IsNegatable SubjectNode where
     naiveNegate (Complement x) = Normal x
     naiveNegate (Normal x) = Complement x
-    foldNegation _ inverted (Complement x) = inverted (Normal x)
-    foldNegation normal _ (Normal x) = normal (Normal x)
+    foldNegation' inverted _ (Complement x) = inverted (Normal x)
+    foldNegation' _ normal (Normal x) = normal (Normal x)
 
 -- |We want Normal nodes to come before Complement nodes, because normally
 -- a Subject will have at least one Normal node so we can expect minId to
@@ -203,7 +203,7 @@ subjectDefinitionIds = Set.map assertionId . subjectAssertions
 subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula)
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
-instance (IsQuantified formula atom v, HasEquality atom p term) => Arity (SubjectTuple formula) where
+instance (IsQuantified formula atom v, HasEquality atom p term, HasBoolean p, Arity p) => Arity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-

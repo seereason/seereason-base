@@ -8,13 +8,13 @@ module Ontology.Types.PredForm
     ) where
 
 import Data.Data (Data(..))
-import Data.Logic.Classes.Apply (pApp)
-import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Constants (fromBool)
-import Data.Logic.Classes.Equals (HasEquality, foldAtomEq)
-import Data.Logic.Classes.FirstOrder (IsQuantified(foldQuantified))
-import Data.Logic.Classes.Term (IsTerm(vt))
-import Data.Logic.Classes.Variable (variants)
+import FOL (pApp)
+import Ontology.Arity (Arity(arity))
+import Formulas (fromBool, HasBoolean)
+import FOL (HasEquality, foldEquals)
+import FOL (IsQuantified(foldQuantified))
+import FOL (IsTerm(vt))
+import FOL (variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
@@ -27,23 +27,23 @@ newtype PredForm formula = PredForm formula
 -- ^ This function is used to access the predicate in a PredForm.
 -- Note that the type "a" might be a function such as "[term] -> b",
 -- which means you can simulate the pApp function.
-foldPred :: (IsQuantified formula atom v, HasEquality atom p term) => (p -> a) -> PredForm formula -> a
+foldPred :: (IsQuantified formula atom v, HasEquality atom p term, HasBoolean p {-FIXME-}) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
     foldQuantified qu co tf at form
     where
-      at = foldAtomEq (\ p _ -> fn p) (\ _ _ -> undefined)
+      at = foldEquals (\ p _ -> fn p) (\ _ _ -> undefined)
       tf = fn . fromBool
       qu = undefined
       co = undefined
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
-makePred :: (IsQuantified formula atom v, HasEquality atom p term, IsTerm term v f) => p -> PredForm formula
+makePred :: (IsQuantified formula atom v, HasEquality atom p term, IsTerm term v f, Arity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
                  Just n -> take n (map vt (variants (fromString "x")))
 
-instance (IsQuantified formula atom v, HasEquality atom p term) => Arity (PredForm formula) where
+instance (IsQuantified formula atom v, HasEquality atom p term, HasBoolean p, Arity p) => Arity (PredForm formula) where
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)

@@ -17,7 +17,7 @@ import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (IxSet)
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
+import Pretty (Pretty(pPrint))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 --import Data.Time (Day(..))

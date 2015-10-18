@@ -11,7 +11,7 @@ module Ontology.Types.Formula
     , TermF
     ) where
 
-import qualified Data.Logic.Types.FirstOrder as N
+import qualified FOL as N
 import qualified Data.Logic.Types.FirstOrderPublic as P
 import Ontology.Types.Formula.V
 import Ontology.Types.Formula.AtomicPredicate

@@ -7,14 +7,14 @@ import qualified Data.Set as Set
 import Data.Logic.Classes.Apply (pApp1, pApp2)
 --import Data.Logic.Classes.Constants (fromBool)
 import Data.Logic.Classes.Equals ((.=.))
---import Data.Logic.Classes.Pretty (Pretty(pretty), HasFixity(..))
+--import Pretty (Pretty(pretty), HasFixity(..))
 import Data.Logic.Classes.Term (IsTerm(..) {-, Function-})
 import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm {-, runNormal-})
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrderPublic
-import qualified Data.Logic.Types.FirstOrder as N
+import qualified FOL as N
 import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)

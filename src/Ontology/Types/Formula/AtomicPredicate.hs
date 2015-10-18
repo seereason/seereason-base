@@ -12,11 +12,11 @@ module Ontology.Types.Formula.AtomicPredicate
 
 import Data.Data (Data)
 import Data.List (isSuffixOf)
-import Data.Logic.Classes.Apply (IsPredicate)
-import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Constants (HasBoolean(..))
-import Data.Logic.Classes.Equals (HasEquals(isEquals))
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
+import FOL (IsPredicate)
+import Ontology.Arity (Arity(arity))
+import Formulas (HasBoolean(..))
+import FOL (HasEquals(isEquals))
+import Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)

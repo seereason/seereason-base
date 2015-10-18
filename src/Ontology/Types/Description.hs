@@ -13,7 +13,7 @@ module Ontology.Types.Description
     ) where
 
 import Data.Data (Data(..))
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
+import Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
 import qualified Data.Text as T
 import Data.Typeable (Typeable)

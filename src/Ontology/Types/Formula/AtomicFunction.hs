@@ -6,11 +6,11 @@ module Ontology.Types.Formula.AtomicFunction
     ) where
 
 import Data.Data (Data)
-import Data.Logic.Classes.Arity (Arity(arity))
-import Data.Logic.Classes.Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Skolem (HasSkolem(..))
-import Data.Logic.Classes.Term (Function)
-import Data.Logic.Classes.Variable (IsVariable)
+import Ontology.Arity (Arity(arity))
+import Pretty (Pretty(pPrint))
+import Skolem (HasSkolem(..))
+import FOL (Function)
+import FOL (IsVariable)
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Typeable (Typeable)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))

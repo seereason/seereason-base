@@ -83,7 +83,7 @@ Library
      Prop
      Skolem
  else
-   Build-Depends: logic-classes
+   Build-Depends: atp-haskell, logic-classes
 
 Executable geni-client
  -- Hs-Source-Dirs: src, ../logic-classes
@@ -112,7 +112,7 @@ Executable geni-client
   web-routes,
   web-routes-th
  if !flag(local-logic-classes)
-   Build-Depends: logic-classes
+   Build-Depends: atp-haskell, logic-classes
 
 Test-Suite seereason-base-tests
  Default-Language: Haskell2010
@@ -137,4 +137,4 @@ Test-Suite seereason-base-tests
   userid,
   web-routes-th
  if !flag(local-logic-classes)
-  Build-Depends: logic-classes
+   Build-Depends: atp-haskell, logic-classes

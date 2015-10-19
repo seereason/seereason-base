@@ -34,7 +34,7 @@ import Text.Printf (printf)
 -- = Users in PredApp x [Var (V "x")]@.  This is a formula with one
 -- free variable, which we are calling a Predicate.
 data AtomicPredicate description
-    = Description Arity description                   -- ^ Is the term an element of the described set?
+    = Described Arity description                     -- ^ Is the term an element of the described set?
     | Reference Arity SubjectId                       -- ^ A reference to a subject, which is an n-ary predicate
                                                       -- describing a set of n-tuples.  The membership is defined
                                                       -- only by the other assertions about that subject.
@@ -61,7 +61,7 @@ instance (Eq description, Ord description, Pretty description) => HasArity (Atom
     arity =
         Just . arity'
         where
-          arity' (Description n _) = n
+          arity' (Described n _) = n
           arity' (Reference n _) = n
           arity' (Somebody _) = 1
           arity' You = 1
@@ -95,7 +95,7 @@ prettyAtomicPredicate :: (Eq description, Ord description, Pretty description) =
 prettyAtomicPredicate style x =
     case x of
       Reference _ ident -> prettySubjectId style ident
-      Description _ d -> pPrint d
+      Described _ d -> pPrint d
       AssertionRef ident -> prettyAssertionId ident
       DocumentRef ident -> prettyDocumentId ident
       TheoremRef ident -> prettyTheoremId ident
@@ -177,9 +177,9 @@ compare2 p1 p2 =
       (Nickname _ _, _) -> LT2
       (_, Nickname _ _) -> GT2
 
-      (Description _ a, Description _ b) -> EQ2 $ compare a b
-      (Description _ _, _) -> LT2
-      (_, Description _ _) -> GT2
+      (Described _ a, Described _ b) -> EQ2 $ compare a b
+      (Described _ _, _) -> LT2
+      (_, Described _ _) -> GT2
 
       (Persons, Persons) -> EQ2 EQ
       (Persons, _) -> LT2

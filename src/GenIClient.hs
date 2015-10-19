@@ -25,7 +25,7 @@ import Network.HTTP.Conduit (simpleHttp)
 import Ontology.Types (SubjectId(..), prettySubjectId, unsafeSubjectId, unsafeAssertionId, SubjectNode(..), Assertion(..), AssertionId(..),
                        PredicateStyle(AsPredicate, AsFunction))
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(Function))
-import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(Reference, Description))
+import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(Reference, Described))
 import Ontology.Types.GenI (LSubject(..))
 import Ontology.Types.PF (FormulaPF)
 import System.IO (putStrLn)

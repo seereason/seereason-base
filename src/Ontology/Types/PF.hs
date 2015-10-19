@@ -44,7 +44,7 @@ instance Pretty TermPF where
 
 -- |Quick way to turn a string into a description.
 desc :: Int -> String -> AtomicPredicatePF
-desc a s = Description a (Description' NounPhrase [T (T.pack s)])
+desc a s = Described a (Description' NounPhrase [T (T.pack s)])
 
 -- |Arity 1 description
 desc1 :: String -> AtomicPredicatePF

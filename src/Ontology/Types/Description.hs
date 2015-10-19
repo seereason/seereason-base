@@ -90,7 +90,7 @@ instance Ord NounPhraseFragment where
 
 instance Eq NounPhraseFragment where
     a == b = compare a b == EQ
-            
+
 textOfNounPhraseFragment :: Documents -> NounPhraseFragment -> [T.Text]
 textOfNounPhraseFragment _documents (T t) = T.words t
 textOfNounPhraseFragment _documents (S _)   = [] -- dereference Subject
@@ -101,19 +101,19 @@ textOfNounPhraseFragment documents (D sd) = lookupSD sd
       lookupSD :: SubDocument -> [T.Text]
       lookupSD (Quotation q _aid) = T.words q
 {-
-          case lookupAss aid of 
+          case lookupAss aid of
             Nothing -> error $ "searchIndex: invalid index: " ++ show aid
             (Just (Document _ (Text _authors title _text)) -> [quot, title]
 -}
       lookupSD (TextRanges ranges aid) =
-          case lookupAss aid of 
+          case lookupAss aid of
             Nothing -> [] -- error $ "searchIndex: invalid index: " ++ show r
             Just doc -> map (lookupRange (text doc)) ranges
 
       lookupRange :: T.Text -> TextRange -> T.Text
-      lookupRange body (TextRange start end) = 
-          T.take (max 0 ((end - start) + 1)) $ T.drop start body 
-      
+      lookupRange body (TextRange start end) =
+          T.take (max 0 ((end - start) + 1)) $ T.drop start body
+
       lookupAss :: DocumentId -> Maybe Document
       lookupAss aid =
           case toList (documents @= aid) of

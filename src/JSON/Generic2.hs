@@ -190,7 +190,7 @@ fromJSON_generic fromJSON_base j = generic
         -- Count how many arguments a constructor has.  The value x is used to determine what type the constructor returns.
         numConstrArgs :: (Data a) => a -> Constr -> Int
         numConstrArgs x c = execState (fromConstrM f c `asTypeOf` return x) 0
-          where f = do modify (+1); return undefined
+          where f = do modify (+1); return (error "numConstrArgs")
 
         resType :: Result a -> a
         resType _ = error "resType"

@@ -1,33 +1,72 @@
-{-# LANGUAGE FlexibleInstances, OverloadedStrings, PackageImports, StandaloneDeriving, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, OverloadedStrings, PackageImports, StandaloneDeriving, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
-import qualified Data.Map as Map
-import qualified Data.Set as Set
-import Data.Logic.Classes.Apply (pApp1, pApp2)
---import Data.Logic.Classes.Constants (fromBool)
-import Data.Logic.Classes.Equals ((.=.))
---import Pretty (Pretty(pretty), HasFixity(..))
-import Data.Logic.Classes.Term (IsTerm(..) {-, Function-})
-import Data.Logic.Harrison.Skolem (runSkolem, skolemNormalForm)
+import Data.Logic.Classes.Atom (Atom(..))
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm {-, runNormal-})
+import Data.Logic.Resolution (getSubstAtomEq, isRenameOfAtomEq)
 import Data.Logic.Resolution (SetOfSupport, prove)
+import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic
-import qualified FOL as N
-import qualified Data.Set.Extra as S
 import Data.Set (fromList)
-import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
---import qualified Ontology.Types.Description as O
-import Ontology.Types.Formula (LiteralF, TermF)
-import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
+import FOL (asubst, fva, foldEquate, HasFunctions(funcs), HasPredicate, IsTerm(..), equalsFuncs, (.=.), pApp)
+import Formulas (IsFormula)
+import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
+import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
+import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.Formula.V (V(V))
 import Ontology.Types.PF (FormulaPF, LiteralPF)
+import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+import qualified Data.Set.Extra as S
+import Skolem (runSkolem, skolemize)
 import System.Exit
 import Test.HUnit
---import Text.PrettyPrint (text)
+
+instance HasFunctions (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V))) (AtomicFunction Description V) where
+    funcs = equalsFuncs
+
+{-
+instance IsFirstOrder FormulaPF
+                      (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
+                      (AtomicPredicate Description)
+                      (NTerm V (AtomicFunction Description V))
+                      V
+                      (AtomicFunction Description V)
+-}
+
+instance Atom (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
+              (NTerm V (AtomicFunction Description V))
+              V where
+    substitute = asubst
+    freeVariables = fva
+    allVariables = fva -- Variables are always free in an atom - this method is unnecessary
+    unify = unify
+    match = unify
+    foldTerms f r pr = foldEquate (\_ ts -> Prelude.foldr f r ts) (\t1 t2 -> f t2 (f t1 r)) pr
+    isRename = isRenameOfAtomEq
+    getSubst = getSubstAtomEq
+
+instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction String V)))
+              (TermF String)
+              V where
+    substitute = asubst
+    freeVariables = fva
+    allVariables = fva -- Variables are always free in an atom - this method is unnecessary
+    unify = unify
+    match = unify
+    foldTerms f r pr = foldEquate (\_ ts -> Prelude.foldr f r ts) (\t1 t2 -> f t2 (f t1 r)) pr
+    isRename = isRenameOfAtomEq
+    getSubst = getSubstAtomEq
+
+pApp1 :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> term -> formula
+pApp1 p a = pApp p [a]
+pApp2 :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> term -> term -> formula
+pApp2 p a b = pApp p [a, b]
 
 main :: IO ()
 main =
@@ -37,7 +76,7 @@ main =
 
 -- prove :: Literal lit term v p f => SetOfSupport lit v term -> SetOfSupport lit v term -> S.Set (ImplicativeForm lit) -> (Bool, SetOfSupport lit v term)
 
-type Description = String
+-- type Description = String
 
 prove1 :: Test
 prove1 =
@@ -169,7 +208,7 @@ atomic2 :: Test
 atomic2 =
     TestCase (assertEqual "Atom test 2" expected input)
     where
-      input = runSkolem (implicativeNormalForm (unFormula (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF))) :: Set.Set (ImplicativeForm LiteralPF)
+      input = runSkolem (implicativeNormalForm (unFormula (pApp (Reference 1 (unsafeSubjectId 58) :: AtomicPredicate Description) [fApp (Function (NumberLit 1.0) :: AtomicFunction Description V) []]))) :: Set.Set (ImplicativeForm LiteralPF)
       expected = Set.fromList [INF {neg = Set.fromList [],
                                     pos = Set.fromList [N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])]}]
 
@@ -178,8 +217,8 @@ atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)
     where
       input = compare f0 f1
-      f0 = runSkolem (skolemNormalForm id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: FormulaPF)) :: FormulaPF
-      f1 = runSkolem (skolemNormalForm id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF)) :: FormulaPF
+      f0 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: LiteralPF)) :: FormulaPF
+      f1 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: LiteralPF)) :: FormulaPF
       expected = LT
 
 atomic4 :: Test
@@ -196,8 +235,8 @@ atomic5 =
     TestCase (assertEqual "Atom test 5" expected input)
     where
       input = compare f0 f1
-      f0 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description V)
-      f1 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]) :: N.Formula V (AtomicPredicate Description) (AtomicFunction Description V)
+      f0 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []]) :: N.NFormula V (AtomicPredicate Description) (AtomicFunction Description V)
+      f1 = N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]) :: N.NFormula V (AtomicPredicate Description) (AtomicFunction Description V)
       -- f0 = N.FunApp (Function (NumberLit 0.0)) [] :: N.PTerm V (AtomicFunction Description)
       -- f1 = N.FunApp (Function (NumberLit 1.0)) [] :: N.PTerm V (AtomicFunction Description)
       -- f0 = Function (NumberLit 0.0) :: AtomicFunction Description

@@ -9,9 +9,9 @@ module Ontology.Types.PredForm
 
 import Data.Data (Data(..))
 import FOL (pApp)
-import Ontology.Arity (Arity(arity))
+import Ontology.Arity (HasArity(arity))
 import Formulas (fromBool, HasBoolean)
-import FOL (HasEquality, foldEquals)
+import FOL (HasEquate, foldEquate)
 import FOL (IsQuantified(foldQuantified))
 import FOL (IsTerm(vt))
 import FOL (variants)
@@ -27,23 +27,23 @@ newtype PredForm formula = PredForm formula
 -- ^ This function is used to access the predicate in a PredForm.
 -- Note that the type "a" might be a function such as "[term] -> b",
 -- which means you can simulate the pApp function.
-foldPred :: (IsQuantified formula atom v, HasEquality atom p term, HasBoolean p {-FIXME-}) => (p -> a) -> PredForm formula -> a
+foldPred :: (IsQuantified formula atom v, HasEquate atom p term, HasBoolean p {-FIXME-}) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
     foldQuantified qu co tf at form
     where
-      at = foldEquals (\ p _ -> fn p) (\ _ _ -> undefined)
+      at = foldEquate (\ p _ -> fn p) (\ _ _ -> error "foldPred")
       tf = fn . fromBool
-      qu = undefined
-      co = undefined
+      qu = error "foldPred"
+      co = error "foldPred"
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
-makePred :: (IsQuantified formula atom v, HasEquality atom p term, IsTerm term v f, Arity p) => p -> PredForm formula
+makePred :: (IsQuantified formula atom v, HasEquate atom p term, IsTerm term v f, HasArity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
                  Just n -> take n (map vt (variants (fromString "x")))
 
-instance (IsQuantified formula atom v, HasEquality atom p term, HasBoolean p, Arity p) => Arity (PredForm formula) where
+instance (IsQuantified formula atom v, HasEquate atom p term, HasBoolean p, HasArity p) => HasArity (PredForm formula) where
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)

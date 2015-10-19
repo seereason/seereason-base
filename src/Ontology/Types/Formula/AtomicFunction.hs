@@ -6,36 +6,42 @@ module Ontology.Types.Formula.AtomicFunction
     ) where
 
 import Data.Data (Data)
-import Ontology.Arity (Arity(arity))
+import Data.SafeCopy (base, deriveSafeCopy)
+import Data.String (IsString(fromString))
+import Data.Typeable (Typeable)
+import FOL (IsFunction, IsVariable)
+import Ontology.Arity (HasArity(arity))
+import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate, prettyNumberLit)
+import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
 import Pretty (Pretty(pPrint))
 import Skolem (HasSkolem(..))
-import FOL (Function)
-import FOL (IsVariable)
-import Data.SafeCopy (base, deriveSafeCopy)
-import Data.Typeable (Typeable)
-import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
-import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate, prettyNumberLit)
 import Text.PrettyPrint (Doc, text)
 
 -- |The atomic function used as a parameter to the
 -- 'Logic.Predicate.Formula' type.
 data AtomicFunction description v
     = Function (AtomicPredicate description)
-    -- ^ If the argument is an n-ary predicate, this is an (n-1)-ary
-    -- function.  The pairs of the function are formed by decomposing
-    -- each n-tuple in the subject to an (n-1)-tuple and a singleton.
-    -- The value of the function is the union of the singletons for a
-    -- given (n-1)-tuple.  So a unary predicate like Somebody UserId
-    -- turns in a constant function whose value is that user.
-    | Skolem v                    -- ^ A temporary value used by the automatic theorem prover
+    -- ^ If an n-ary predicate is known to match exactly one object,
+    -- we can use it to represent an (n-1)-ary function whose "name"
+    -- is the n-1-tuple containing the first n-1 arguments to the
+    -- predicate and whose value is the matching tuple's nth element.
+    -- So a unary predicate like Somebody UserId turns in a constant
+    -- function whose value is that user.  Although we cannot
+    -- necessarily know that a predicate matches exactly one value, we
+    -- shall assume it.  This requires more thought. (FIXME)
+    | Skolem v -- ^ A temporary value used by the automatic theorem prover
     deriving (Eq, Ord, Data, Typeable, Show)
+
+instance IsString (AtomicFunction description v) where
+    fromString = Function . fromString
 
 instance IsVariable v => HasSkolem (AtomicFunction description v) v where
     toSkolem = Skolem
     fromSkolem (Skolem v) = Just v
     fromSkolem _ = Nothing
 
-instance (Pretty description, Ord description, Data description, IsVariable v) => Function (AtomicFunction description v) v
+instance (Pretty description, Ord description, Data description, IsVariable v, IsString (AtomicFunction description v)
+         ) => IsFunction (AtomicFunction description v)
 
 prettyAtomicFunction :: (Eq description, Ord description, Pretty description, IsVariable v) => AtomicFunction description v -> Doc
 prettyAtomicFunction x =
@@ -48,7 +54,7 @@ prettyAtomicFunction x =
 instance (Pretty description, Ord description, IsVariable v) => Pretty (AtomicFunction description v) where
     pPrint = prettyAtomicFunction
 
-instance (Ord description, Pretty description, IsVariable v) => Arity (AtomicFunction description v) where
+instance (Ord description, Pretty description, IsVariable v) => HasArity (AtomicFunction description v) where
     arity (Function p) = maybe Nothing (\ n -> Just (n - 1)) (arity p)
     arity (Skolem _) = Nothing
 

@@ -12,15 +12,15 @@ module Ontology.Types.Formula.AtomicPredicate
 
 import Data.Data (Data)
 import Data.List (isSuffixOf)
-import FOL (IsPredicate)
-import Ontology.Arity (Arity(arity))
-import Formulas (HasBoolean(..))
-import FOL (HasEquals(isEquals))
-import Pretty (Pretty(pPrint))
 import Data.SafeCopy (base, deriveSafeCopy)
+import Data.String (IsString(fromString))
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
+import FOL (Arity, HasEquals(..), IsPredicate)
+import Formulas (HasBoolean(..))
+import Pretty (Pretty(pPrint))
+import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Assertion (AssertionId, prettyAssertionId)
 import Ontology.Types.Belief (Belief(..))
 import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
@@ -34,8 +34,8 @@ import Text.Printf (printf)
 -- = Users in PredApp x [Var (V "x")]@.  This is a formula with one
 -- free variable, which we are calling a Predicate.
 data AtomicPredicate description
-    = Description Int description                     -- ^ Is the term an element of the described set?
-    | Reference Int SubjectId                         -- ^ A reference to a subject, which is an n-ary predicate
+    = Description Arity description                   -- ^ Is the term an element of the described set?
+    | Reference Arity SubjectId                       -- ^ A reference to a subject, which is an n-ary predicate
                                                       -- describing a set of n-tuples.  The membership is defined
                                                       -- only by the other assertions about that subject.
     | You                                             -- ^ Is the term the currently logged in user?
@@ -43,12 +43,12 @@ data AtomicPredicate description
     | Users                                           -- ^ Is the term a user?
     | Persons                                         -- ^ Is the term a person?
     | Believers Belief                                -- ^ Is the term someone who accepts a Belief?
-    | Nickname Int T.Text                             -- ^ Does not affect membership
+    | Nickname Arity T.Text                           -- ^ Does not affect membership
     | NumberOf (AtomicPredicate description)          -- ^ Is the term a number which matches the cardinality of a set.
     | AssertionRef AssertionId                        -- ^ Is the term the specified assertion?
     | DocumentRef DocumentId                                -- ^ Is the term referenced in the specified document?  
     | TheoremRef TheoremId                            -- ^ Is the term the specified document?
-    | Commentary Int T.Text                           -- ^ Does not affect membership
+    | Commentary Arity T.Text                         -- ^ Does not affect membership
     | Singleton                                       -- ^ I'm not sure this is a meaningful predicate in first order logic.
     | Empty                                           -- ^ Empty set
     | U                                               -- ^ Universal set
@@ -57,7 +57,7 @@ data AtomicPredicate description
     | PercentOf                                       -- ^ for triple a, b, c, true if a * b equals 100 * c
     deriving (Eq, Data, Typeable, Show)
 
-instance (Eq description, Ord description, Pretty description) => Arity (AtomicPredicate description) where
+instance (Eq description, Ord description, Pretty description) => HasArity (AtomicPredicate description) where
     arity =
         Just . arity'
         where
@@ -86,12 +86,10 @@ instance HasBoolean (AtomicPredicate description) where
     fromBool False = Empty
     asBool U = Just True
     asBool Empty = Just False
-    asBool _ = Nothing           
+    asBool _ = Nothing
 
-{-
-instance IsString AtomicPredicate where
+instance IsString (AtomicPredicate description) where
     fromString s = error ("IsString AtomicPredicate " ++ show s)
--}
 
 prettyAtomicPredicate :: (Eq description, Ord description, Pretty description) => PredicateStyle -> AtomicPredicate description -> Doc
 prettyAtomicPredicate style x =
@@ -125,10 +123,11 @@ prettyUserId u = text ("U" ++ show (_unUserId u))
 instance Pretty UserId where
     pPrint = prettyUserId
 
-instance (Pretty description, Ord description, Data description) => IsPredicate (AtomicPredicate description)
+instance (Pretty description, Ord description, Data description, Show description) => IsPredicate (AtomicPredicate description)
 
-instance IsPredicate (AtomicPredicate description) => HasEquals (AtomicPredicate description) where
-    isEquals _ = error "instance HasEquals (AtomicPredicate description)"
+instance HasEquals (AtomicPredicate description) where
+    equals = error "HasEquals (AtomicPredicate description)"
+    isEquals = error "HasEquals (AtomicPredicate description)"
 
 prettyNumberLit :: Double -> Doc
 prettyNumberLit d = text $ let s = printf "%g" d in if isSuffixOf ".0" s then take (length s - 2) s else s

@@ -11,10 +11,11 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
-import Data.Logic.Classes.Combine (Combination(..), BinOp(..))
-import Data.Logic.Classes.FirstOrder (foldQuantified, Quant(..))
+import Data.Logic.Types.FirstOrder (NPredicate(Apply, Equal))
+import Formulas (Combination(..), BinOp(..))
+import FOL (foldQuantified, Quant(..))
 import Pretty (Pretty(pPrint))
-import Data.Logic.Classes.Term (foldTerm)
+import FOL (foldTerm)
 import FOL (Predicate(..))
 import qualified Data.Text as Text
 import GenI.URL (GenIURL(..))
@@ -41,7 +42,7 @@ main = run $
        text <- geni (proposition a4)
        liftIO (putStrLn text)
 
-run :: RouteT GenIURL m a -> m a  
+run :: RouteT GenIURL m a -> m a
 run route =
   unRouteT route showFn
   where

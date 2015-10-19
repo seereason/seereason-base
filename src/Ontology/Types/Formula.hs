@@ -11,13 +11,23 @@ module Ontology.Types.Formula
     , TermF
     ) where
 
-import qualified FOL as N
+import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Logic.Types.FirstOrderPublic as P
 import Ontology.Types.Formula.V
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
 
-type FormulaF description = P.Formula V (AtomicPredicate description) (AtomicFunction description V)
-type LiteralF description = N.Formula V (AtomicPredicate description) (AtomicFunction description V)
-type TermF description = N.PTerm V (AtomicFunction description V)
-type AtomF description = N.Predicate (AtomicPredicate description) (TermF description)
+type FormulaF description = P.PFormula V (AtomicPredicate description) (AtomicFunction description V)
+type LiteralF description = N.NFormula V (AtomicPredicate description) (AtomicFunction description V)
+type TermF description = N.NTerm V (AtomicFunction description V)
+type AtomF description = N.NPredicate (AtomicPredicate description) (TermF description)
+
+{-
+instance (Data description, Ord description, Show description, Pretty description
+         ) => HasPredicate (AtomF description) (AtomicPredicate description) (TermF description) where
+ -- applyPredicate :: predicate -> [term] -> atom
+    applyPredicate = N.Apply
+ -- foldPredicate :: (predicate -> [term] -> r) -> atom -> r
+    foldPredicate f (N.Apply p ts) = f p ts
+    foldPredicate _ (N.Equal _ _) = error "foldPredicate - found Equate"
+-}

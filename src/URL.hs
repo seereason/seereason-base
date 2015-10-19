@@ -16,7 +16,7 @@ import qualified Scaffolding.MkURL as MkURL
 import Test.QuickCheck (Arbitrary(arbitrary), oneof {-, Property, property-})
 import Web.Routes.TH (derivePathInfo)
 
-data WebURL 
+data WebURL
     = W_Homepage
     | W_Auth AuthURL
     | W_Profile ProfileURL

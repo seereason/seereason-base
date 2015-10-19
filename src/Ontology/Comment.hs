@@ -19,7 +19,7 @@ import Test.QuickCheck (Arbitrary(..), oneof)
 import Text.PrettyPrint            (Doc)
 import Web.Routes.TH   (derivePathInfo)
 
-data Topic 
+data Topic
     = TopicDocument   DocumentId
     | TopicAssertion  AssertionId
     | TopicSubject    SubjectId

@@ -7,11 +7,11 @@ module Ontology.Types.Formula.V
 
 import Data.Char (isDigit)
 import Data.Generics (Data, Typeable)
+import Data.SafeCopy (base, deriveSafeCopy)
+import Data.Set as Set
+import Data.String (IsString(..))
 import Pretty (Pretty(pPrint))
 import FOL (IsVariable(..))
-import Data.SafeCopy (base, deriveSafeCopy)
-import qualified Data.Set as Set
-import Data.String (IsString(..))
 import Text.PrettyPrint.HughesPJClass (Doc, text)
 
 -- | Variable names

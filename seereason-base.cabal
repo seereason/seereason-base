@@ -70,6 +70,7 @@ Library
      Data.Logic.Normal.Implicative
      Data.Logic.Resolution
      Data.Logic.Satisfiable
+     Data.Logic.Types.FirstOrder
      Data.Logic.Types.FirstOrderPublic
      Data.Boolean
      Data.Boolean.SatSolver
@@ -77,6 +78,10 @@ Library
      Lib
      Pretty
      Formulas
+     FOL
+     Lit
+     Prop
+     Skolem
  else
    Build-Depends: logic-classes
 

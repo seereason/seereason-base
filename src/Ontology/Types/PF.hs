@@ -3,19 +3,13 @@
 module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
-import FOL (pApp)
-import FOL (prettyAtomEq)
-import FOL (for_all, prettyFirstOrder)
-import Lit (prettyLit)
-import Pretty (Pretty(pPrint))
-import FOL (IsTerm(vt), prettyTerm)
 import qualified Data.Text as T
-import Ontology.Types.Formula        (AtomicPredicate(..), prettyAtomicPredicate, V(V),
-                                      AtomicFunction(..), prettyAtomicFunction, prettyV, FormulaF, LiteralF, AtomF, TermF)
-import Ontology.Types                (Assertion, Subject, PredicateStyle(AsPredicate))
-import Ontology.Types.Description   (Description(Description'), LinguisticHint(..), NounPhraseFragment(..))
-import Ontology.Types.UserData      (UserData)
-import Text.PrettyPrint (Doc)
+import FOL (pApp, for_all, IsTerm(vt), HasPredicate)
+import Formulas (IsFormula)
+import Ontology.Types.Formula (AtomicPredicate(..), V(V), AtomicFunction(..), FormulaF, LiteralF, AtomF, TermF)
+import Ontology.Types (Assertion, Subject)
+import Ontology.Types.Description (Description(Description'), LinguisticHint(..), NounPhraseFragment(..))
+import Ontology.Types.UserData (UserData)
 
 type AtomicPredicatePF = AtomicPredicate Description
 type AtomicFunctionPF = AtomicFunction Description V
@@ -29,6 +23,7 @@ type SubjectPF = Subject FormulaPF
 --type ImplicativeNormalFormPF = ImplicativeNormalForm LiteralPF
 type ProofPF = Proof LiteralPF
 
+{-
 prettyLitPF :: Int -> LiteralPF -> Doc
 prettyLitPF = prettyLit pa prettyV
     where pa = prettyAtomEq prettyV (prettyAtomicPredicate AsPredicate) prettyAtomicFunction
@@ -45,6 +40,7 @@ prettyTermPF = prettyTerm prettyV prettyAtomicFunction
 
 instance Pretty TermPF where
     pPrint = prettyTermPF
+-}
 
 -- |Quick way to turn a string into a description.
 desc :: Int -> String -> AtomicPredicatePF
@@ -58,5 +54,14 @@ desc1 = desc 1
 desc2 :: String -> AtomicPredicatePF
 desc2 = desc 2
 
+-- for_all :: IsQuantified formula atom v => v -> formula -> formula
+-- pApp :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> [term] -> formula
+-- IsTerm term v function => vt :: v -> term
+
 defaultFormula :: FormulaPF
-defaultFormula = (for_all (V "x") (pApp (Empty) [vt (V "x") :: TermPF])) :: FormulaPF
+defaultFormula = (for_all' (V "x" :: V) (pApp' (Empty :: AtomicPredicate Description) [vt (V "x" :: V) :: TermPF])) :: FormulaPF
+
+for_all' :: V -> FormulaPF -> FormulaPF
+for_all' = for_all
+pApp' :: AtomicPredicatePF -> [TermPF] -> FormulaPF
+pApp' = (pApp :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> [term] -> formula)

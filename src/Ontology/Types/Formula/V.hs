@@ -2,7 +2,6 @@
 {-# OPTIONS -Wall -Wwarn #-}
 module Ontology.Types.Formula.V
     ( V(..)
-    , prettyV
     ) where
 
 import Data.Char (isDigit)
@@ -11,9 +10,10 @@ import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Set as Set
 import Data.String (IsString(..))
 import Pretty (Pretty(pPrint))
-import FOL (IsVariable(..))
+import FOL (IsVariable(..), V(V))
 import Text.PrettyPrint.HughesPJClass (Doc, text)
 
+{-
 -- | Variable names
 newtype V = V String
     deriving (Eq, Ord, Typeable, Data, Show) -- Monoid,IsString
@@ -48,6 +48,7 @@ instance IsString V where
     fromString = V
 
 $(deriveSafeCopy 1 'base ''V)
+-}
 
 -- |We need a Default instance here because we use this in a generic formlet.
 -- When we eliminate g-f we can remove this.

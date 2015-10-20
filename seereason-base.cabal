@@ -36,7 +36,6 @@ Library
                    Ontology.Types.Formula
                    Ontology.Types.Formula.AtomicFunction
                    Ontology.Types.Formula.AtomicPredicate
-                   Ontology.Types.Formula.V
                    Ontology.Types.FunctionId
                    Ontology.Types.GenI
                    Ontology.Types.InsertMode

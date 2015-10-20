@@ -2,7 +2,7 @@
              StandaloneDeriving, TypeFamilies, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS -Wall -Wwarn -fno-warn-orphans #-}
 module Ontology.Types.Formula
-    ( module Ontology.Types.Formula.V
+    ( module FOL
     , module Ontology.Types.Formula.AtomicPredicate
     , module Ontology.Types.Formula.AtomicFunction
     , FormulaF
@@ -13,7 +13,7 @@ module Ontology.Types.Formula
 
 import qualified Data.Logic.Types.FirstOrder as N
 import qualified Data.Logic.Types.FirstOrderPublic as P
-import Ontology.Types.Formula.V
+import FOL (V(V))
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
 

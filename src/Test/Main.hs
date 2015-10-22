@@ -9,6 +9,9 @@ import Data.Logic.Resolution (getSubstAtomEq, isRenameOfAtomEq)
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+import qualified Data.Set.Extra as S
 import Data.Set (fromList)
 import FOL (asubst, fva, foldEquate, HasFunctions(funcs), HasPredicate, IsTerm(..), equalsFuncs, (.=.), pApp, V(V))
 import Formulas (IsFormula)
@@ -19,9 +22,7 @@ import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
-import qualified Data.Map as Map
-import qualified Data.Set as Set
-import qualified Data.Set.Extra as S
+import Prop (Marked, Propositional)
 import Skolem (runSkolem, skolemize)
 import System.Exit
 import Test.HUnit
@@ -216,8 +217,8 @@ atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)
     where
       input = compare f0 f1
-      f0 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: LiteralPF)) :: FormulaPF
-      f1 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: LiteralPF)) :: FormulaPF
+      f0 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: FormulaPF)) :: Marked Propositional FormulaPF
+      f1 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF)) :: Marked Propositional FormulaPF
       expected = LT
 
 atomic4 :: Test

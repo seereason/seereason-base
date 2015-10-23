@@ -21,7 +21,7 @@ type AssertionPF = Assertion FormulaPF
 type UserDataPF = UserData FormulaPF
 type SubjectPF = Subject FormulaPF
 --type ImplicativeNormalFormPF = ImplicativeNormalForm LiteralPF
-type ProofPF = Proof {-LiteralPF-} FormulaPF
+type ProofPF = Proof LiteralPF
 
 {-
 prettyLitPF :: Int -> LiteralPF -> Doc

@@ -29,11 +29,12 @@ newtype PredForm formula = PredForm formula
 -- which means you can simulate the pApp function.
 foldPred :: (IsQuantified formula atom v, HasEquate atom p term, HasBoolean p {-FIXME-}) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
-    foldQuantified qu co tf at form
+    foldQuantified qu co ne tf at form
     where
       at = foldEquate (\ p _ -> fn p) (\ _ _ -> error "foldPred")
       tf = fn . fromBool
       qu = error "foldPred"
+      ne = error "foldPred"
       co = error "foldPred"
 
 -- |Create a PredForm from an atomic predicate and some generated terms.

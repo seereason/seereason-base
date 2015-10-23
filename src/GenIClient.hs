@@ -71,7 +71,7 @@ askDescriptions u i =
 
 geni :: FormulaPF -> RouteT GenIURL IO String
 geni f =
-    foldQuantified qu co tf at f
+    foldQuantified qu co ne tf at f
     where
       qu (:!:) v f =
           do text <- geni f
@@ -88,7 +88,7 @@ geni f =
                          (:&:) -> "and"
                          (:|:) -> "or"
              return $ t1 ++ " " ++ op' ++ " " ++ t2
-      co ((:~:) f) =
+      ne f =
           do text <- geni f
              return $ "not " ++ text
       tf True = return "true"

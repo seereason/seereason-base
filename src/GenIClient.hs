@@ -79,7 +79,7 @@ geni f =
       qu (:?:) v f =
           do text <- geni f
              return $ "for all " ++ show (pPrint v) ++ " " ++ text
-      co (BinOp f1 op f2) =
+      co f1 op f2 =
           do t1 <- geni f1
              t2 <- geni f2
              let op' = case op of

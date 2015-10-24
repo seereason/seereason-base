@@ -8,7 +8,7 @@ import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativ
 import Data.Logic.Resolution (getSubstAtomEq, isRenameOfAtomEq)
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrder as N
-import Data.Logic.Types.FirstOrderPublic
+import Data.Logic.Types.FirstOrderPublic (markPublic, unmarkPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
 import FOL (asubst, fva, foldEquate, HasFunctions(funcs), HasPredicate, IsTerm(..), equalsFuncs, (.=.), pApp, V(V))
@@ -21,7 +21,7 @@ import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
 import Prop (Marked(Mark), Propositional)
-import Skolem (runSkolem, skolemize)
+import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit
 
@@ -207,10 +207,11 @@ atomic2 =
     TestCase (assertEqual "Atom test 2" expected input)
     where
       input :: Set (ImplicativeForm LiteralPF)
-      input = runSkolem (implicativeNormalForm (unFormula (pApp (Reference 1 (unsafeSubjectId 58) :: AtomicPredicate Description) [fApp (Function (NumberLit 1.0) :: AtomicFunction Description V) []])))
+      input = runSkolem (implicativeNormalForm (pApp (Reference 1 (unsafeSubjectId 58) :: AtomicPredicate Description) [fApp (Function (NumberLit 1.0) :: AtomicFunction Description V) []]) :: SkolemM (Set (ImplicativeForm LiteralPF)))
       expected :: Set (ImplicativeForm LiteralPF)
       expected = Set.fromList [INF {neg = Set.fromList [],
-                                    pos = Set.fromList [Mark (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]))]}]
+                                    -- Marked both Public and Literal
+                                    pos = Set.fromList [Mark (Mark (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])))]}]
 
 atomic3 :: Test
 atomic3 =
@@ -226,8 +227,8 @@ atomic4 =
     TestCase (assertEqual "Atom test 4" expected input)
     where
       input = compare f0 f1
-      f0 = Formula (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []])) :: FormulaPF
-      f1 = Formula (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]))
+      f0 = markPublic (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 0.0)) []])) :: FormulaPF
+      f1 = markPublic (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []]))
       expected = LT
 
 atomic5 :: Test

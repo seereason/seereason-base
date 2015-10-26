@@ -31,7 +31,7 @@ foldPred :: (IsQuantified formula atom v, IsAtomWithEquate atom p term, HasBoole
 foldPred fn (PredForm form) =
     foldQuantified qu co ne tf at form
     where
-      at = foldEquate (\ p _ -> fn p) (\ _ _ -> error "foldPred")
+      at = foldEquate (\ _ _ -> error "foldPred") (\ p _ -> fn p)
       tf = fn . fromBool
       qu = error "foldPred"
       ne = error "foldPred"

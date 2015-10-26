@@ -8,10 +8,10 @@ import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativ
 import Data.Logic.Resolution (getSubstAtomEq, isRenameOfAtomEq)
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrder as N
-import Data.Logic.Types.FirstOrderPublic (markPublic, unmarkPublic)
+import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, fva, foldEquate, HasFunctions(funcs), HasPredicate, IsTerm(..), equalsFuncs, (.=.), pApp, V(V))
+import FOL (asubst, fva, foldEquate, HasFunctions(funcs), IsAtom, IsTerm(..), equalsFuncs, (.=.), pApp, V(V))
 import Formulas (IsFormula)
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -45,7 +45,7 @@ instance Atom (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction
     allVariables = fva -- Variables are always free in an atom - this method is unnecessary
     unify = unify
     match = unify
-    foldTerms f r pr = foldEquate (\_ ts -> Prelude.foldr f r ts) (\t1 t2 -> f t2 (f t1 r)) pr
+    foldTerms f r pr = foldEquate (\t1 t2 -> f t2 (f t1 r)) (\_ ts -> Prelude.foldr f r ts) pr
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
@@ -57,13 +57,13 @@ instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction Stri
     allVariables = fva -- Variables are always free in an atom - this method is unnecessary
     unify = unify
     match = unify
-    foldTerms f r pr = foldEquate (\_ ts -> Prelude.foldr f r ts) (\t1 t2 -> f t2 (f t1 r)) pr
+    foldTerms f r pr = foldEquate (\t1 t2 -> f t2 (f t1 r)) (\_ ts -> Prelude.foldr f r ts) pr
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
-pApp1 :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> term -> formula
+pApp1 :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> term -> formula
 pApp1 p a = pApp p [a]
-pApp2 :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> term -> term -> formula
+pApp2 :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> term -> term -> formula
 pApp2 p a b = pApp p [a, b]
 
 main :: IO ()

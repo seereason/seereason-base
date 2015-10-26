@@ -9,7 +9,6 @@ module Ontology.Comment
     , prettyTopic
     ) where
 
-import Control.Applicative ((<$>))
 import Data.Data (Data, Typeable)
 import Data.SafeCopy (base, deriveSafeCopy)
 import Ontology.Extra ()

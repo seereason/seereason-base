@@ -27,11 +27,10 @@ module Ontology.Types.Subject
     , unsafeSubjectTuple
     ) where
 
-import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Ontology.Arity (HasArity(arity))
-import FOL (HasEquate)
+import FOL (IsAtomWithEquate)
 import Pretty (Pretty(pPrint))
 import Formulas (HasBoolean, IsNegatable(..))
 import FOL (IsQuantified)
@@ -203,7 +202,7 @@ subjectDefinitionIds = Set.map assertionId . subjectAssertions
 subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula)
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
-instance (IsQuantified formula atom v, HasEquate atom p term, HasBoolean p, HasArity p) => HasArity (SubjectTuple formula) where
+instance (IsQuantified formula atom v, IsAtomWithEquate atom p term, HasBoolean p, HasArity p) => HasArity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-

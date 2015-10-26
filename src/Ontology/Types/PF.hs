@@ -4,7 +4,7 @@ module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
 import qualified Data.Text as T
-import FOL (pApp, for_all, IsTerm(vt), HasPredicate)
+import FOL (pApp, for_all, IsTerm(vt), IsAtom)
 import Formulas (IsFormula)
 import Ontology.Types.Formula (AtomicPredicate(..), V(V), AtomicFunction(..), FormulaF, LiteralF, AtomF, TermF)
 import Ontology.Types (Assertion, Subject)
@@ -55,7 +55,7 @@ desc2 :: String -> AtomicPredicatePF
 desc2 = desc 2
 
 -- for_all :: IsQuantified formula atom v => v -> formula -> formula
--- pApp :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> [term] -> formula
+-- pApp :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> [term] -> formula
 -- IsTerm term v function => vt :: v -> term
 
 defaultFormula :: FormulaPF
@@ -64,4 +64,4 @@ defaultFormula = (for_all' (V "x" :: V) (pApp' (Empty :: AtomicPredicate Descrip
 for_all' :: V -> FormulaPF -> FormulaPF
 for_all' = for_all
 pApp' :: AtomicPredicatePF -> [TermPF] -> FormulaPF
-pApp' = (pApp :: (IsFormula formula atom, HasPredicate atom predicate term) => predicate -> [term] -> formula)
+pApp' = (pApp :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> [term] -> formula)

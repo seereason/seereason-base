@@ -6,7 +6,6 @@ module Ontology.URL
     , MkURL(..)
     ) where
 
-import Control.Applicative ((<$>))
 import Data.Data
 import Data.UserId (UserId)
 import Ontology.Extra ()

@@ -2,7 +2,6 @@
 {-# OPTIONS -fno-warn-orphans -fspec-constr-count=3 #-}
 module URL where
 
-import Control.Applicative((<$>))
 import Data.Data(Data)
 import Data.Typeable(Typeable)
 import GenI.URL (GenIURL(..))

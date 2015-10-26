@@ -17,7 +17,7 @@ import Data.String (IsString(fromString))
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
-import FOL (Arity, HasEquals(..), IsPredicate)
+import FOL (Arity, HasEquals(..), IsPredicate(prettyPredicateApplication))
 import Formulas (HasBoolean(..))
 import Pretty (Pretty(pPrint))
 import Ontology.Arity (HasArity(arity))
@@ -123,7 +123,8 @@ prettyUserId u = text ("U" ++ show (_unUserId u))
 instance Pretty UserId where
     pPrint = prettyUserId
 
-instance (Pretty description, Ord description, Data description, Show description) => IsPredicate (AtomicPredicate description)
+instance (Pretty description, Ord description, Data description, Show description) => IsPredicate (AtomicPredicate description) where
+    prettyPredicateApplication = error "prettyPredicateApplication (AtomicPredicate description)"
 
 instance HasEquals (AtomicPredicate description) where
     equals = error "HasEquals (AtomicPredicate description)"

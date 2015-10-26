@@ -11,7 +11,7 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, fva, foldEquate, HasFunctions(funcs), IsAtom, IsTerm(..), equalsFuncs, (.=.), pApp, V(V))
+import FOL (asubst, atomFuncs, fva, foldEquate, HasApply, HasFunctions(funcs), IsAtom, IsTerm(..), (.=.), pApp, V(V))
 import Formulas (IsFormula)
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -26,7 +26,7 @@ import System.Exit
 import Test.HUnit
 
 instance HasFunctions (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V))) (AtomicFunction Description V) where
-    funcs = equalsFuncs
+    funcs = atomFuncs
 
 {-
 instance IsFirstOrder FormulaPF
@@ -61,9 +61,9 @@ instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction Stri
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
-pApp1 :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> term -> formula
+pApp1 :: (IsFormula formula atom, IsAtom atom predicate term, HasApply atom predicate term) => predicate -> term -> formula
 pApp1 p a = pApp p [a]
-pApp2 :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> term -> term -> formula
+pApp2 :: (IsFormula formula atom, IsAtom atom predicate term, HasApply atom predicate term) => predicate -> term -> term -> formula
 pApp2 p a b = pApp p [a, b]
 
 main :: IO ()

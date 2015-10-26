@@ -64,4 +64,4 @@ defaultFormula = (for_all' (V "x" :: V) (pApp' (Empty :: AtomicPredicate Descrip
 for_all' :: V -> FormulaPF -> FormulaPF
 for_all' = for_all
 pApp' :: AtomicPredicatePF -> [TermPF] -> FormulaPF
-pApp' = (pApp :: (IsFormula formula atom, IsAtom atom predicate term) => predicate -> [term] -> formula)
+pApp' = pApp

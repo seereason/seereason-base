@@ -40,7 +40,7 @@ instance IsVariable v => HasSkolem (AtomicFunction description v) v where
     fromSkolem (Skolem v) = Just v
     fromSkolem _ = Nothing
 
-instance (Pretty description, Ord description, Data description, IsVariable v, IsString (AtomicFunction description v)
+instance (Pretty description, Show description, Ord description, Data description, IsVariable v, IsString (AtomicFunction description v)
          ) => IsFunction (AtomicFunction description v)
 
 prettyAtomicFunction :: (Eq description, Ord description, Pretty description, IsVariable v) => AtomicFunction description v -> Doc

@@ -4,8 +4,7 @@ module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
 import qualified Data.Text as T
-import FOL (pApp, for_all, IsTerm(vt), IsAtom)
-import Formulas (IsFormula)
+import FOL (pApp, for_all, IsTerm(vt))
 import Ontology.Types.Formula (AtomicPredicate(..), V(V), AtomicFunction(..), FormulaF, LiteralF, AtomF, TermF)
 import Ontology.Types (Assertion, Subject)
 import Ontology.Types.Description (Description(Description'), LinguisticHint(..), NounPhraseFragment(..))
@@ -59,9 +58,4 @@ desc2 = desc 2
 -- IsTerm term v function => vt :: v -> term
 
 defaultFormula :: FormulaPF
-defaultFormula = (for_all' (V "x" :: V) (pApp' (Empty :: AtomicPredicate Description) [vt (V "x" :: V) :: TermPF])) :: FormulaPF
-
-for_all' :: V -> FormulaPF -> FormulaPF
-for_all' = for_all
-pApp' :: AtomicPredicatePF -> [TermPF] -> FormulaPF
-pApp' = pApp
+defaultFormula = (for_all (V "x") (pApp Empty [vt (V "x")]))

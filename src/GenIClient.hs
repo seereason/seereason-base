@@ -12,7 +12,7 @@ import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
 import Data.Logic.Types.FirstOrder (NPredicate(Apply, Equal))
-import Formulas (Combination(..), BinOp(..))
+import Formulas (BinOp(..))
 import FOL (foldQuantified, Quant(..))
 import Pretty (Pretty(pPrint))
 import FOL (foldTerm)

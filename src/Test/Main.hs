@@ -11,8 +11,9 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, atomFuncs, fva, foldEquate, HasApply, HasFunctions(funcs), IsAtom, IsTerm(..), (.=.), pApp, V(V))
+import FOL (asubst, atomFuncs, fva, foldEquate, HasApply, HasFunctions(funcs), IsTerm(..), (.=.), pApp, V(V))
 import Formulas (IsFormula)
+import Lib (Marked(Mark))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
@@ -20,7 +21,7 @@ import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
-import Prop (Marked(Mark), Propositional)
+import Prop (IsAtom, Propositional)
 import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit
@@ -36,6 +37,8 @@ instance IsFirstOrder FormulaPF
                       V
                       (AtomicFunction Description V)
 -}
+
+instance IsAtom (NPredicate (AtomicPredicate description) (NTerm V (AtomicFunction description V)))
 
 instance Atom (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
               (NTerm V (AtomicFunction Description V))
@@ -61,9 +64,9 @@ instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction Stri
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
-pApp1 :: (IsFormula formula atom, IsAtom atom predicate term, HasApply atom predicate term) => predicate -> term -> formula
+pApp1 :: (IsFormula formula atom, IsAtom atom, HasApply atom predicate term) => predicate -> term -> formula
 pApp1 p a = pApp p [a]
-pApp2 :: (IsFormula formula atom, IsAtom atom predicate term, HasApply atom predicate term) => predicate -> term -> term -> formula
+pApp2 :: (IsFormula formula atom, IsAtom atom, HasApply atom predicate term) => predicate -> term -> term -> formula
 pApp2 p a b = pApp p [a, b]
 
 main :: IO ()

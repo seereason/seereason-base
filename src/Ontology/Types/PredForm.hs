@@ -40,7 +40,7 @@ foldPred fn (PredForm form) =
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
 makePred :: (atom ~ AtomOf formula, v ~ VarOf formula, p ~ PredOf atom, term ~ TermOf atom,
-             IsQuantified formula, HasApplyAndEquate atom, IsTerm term v f, HasArity p) => p -> PredForm formula
+             IsQuantified formula, HasApplyAndEquate atom, IsTerm term, HasArity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"

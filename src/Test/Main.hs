@@ -11,7 +11,7 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, atomFuncs, fva, foldEquate, HasApply(PredOf, TermOf), HasFunctions(funcs), IsTerm(..), (.=.), pApp, V(V))
+import FOL (asubst, fva, foldEquate, HasApply(PredOf, TermOf), IsTerm(..), (.=.), pApp, V(V))
 import Formulas (IsFormula(AtomOf))
 import Lib (Marked(Mark))
 import Ontology.Types.Description (Description)
@@ -25,9 +25,6 @@ import Prop (IsAtom, Propositional)
 import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit
-
-instance HasFunctions (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V))) (AtomicFunction Description V) where
-    funcs = atomFuncs
 
 instance Atom (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
               (NTerm V (AtomicFunction Description V))

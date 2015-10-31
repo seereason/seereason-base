@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, OverloadedStrings, PackageImports, StandaloneDeriving, TypeSynonymInstances, UndecidableInstances #-}
+{-# LANGUAGE FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, OverloadedStrings, PackageImports, StandaloneDeriving, TypeFamilies, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
@@ -11,8 +11,8 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, atomFuncs, fva, foldEquate, HasApply, HasFunctions(funcs), IsTerm(..), (.=.), pApp, V(V))
-import Formulas (IsFormula)
+import FOL (asubst, atomFuncs, fva, foldEquate, HasApply(PredOf, TermOf), HasFunctions(funcs), IsTerm(..), (.=.), pApp, V(V))
+import Formulas (IsFormula(AtomOf))
 import Lib (Marked(Mark))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -28,17 +28,6 @@ import Test.HUnit
 
 instance HasFunctions (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V))) (AtomicFunction Description V) where
     funcs = atomFuncs
-
-{-
-instance IsFirstOrder FormulaPF
-                      (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
-                      (AtomicPredicate Description)
-                      (NTerm V (AtomicFunction Description V))
-                      V
-                      (AtomicFunction Description V)
--}
-
-instance IsAtom (NPredicate (AtomicPredicate description) (NTerm V (AtomicFunction description V)))
 
 instance Atom (NPredicate (AtomicPredicate Description) (NTerm V (AtomicFunction Description V)))
               (NTerm V (AtomicFunction Description V))
@@ -64,9 +53,9 @@ instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction Stri
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
-pApp1 :: (IsFormula formula atom, IsAtom atom, HasApply atom predicate term) => predicate -> term -> formula
+pApp1 :: (IsFormula formula, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom, IsAtom atom, HasApply atom) => predicate -> term -> formula
 pApp1 p a = pApp p [a]
-pApp2 :: (IsFormula formula atom, IsAtom atom, HasApply atom predicate term) => predicate -> term -> term -> formula
+pApp2 :: (IsFormula formula, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom, IsAtom atom, HasApply atom) => predicate -> term -> term -> formula
 pApp2 p a b = pApp p [a, b]
 
 main :: IO ()

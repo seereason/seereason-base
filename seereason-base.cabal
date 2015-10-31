@@ -52,7 +52,7 @@ Library
                    CommentTypes
  if flag(local-logic-classes)
    Hs-Source-Dirs: ../logic-classes, ../atp-haskell/src
-   Build-Depends: applicative-extras, template-haskell, HUnit, PropLogic
+   Build-Depends: applicative-extras, template-haskell, HUnit, parsec, PropLogic
    Exposed-Modules:
      Data.Logic
      Data.Logic.Classes.Atom
@@ -76,6 +76,7 @@ Library
      ATP
      Lib
      Pretty
+     Parser
      Formulas
      FOL
      Lit

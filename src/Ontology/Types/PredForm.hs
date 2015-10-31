@@ -10,9 +10,9 @@ module Ontology.Types.PredForm
 import Data.Data (Data(..))
 import FOL (pApp)
 import Ontology.Arity (HasArity(arity))
-import Formulas (fromBool, HasBoolean)
-import FOL (HasApplyAndEquate, foldEquate)
-import FOL (IsQuantified(foldQuantified))
+import Formulas (AtomOf, fromBool)
+import FOL (HasApply(TermOf, PredOf), HasApplyAndEquate, foldEquate)
+import FOL (IsQuantified(VarOf, foldQuantified))
 import FOL (IsTerm(vt))
 import FOL (variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
@@ -27,7 +27,8 @@ newtype PredForm formula = PredForm formula
 -- ^ This function is used to access the predicate in a PredForm.
 -- Note that the type "a" might be a function such as "[term] -> b",
 -- which means you can simulate the pApp function.
-foldPred :: (IsQuantified formula atom v, HasApplyAndEquate atom p term, HasBoolean p {-FIXME-}) => (p -> a) -> PredForm formula -> a
+foldPred :: (atom ~ AtomOf formula, p ~ PredOf atom,
+             IsQuantified formula, HasApplyAndEquate atom) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
     foldQuantified qu co ne tf at form
     where
@@ -38,13 +39,15 @@ foldPred fn (PredForm form) =
       co = error "foldPred"
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
-makePred :: (IsQuantified formula atom v, HasApplyAndEquate atom p term, IsTerm term v f, HasArity p) => p -> PredForm formula
+makePred :: (atom ~ AtomOf formula, v ~ VarOf formula, p ~ PredOf atom, term ~ TermOf atom,
+             IsQuantified formula, HasApplyAndEquate atom, IsTerm term v f, HasArity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
                  Just n -> take n (map vt (variants (fromString "x")))
 
-instance (IsQuantified formula atom v, HasApplyAndEquate atom p term, HasBoolean p, HasArity p) => HasArity (PredForm formula) where
+instance (atom ~ AtomOf formula, p ~ PredOf atom,
+          IsQuantified formula, HasApplyAndEquate atom, HasArity p) => HasArity (PredForm formula) where
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)

@@ -30,9 +30,9 @@ module Ontology.Types.Subject
 import Data.Data (Data(..))
 import Data.Function (on)
 import Ontology.Arity (HasArity(arity))
-import FOL (HasApplyAndEquate)
+import FOL (HasApply(PredOf), HasApplyAndEquate)
 import Pretty (Pretty(pPrint))
-import Formulas (HasBoolean, IsNegatable(..))
+import Formulas (AtomOf, HasBoolean, IsNegatable(..))
 import FOL (IsQuantified)
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
@@ -202,7 +202,8 @@ subjectDefinitionIds = Set.map assertionId . subjectAssertions
 subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula)
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
-instance (IsQuantified formula atom v, HasApplyAndEquate atom p term, HasBoolean p, HasArity p) => HasArity (SubjectTuple formula) where
+instance (atom ~ AtomOf formula, p ~ PredOf atom,
+          IsQuantified formula, HasApplyAndEquate atom, HasArity p) => HasArity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-

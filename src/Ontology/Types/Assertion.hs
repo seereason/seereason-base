@@ -13,7 +13,6 @@ module Ontology.Types.Assertion
     , successorAssertionIds
     ) where
 
-import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (IxSet)

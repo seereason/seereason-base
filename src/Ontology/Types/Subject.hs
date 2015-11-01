@@ -121,8 +121,8 @@ prettyEdge style (s1, s2, _) = cat [prettySubjectNode style s1, text "->", prett
 instance IsNegatable SubjectNode where
     naiveNegate (Complement x) = Normal x
     naiveNegate (Normal x) = Complement x
-    foldNegation' inverted _ (Complement x) = inverted (Normal x)
-    foldNegation' _ normal (Normal x) = normal (Normal x)
+    foldNegation _ inverted (Complement x) = inverted (Normal x)
+    foldNegation normal _ (Normal x) = normal (Normal x)
 
 -- |We want Normal nodes to come before Complement nodes, because normally
 -- a Subject will have at least one Normal node so we can expect minId to

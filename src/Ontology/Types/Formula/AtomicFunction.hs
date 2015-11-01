@@ -35,10 +35,10 @@ data AtomicFunction description v
 instance IsString (AtomicFunction description v) where
     fromString = Function . fromString
 
-instance IsVariable v => HasSkolem (AtomicFunction description v) v where
+instance (IsVariable v, Data description, Ord description, Show description, Pretty description) => HasSkolem (AtomicFunction description v) v where
     toSkolem = Skolem
-    fromSkolem (Skolem v) = Just v
-    fromSkolem _ = Nothing
+    foldSkolem _ sk (Skolem v) = sk v
+    foldSkolem f _ ap = f ap
 
 instance (Pretty description, Show description, Ord description, Data description, IsVariable v, IsString (AtomicFunction description v)
          ) => IsFunction (AtomicFunction description v)

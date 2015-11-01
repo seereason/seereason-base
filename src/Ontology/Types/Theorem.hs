@@ -11,7 +11,6 @@ module Ontology.Types.Theorem
     , Theorems
     ) where
 
-import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (inferIxSet, noCalcs)

@@ -11,15 +11,13 @@ module Ontology.Types.Formula
     , TermF
     ) where
 
-import Data.Generics (Data)
 import qualified Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic as P
 import FOL (V(V))
 import Lib (Marked)
+import Lit (Literal)
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
-import Pretty (Pretty)
-import Prop (IsAtom, Literal)
 
 type FormulaF description = Marked Public (N.NFormula V (AtomicPredicate description) (AtomicFunction description V))
 type LiteralF description = Marked Literal (FormulaF description) -- (N.NFormula V (AtomicPredicate description) (AtomicFunction description V))

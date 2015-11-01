@@ -12,7 +12,7 @@ import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
 import FOL (asubst, fva, foldEquate, HasApply(PredOf, TermOf), IsTerm(..), (.=.), pApp, V(V))
-import Formulas (IsFormula(AtomOf))
+import Formulas (IsAtom, IsFormula(AtomOf))
 import Lib (Marked(Mark))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
@@ -21,7 +21,7 @@ import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
-import Prop (IsAtom, Propositional)
+import Prop (Propositional)
 import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit

@@ -10,9 +10,9 @@ module Ontology.Types.PredForm
 import Data.Data (Data(..))
 import FOL (pApp)
 import Ontology.Arity (HasArity(arity))
-import Formulas (AtomOf, fromBool)
+import Formulas (AtomOf)
 import FOL (HasApply(TermOf, PredOf), HasApplyAndEquate, foldEquate)
-import FOL (IsQuantified(VarOf, foldQuantified))
+import FOL (IsQuantified(foldQuantified), IsTerm(TVarOf))
 import FOL (IsTerm(vt))
 import FOL (variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
@@ -33,13 +33,13 @@ foldPred fn (PredForm form) =
     foldQuantified qu co ne tf at form
     where
       at = foldEquate (\ _ _ -> error "foldPred") (\ p _ -> fn p)
-      tf = fn . fromBool
+      tf = error "foldPred" -- fn . fromBool
       qu = error "foldPred"
       ne = error "foldPred"
       co = error "foldPred"
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
-makePred :: (atom ~ AtomOf formula, v ~ VarOf formula, p ~ PredOf atom, term ~ TermOf atom,
+makePred :: (atom ~ AtomOf formula, v ~ TVarOf term, p ~ PredOf atom, term ~ TermOf atom,
              IsQuantified formula, HasApplyAndEquate atom, IsTerm term, HasArity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of

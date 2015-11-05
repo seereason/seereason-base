@@ -8,20 +8,20 @@ import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativ
 import Data.Logic.Resolution (getSubstAtomEq, isRenameOfAtomEq)
 import Data.Logic.Resolution (SetOfSupport, prove)
 import Data.Logic.Types.FirstOrder as N
-import Data.Logic.Types.FirstOrderPublic (markPublic)
+import Data.Logic.Types.FirstOrderPublic (Marked(Mark), Public, markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
 import FOL (asubst, fva, foldEquate, HasApply(PredOf, TermOf), IsTerm(..), (.=.), pApp, V(V))
-import Formulas (IsAtom, IsFormula(AtomOf))
-import Lib (Marked(Mark))
+import Lit (LFormula)
+import Formulas (atomic, IsAtom, IsFormula(AtomOf))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
-import Ontology.Types.Formula (LiteralF, TermF)
+import Ontology.Types.Formula (FormulaF, LiteralF, TermF)
 import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
-import Prop (Propositional)
+import Prop (PFormula)
 import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit
@@ -50,9 +50,9 @@ instance Atom (NPredicate (AtomicPredicate String) (NTerm V (AtomicFunction Stri
     isRename = isRenameOfAtomEq
     getSubst = getSubstAtomEq
 
-pApp1 :: (IsFormula formula, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom, IsAtom atom, HasApply atom) => predicate -> term -> formula
+pApp1 :: (IsFormula formula, HasApply atom, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom) => predicate -> term -> formula
 pApp1 p a = pApp p [a]
-pApp2 :: (IsFormula formula, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom, IsAtom atom, HasApply atom) => predicate -> term -> term -> formula
+pApp2 :: (IsFormula formula, HasApply atom, atom ~ AtomOf formula, predicate ~ PredOf atom, term ~ TermOf atom) => predicate -> term -> term -> formula
 pApp2 p a b = pApp p [a, b]
 
 main :: IO ()
@@ -191,24 +191,24 @@ prove2 =
                                               pos = Set.fromList [(pApp2 (Reference 2 (unsafeSubjectId 60)) (vt (V "x")) (vt (V "y")))]},
                                          Map.fromList [(V "x",vt (V "x")),(V "y",vt (V "y"))])])
 
+
 atomic2 :: Test
 atomic2 =
     TestCase (assertEqual "Atom test 2" expected input)
     where
       input :: Set (ImplicativeForm LiteralPF)
-      input = runSkolem (implicativeNormalForm (pApp (Reference 1 (unsafeSubjectId 58) :: AtomicPredicate Description) [fApp (Function (NumberLit 1.0) :: AtomicFunction Description V) []]) :: SkolemM (FunOf (TermOf (AtomOf LiteralPF))) (Set (ImplicativeForm LiteralPF)))
+      input = runSkolem (implicativeNormalForm (pApp (Reference 1 (unsafeSubjectId 58) :: AtomicPredicate Description) [fApp (Function (NumberLit 1.0) :: AtomicFunction Description V) []] :: FormulaPF) :: SkolemM (FunOf (TermOf (AtomOf LiteralPF))) (Set (ImplicativeForm LiteralPF)))
       expected :: Set (ImplicativeForm LiteralPF)
       expected = Set.fromList [INF {neg = Set.fromList [],
-                                    -- Marked both Public and Literal
-                                    pos = Set.fromList [Mark (Mark (N.Predicate (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])))]}]
+                                    pos = Set.fromList [atomic (N.Apply (Reference 1 (unsafeSubjectId 58)) [N.FunApp (Function (NumberLit 1.0)) []])]}]
 
 atomic3 :: Test
 atomic3 =
     TestCase (assertEqual "Atom test 3" expected input)
     where
       input = compare f0 f1
-      f0 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: FormulaPF)) :: Marked Propositional FormulaPF
-      f1 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF)) :: Marked Propositional FormulaPF
+      f0 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 0.0)) []) :: FormulaPF)) :: PFormula (AtomOf FormulaPF)
+      f1 = runSkolem (skolemize id (pApp1 (Reference 1 (unsafeSubjectId 58)) (fApp (Function (NumberLit 1.0)) []) :: FormulaPF)) :: PFormula (AtomOf FormulaPF)
       expected = LT
 
 atomic4 :: Test

@@ -14,13 +14,13 @@ module Ontology.Types.Formula
 import qualified Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic as P
 import FOL (V(V))
-import Lib (Marked)
-import Lit (Literal)
+import Formulas (AtomOf)
+import Lit (LFormula)
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
 
 type FormulaF description = Marked Public (N.NFormula V (AtomicPredicate description) (AtomicFunction description V))
-type LiteralF description = Marked Literal (FormulaF description) -- (N.NFormula V (AtomicPredicate description) (AtomicFunction description V))
+type LiteralF description = LFormula (AtomOf (FormulaF description))
 type TermF description = N.NTerm V (AtomicFunction description V)
 type AtomF description = N.NPredicate (AtomicPredicate description) (TermF description)
 

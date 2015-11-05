@@ -32,7 +32,7 @@ import Data.Function (on)
 import Ontology.Arity (HasArity(arity))
 import FOL (HasApply(PredOf), HasApplyAndEquate)
 import Pretty (Pretty(pPrint))
-import Formulas (AtomOf, HasBoolean, IsNegatable(..))
+import Formulas (AtomOf, IsNegatable(..))
 import FOL (IsQuantified)
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map

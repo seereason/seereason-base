@@ -29,18 +29,18 @@ module Ontology.Types.Subject
 
 import Data.Data (Data(..))
 import Data.Function (on)
-import Ontology.Arity (HasArity(arity))
-import FOL (HasApply(PredOf), HasApplyAndEquate)
-import Pretty (Pretty(pPrint))
-import Formulas (AtomOf, IsNegatable(..))
-import FOL (IsQuantified)
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
+import FOL (HasApply(PredOf), HasApplyAndEquate, IsQuantified)
+import Formulas (AtomOf)
+import Lit (IsNegatable(..))
+import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Assertion (Assertion(assertionId), AssertionId)
 import Ontology.Types.PredForm (PredForm, foldPred)
+import Pretty (Pretty(pPrint))
 import Test.QuickCheck (Arbitrary(arbitrary), oneof)
 import Text.JSON (JSON(readJSON, showJSON), makeObj, valFromObj, JSValue(JSObject))
 import Text.PrettyPrint (Doc, text, cat, brackets, sep)

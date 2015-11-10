@@ -11,8 +11,11 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import FOL (asubst, fva, foldEquate, HasApply(PredOf, TermOf), IsTerm(..), (.=.), pApp, V(V))
+import Apply (HasApply(PredOf, TermOf), pApp)
+import Equate ((.=.), foldEquate)
+import FOL (asubst, fva)
 import Formulas (atomic, IsFormula(AtomOf))
+import Term (IsTerm(..), V(V))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))

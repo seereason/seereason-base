@@ -23,9 +23,9 @@ data (Data formula, Ord formula) => UserData formula
       -- ^ The user's working set subjects, to populate a menu of subjects
       -- which can be used when constructing propositions.
       , theme :: Theme
-      } deriving (Typeable)
+      } deriving (Typeable, Show)
 
-data Theme = DefaultTheme | IPadTheme deriving (Typeable)
+data Theme = DefaultTheme | IPadTheme deriving (Typeable, Show)
 
 $(deriveSafeCopy 2 'extension ''UserData)
 $(deriveSafeCopy 1 'base ''Theme)

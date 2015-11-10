@@ -8,13 +8,12 @@ module Ontology.Types.PredForm
     ) where
 
 import Data.Data (Data(..))
-import FOL (pApp)
+import Apply (HasApply(TermOf, PredOf), pApp)
 import Ontology.Arity (HasArity(arity))
 import Formulas (AtomOf)
-import FOL (HasApply(TermOf, PredOf), HasApplyAndEquate, foldEquate)
-import FOL (IsQuantified(foldQuantified), IsTerm(TVarOf))
-import FOL (IsTerm(vt))
-import FOL (variants)
+import Equate (HasEquate, foldEquate)
+import Quantified (IsQuantified(foldQuantified))
+import Term (IsTerm(vt, TVarOf), variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
@@ -28,7 +27,7 @@ newtype PredForm formula = PredForm formula
 -- Note that the type "a" might be a function such as "[term] -> b",
 -- which means you can simulate the pApp function.
 foldPred :: (atom ~ AtomOf formula, p ~ PredOf atom,
-             IsQuantified formula, HasApplyAndEquate atom) => (p -> a) -> PredForm formula -> a
+             IsQuantified formula, HasEquate atom) => (p -> a) -> PredForm formula -> a
 foldPred fn (PredForm form) =
     foldQuantified qu co ne tf at form
     where
@@ -40,14 +39,14 @@ foldPred fn (PredForm form) =
 
 -- |Create a PredForm from an atomic predicate and some generated terms.
 makePred :: (atom ~ AtomOf formula, v ~ TVarOf term, p ~ PredOf atom, term ~ TermOf atom,
-             IsQuantified formula, HasApplyAndEquate atom, IsTerm term, HasArity p) => p -> PredForm formula
+             IsQuantified formula, HasEquate atom, IsTerm term, HasArity p) => p -> PredForm formula
 makePred p = PredForm (pApp p ts)
     where ts = case arity p of
                  Nothing -> error "makePred: Fixed arity expected"
                  Just n -> take n (map vt (variants (fromString "x")))
 
 instance (atom ~ AtomOf formula, p ~ PredOf atom,
-          IsQuantified formula, HasApplyAndEquate atom, HasArity p) => HasArity (PredForm formula) where
+          IsQuantified formula, HasEquate atom, HasArity p) => HasArity (PredForm formula) where
     arity = foldPred arity
 
 $(deriveSafeCopy 1 'base ''PredForm)

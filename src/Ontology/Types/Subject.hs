@@ -34,13 +34,16 @@ import qualified Data.Map as Map
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
-import FOL (HasApply(PredOf), HasApplyAndEquate, IsQuantified)
+import Apply (HasApply(PredOf))
+import Equate (HasEquate)
+import Formulas (IsAtom, IsFormula)
+import Quantified (IsQuantified)
 import Formulas (AtomOf)
-import Lit (IsNegatable(..))
+import Lit (IsLiteral(..))
 import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Assertion (Assertion(assertionId), AssertionId)
 import Ontology.Types.PredForm (PredForm, foldPred)
-import Pretty (Pretty(pPrint))
+import Pretty (HasFixity, Pretty(pPrint))
 import Test.QuickCheck (Arbitrary(arbitrary), oneof)
 import Text.JSON (JSON(readJSON, showJSON), makeObj, valFromObj, JSValue(JSObject))
 import Text.PrettyPrint (Doc, text, cat, brackets, sep)
@@ -117,12 +120,6 @@ prettySubjectNode style (Normal s) = prettySubjectId style s
 
 prettyEdge :: PredicateStyle -> SubjectEdge formula -> Doc
 prettyEdge style (s1, s2, _) = cat [prettySubjectNode style s1, text "->", prettySubjectNode style s2]
-
-instance IsNegatable SubjectNode where
-    naiveNegate (Complement x) = Normal x
-    naiveNegate (Normal x) = Complement x
-    foldNegation _ inverted (Complement x) = inverted (Normal x)
-    foldNegation normal _ (Normal x) = normal (Normal x)
 
 -- |We want Normal nodes to come before Complement nodes, because normally
 -- a Subject will have at least one Normal node so we can expect minId to
@@ -203,7 +200,7 @@ subjectTuples :: Ord formula => Subject formula -> Set.Set (SubjectTuple formula
 subjectTuples = Set.unions . Map.elems . subjectDefinitionMap
 
 instance (atom ~ AtomOf formula, p ~ PredOf atom,
-          IsQuantified formula, HasApplyAndEquate atom, HasArity p) => HasArity (SubjectTuple formula) where
+          IsQuantified formula, HasEquate atom, HasArity p) => HasArity (SubjectTuple formula) where
     arity = foldPred arity . thePredicate
 
 {-

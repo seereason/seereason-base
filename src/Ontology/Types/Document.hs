@@ -30,7 +30,7 @@ data Document
                , text :: T.Text
                }
     -- ^ A text document.  Attributes like author are set using assertions.
-    deriving (Data, Typeable)
+    deriving (Data, Typeable, Show)
 
 -- |Build a string that will serve as the document title.  It is the
 -- first non-white line of the document trimmed to 70 characters.

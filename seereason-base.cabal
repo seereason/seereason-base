@@ -76,7 +76,11 @@ Library
      ATP
      Lib
      Pretty
+     Quantified
+     Apply
+     Equate
      Parser
+     Term
      Formulas
      FOL
      Lit

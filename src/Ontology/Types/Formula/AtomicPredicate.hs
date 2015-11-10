@@ -17,9 +17,11 @@ import Data.String (IsString(fromString))
 import qualified Data.Text as T
 import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
-import FOL (Arity, IsPredicate)
-import Formulas (HasBoolean(..))
-import Pretty (Pretty(pPrint))
+import Lit (precedenceLiteral, associativityLiteral)
+import Term (Arity)
+import Apply (IsPredicate)
+import Formulas (IsFormula(..))
+import Pretty (HasFixity(..), Pretty(pPrint))
 import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Assertion (AssertionId, prettyAssertionId)
 import Ontology.Types.Belief (Belief(..))
@@ -80,13 +82,6 @@ instance (Eq description, Ord description, Pretty description) => HasArity (Atom
           arity' (NumberLit _) = 1
           arity' Ratio = 3
           arity' PercentOf = 3
-
-instance HasBoolean (AtomicPredicate description) where
-    fromBool True = U
-    fromBool False = Empty
-    asBool U = Just True
-    asBool Empty = Just False
-    asBool _ = Nothing
 
 instance IsString (AtomicPredicate description) where
     fromString s = error ("IsString AtomicPredicate " ++ show s)

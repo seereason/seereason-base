@@ -4,7 +4,9 @@ module Ontology.Types.PF where
 
 import Data.Logic.KnowledgeBase (Proof(..))
 import qualified Data.Text as T
-import FOL (pApp, for_all, IsTerm(vt))
+import Apply (pApp)
+import Quantified (for_all)
+import Term (IsTerm(vt))
 import Ontology.Types.Formula (AtomicPredicate(..), V(V), AtomicFunction(..), FormulaF, LiteralF, AtomF, TermF)
 import Ontology.Types (Assertion, Subject)
 import Ontology.Types.Description (Description(Description'), LinguisticHint(..), NounPhraseFragment(..))

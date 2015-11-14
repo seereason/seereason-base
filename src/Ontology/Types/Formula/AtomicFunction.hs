@@ -11,7 +11,7 @@ import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Set as Set (notMember)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
-import Term (IsFunction(variantFunction), IsVariable)
+import Term (IsFunction, IsVariable)
 import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate, prettyNumberLit)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
@@ -42,12 +42,12 @@ instance (IsVariable v, Data description, Ord description, Show description, Pre
     toSkolem = Skolem
     foldSkolem _ sk (Skolem v n) = sk v n
     foldSkolem f _ ap = f ap
+    variantSkolem f fns | Set.notMember f fns = f
+    variantSkolem (Skolem v n) fns = variantSkolem (Skolem v (succ n)) fns
+    variantSkolem _ _ = error $ "Expected skolem function"
 
 instance (Pretty description, Show description, Ord description, Data description, IsVariable v, IsString (AtomicFunction description v)
-         ) => IsFunction (AtomicFunction description v) where
-    variantFunction f fns | Set.notMember f fns = f
-    variantFunction (Skolem v n) fns = variantFunction (Skolem v (succ n)) fns
-    variantFunction _ _ = error $ "Expected skolem function"
+         ) => IsFunction (AtomicFunction description v)
 
 prettyAtomicFunction :: (Eq description, Ord description, Pretty description, IsVariable v) => AtomicFunction description v -> Doc
 prettyAtomicFunction x =

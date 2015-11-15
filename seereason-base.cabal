@@ -73,19 +73,19 @@ Library
      Data.Logic.Types.FirstOrderPublic
      Data.Boolean
      Data.Boolean.SatSolver
-     ATP
-     Lib
-     Pretty
-     Quantified
-     Apply
-     Equate
-     Parser
-     Term
-     Formulas
-     FOL
-     Lit
-     Prop
-     Skolem
+     Data.Logic.ATP
+     Data.Logic.ATP.Lib
+     Data.Logic.ATP.Pretty
+     Data.Logic.ATP.Quantified
+     Data.Logic.ATP.Apply
+     Data.Logic.ATP.Equate
+     Data.Logic.ATP.Parser
+     Data.Logic.ATP.Term
+     Data.Logic.ATP.Formulas
+     Data.Logic.ATP.FOL
+     Data.Logic.ATP.Lit
+     Data.Logic.ATP.Prop
+     Data.Logic.ATP.Skolem
  else
    Build-Depends: atp-haskell, logic-classes
 

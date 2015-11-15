@@ -2,7 +2,7 @@
              StandaloneDeriving, TypeFamilies, TypeSynonymInstances, UndecidableInstances #-}
 {-# OPTIONS -Wall -Wwarn -fno-warn-orphans #-}
 module Ontology.Types.Formula
-    ( module Term
+    ( module Data.Logic.ATP.Term
     , module Ontology.Types.Formula.AtomicPredicate
     , module Ontology.Types.Formula.AtomicFunction
     , FormulaF
@@ -11,11 +11,11 @@ module Ontology.Types.Formula
     , TermF
     ) where
 
+import Data.Logic.ATP.Formulas (AtomOf)
+import Data.Logic.ATP.Lit (LFormula)
+import Data.Logic.ATP.Term (V(V))
 import qualified Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic as P
-import Term (V(V))
-import Formulas (AtomOf)
-import Lit (LFormula)
 import Ontology.Types.Formula.AtomicPredicate
 import Ontology.Types.Formula.AtomicFunction
 

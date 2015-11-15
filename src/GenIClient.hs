@@ -4,29 +4,28 @@
 {-# LANGUAGE FlexibleContexts, PackageImports, ScopedTypeVariables, TypeFamilies #-}
 module Main where
 
-import Control.Applicative ((<$>))
+import qualified Codec.Binary.UTF8.String as UTF8
+import "mtl" Control.Monad.Trans (liftIO)
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.ByteString.Lazy as L
 import Data.Generics (gshow)
 import Data.List (intercalate)
+import Data.Logic.ATP.Apply (Predicate(..))
+import Data.Logic.ATP.Pretty (Pretty(pPrint))
+import Data.Logic.ATP.Prop (BinOp(..))
+import Data.Logic.ATP.Quantified (foldQuantified, Quant(..))
+import Data.Logic.ATP.Term (foldTerm)
 import Data.Logic.Types.FirstOrder (NPredicate(Apply, Equal))
+import qualified Data.Text as Text
 import Data.UserId (UserId(UserId))
-import Quantified (foldQuantified, Quant(..))
-import Term (foldTerm)
-import Apply (Predicate(..))
 import GenI.URL (GenIURL(..))
 import JSON.Generic2 (decodeJSON)
-import "mtl" Control.Monad.Trans (liftIO)
 import Network.HTTP.Conduit (simpleHttp)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(Function))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(Reference, Described))
 import Ontology.Types.GenI (LSubject(..))
 import Ontology.Types.PF (FormulaPF)
 import Ontology.Types (SubjectId(..), prettySubjectId, unsafeSubjectId, unsafeAssertionId, SubjectNode(..), Assertion(..), AssertionId(..), PredicateStyle(AsPredicate, AsFunction))
-import Pretty (Pretty(pPrint))
-import Prop (BinOp(..))
-import qualified Codec.Binary.UTF8.String as UTF8
-import qualified Data.ByteString.Char8 as BS
-import qualified Data.ByteString.Lazy as L
-import qualified Data.Text as Text
 import System.IO (putStrLn)
 import URL
 import Web.Routes.RouteT (MonadRoute, RouteT(..), runRouteT)

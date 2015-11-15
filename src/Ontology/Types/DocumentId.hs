@@ -10,7 +10,7 @@ module Ontology.Types.DocumentId
 
 import Control.Applicative((<$>))
 import Data.Data (Data(..))
-import Pretty (Pretty(pPrint))
+import Data.Logic.ATP.Pretty (Pretty(pPrint))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)

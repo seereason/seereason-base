@@ -6,7 +6,6 @@ module Ontology.Types.FunctionId
     , unsafeFunctionId
     ) where
 
-import Control.Applicative((<$>))
 import Data.Data (Data(..))
 import Data.Typeable (Typeable)
 import Text.JSON (JSON(readJSON, showJSON), makeObj, valFromObj, JSValue(JSObject))

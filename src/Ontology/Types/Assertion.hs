@@ -16,7 +16,7 @@ module Ontology.Types.Assertion
 import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (IxSet)
-import Pretty (Pretty(pPrint))
+import Data.Logic.ATP.Pretty (Pretty(pPrint))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 --import Data.Time (Day(..))

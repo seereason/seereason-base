@@ -1,16 +1,15 @@
 {-# LANGUAGE DeriveDataTypeable, TemplateHaskell #-}
-module Preferences.URL 
+module Preferences.URL
        ( URL(..)
        , MkURL(..)
        ) where
 
-import Control.Applicative ((<$>))
 import Data.Data
 import Data.UserId (UserId(..))
 import Test.QuickCheck     (Arbitrary(..),oneof)
 import Web.Routes.TH       (derivePathInfo)
 
-data URL 
+data URL
     = CreateNew
     | View UserId
     | Edit
@@ -21,8 +20,8 @@ class MkURL url where
 
 $(derivePathInfo ''URL)
 instance Arbitrary URL where
-    arbitrary = 
-        oneof [ return CreateNew 
+    arbitrary =
+        oneof [ return CreateNew
               , View . UserId <$> arbitrary
               , return Edit
               ]

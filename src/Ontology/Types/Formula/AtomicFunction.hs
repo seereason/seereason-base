@@ -6,17 +6,17 @@ module Ontology.Types.Formula.AtomicFunction
     ) where
 
 import Data.Data (Data)
+import Data.Logic.ATP.Pretty (Pretty(pPrint))
+import Data.Logic.ATP.Skolem (HasSkolem(..))
+import Data.Logic.ATP.Term (IsFunction, IsVariable)
 import Data.Monoid ((<>))
 import Data.SafeCopy (base, deriveSafeCopy)
 import Data.Set as Set (notMember)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)
-import Term (IsFunction, IsVariable)
 import Ontology.Arity (HasArity(arity))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..), prettyAtomicPredicate, prettyNumberLit)
 import Ontology.Types (prettySubjectId, PredicateStyle(AsFunction))
-import Pretty (Pretty(pPrint))
-import Skolem (HasSkolem(..))
 import Text.PrettyPrint (Doc, brackets, text)
 
 -- |The atomic function used as a parameter to the

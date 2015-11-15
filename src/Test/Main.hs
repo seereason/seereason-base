@@ -2,6 +2,12 @@
 {-# OPTIONS_GHC -Wall -Wwarn #-}
 module Main where
 
+import Data.Logic.ATP.Apply (HasApply(PredOf, TermOf), pApp)
+import Data.Logic.ATP.Equate ((.=.), foldEquate)
+import Data.Logic.ATP.FOL (asubst, fva)
+import Data.Logic.ATP.Formulas (atomic, IsFormula(AtomOf))
+import Data.Logic.ATP.Prop (PFormula)
+import Data.Logic.ATP.Skolem (runSkolem, skolemize, SkolemM)
 import Data.Logic.Classes.Atom (Atom(..))
 import Data.Logic.KnowledgeBase (WithId(WithId, wiItem, wiIdent))
 import Data.Logic.Normal.Implicative (ImplicativeForm(INF, neg, pos), implicativeNormalForm {-, runNormal-})
@@ -11,11 +17,7 @@ import Data.Logic.Types.FirstOrder as N
 import Data.Logic.Types.FirstOrderPublic (markPublic)
 import qualified Data.Map as Map
 import Data.Set.Extra as Set (empty, fromList, map, Set)
-import Apply (HasApply(PredOf, TermOf), pApp)
-import Equate ((.=.), foldEquate)
-import FOL (asubst, fva)
-import Formulas (atomic, IsFormula(AtomOf))
-import Term (IsTerm(..), V(V))
+import Data.Logic.ATP.Term (IsTerm(..), V(V))
 import Ontology.Types.Description (Description)
 import Ontology.Types.Formula.AtomicFunction (AtomicFunction(..))
 import Ontology.Types.Formula.AtomicPredicate (AtomicPredicate(..))
@@ -23,8 +25,6 @@ import Ontology.Types.Formula (LiteralF, TermF)
 import Ontology.Types.PF (FormulaPF, LiteralPF)
 import Ontology.Types (unsafeSubjectId, unsafeAssertionId)
 import Prelude hiding (negate)
-import Prop (PFormula)
-import Skolem (runSkolem, skolemize, SkolemM)
 import System.Exit
 import Test.HUnit
 

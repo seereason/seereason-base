@@ -4,7 +4,6 @@ module MkURL
        , MkURL(..)
        ) where
 
-import Control.Applicative ((<$>))
 import Data.Data
 import Data.UserId (UserId(..))
 import Happstack.Auth.Core.AuthURL (AuthURL)

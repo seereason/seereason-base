@@ -8,12 +8,12 @@ module Ontology.Types.PredForm
     ) where
 
 import Data.Data (Data(..))
-import Apply (HasApply(TermOf, PredOf), pApp)
+import Data.Logic.ATP.Apply (HasApply(TermOf, PredOf), pApp)
+import Data.Logic.ATP.Equate (HasEquate, foldEquate)
+import Data.Logic.ATP.Formulas (AtomOf)
+import Data.Logic.ATP.Quantified (IsQuantified(foldQuantified))
+import Data.Logic.ATP.Term (IsTerm(vt, TVarOf), variants)
 import Ontology.Arity (HasArity(arity))
-import Formulas (AtomOf)
-import Equate (HasEquate, foldEquate)
-import Quantified (IsQuantified(foldQuantified))
-import Term (IsTerm(vt, TVarOf), variants)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import Data.String (IsString(fromString))
 import Data.Typeable (Typeable)

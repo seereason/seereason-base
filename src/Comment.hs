@@ -4,7 +4,6 @@ module Comment
     , URL(..)
     ) where
 
-import Control.Applicative ((<$>))
 import Data.Data
 import CommentTypes (CommentId(..))
 import Test.QuickCheck     (Arbitrary(..),oneof)
@@ -22,7 +21,7 @@ class MkURL topic url | url -> topic where
 
 $(derivePathInfo ''URL)
 instance Arbitrary topic => Arbitrary (URL topic) where
-    arbitrary = 
+    arbitrary =
         oneof [ Comment . CommentId <$> arbitrary
               , Submit <$> arbitrary
               , Spam . CommentId <$> arbitrary ]

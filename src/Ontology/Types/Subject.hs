@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, TemplateHaskell, TypeFamilies, UndecidableInstances #-}
+{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, RecordWildCards, TemplateHaskell, TypeFamilies, UndecidableInstances #-}
 {-# OPTIONS -Wall #-}
 module Ontology.Types.Subject
     (
@@ -38,6 +38,7 @@ import Data.Logic.ATP.Lit (IsLiteral(..))
 import Data.Logic.ATP.Pretty (HasFixity, Pretty(pPrint))
 import Data.Logic.KnowledgeBase (ProofResult(..))
 import qualified Data.Map as Map
+import Data.Monoid ((<>))
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
@@ -46,7 +47,8 @@ import Ontology.Types.Assertion (Assertion(assertionId), AssertionId)
 import Ontology.Types.PredForm (PredForm, foldPred)
 import Test.QuickCheck (Arbitrary(arbitrary), oneof)
 import Text.JSON (JSON(readJSON, showJSON), makeObj, valFromObj, JSValue(JSObject))
-import Text.PrettyPrint (Doc, text, cat, brackets, sep)
+import Text.PrettyPrint (Doc, text, cat, brackets, sep, hang, text, vcat)
+import Text.PrettyPrint.HughesPJClass (Pretty(pPrint))
 import Web.Routes.TH (derivePathInfo)
 
 newtype SubjectId = SubjectId {unSubjectId :: Integer} deriving (Data, Typeable, Eq, Ord, Read)
@@ -60,6 +62,9 @@ data PredicateStyle = AsPredicate | AsFunction deriving Show
 prettySubjectId :: PredicateStyle -> SubjectId -> Doc
 prettySubjectId AsPredicate x = text ("S" ++ show (unSubjectId x))
 prettySubjectId AsFunction x = text ("F" ++ show (unSubjectId x))
+
+subjectIds' :: Subject formula -> Set.Set SubjectId
+subjectIds' subj = Set.map unSubjectNode (subjectIds subj)
 
 instance Pretty SubjectId where
     pPrint = prettySubjectId AsPredicate
@@ -89,6 +94,14 @@ data SubjectTuple formula =
     , theBelief :: ProofResult               -- ^ Whether the user explicitly accepts or rejects the assertion, or neither
     } deriving (Data, Typeable, Show)
 
+instance Pretty formula => Pretty (SubjectTuple formula) where
+    pPrint SubjectTuple{..} =
+        hang (text "SubjectTuple") 1
+             (vcat [text "theAssertion: " <> pPrint theAssertion,
+                    text "theSubject: " <> pPrint theSubject,
+                    text "thePredicate: " <> pPrint thePredicate,
+                    text "theBelief: " <> pPrint theBelief])
+
 -- |This Ord instance gives us the most interesting predicates first,
 -- rather than sorting by subject number.
 instance Ord formula => Ord (SubjectTuple formula) where
@@ -113,6 +126,10 @@ unsafeSubjectId = SubjectId
 data SubjectNode = Normal {unSubjectNode :: SubjectId} | Complement {unSubjectNode :: SubjectId} deriving (Eq, Data, Typeable, Show)
 type SubjectEdge formula = (SubjectNode, SubjectNode, Assertion formula)
 type SubjectEdges formula = Set.Set (SubjectEdge formula)
+
+instance Pretty SubjectNode where
+    pPrint (Normal i) = text ("(Normal " ++ show i ++ ")")
+    pPrint (Complement i) = text ("(Complement " ++ show i ++ ")")
 
 prettySubjectNode :: PredicateStyle -> SubjectNode -> Doc
 prettySubjectNode style (Complement s) = cat [text "~", prettySubjectId style s]
@@ -153,8 +170,12 @@ data Subject formula
       -- definitions must match, and this will hold that value.
       } deriving (Data, Typeable, Show)
 
-subjectIds' :: Subject formula -> Set.Set SubjectId
-subjectIds' subj = Set.map unSubjectNode (subjectIds subj)
+instance Pretty formula => Pretty (Subject formula) where
+    pPrint Subject{..} = hang (text "Subject") 1
+                              (vcat [pPrint subjectEquivalenceSet,
+                                     pPrint subjectIds,
+                                     pPrint subjectDefinitionMap,
+                                     pPrint subjectArity])
 
 unsafeSubject :: Set.Set (Assertion formula)
               -> Set.Set SubjectNode

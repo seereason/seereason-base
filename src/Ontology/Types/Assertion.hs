@@ -25,6 +25,7 @@ import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text, (<>))
+import Text.PrettyPrint.HughesPJClass (Pretty(pPrint), vcat)
 import Web.Routes.TH (derivePathInfo)
 
 -- |The advantage of making this a newtype is that we can build an
@@ -86,6 +87,9 @@ data PrivacyState
     | Private    -- ^ Complete, but still visible only to owner, can return to Proposed state
     | Published  -- ^ Public, can not be altered
     deriving (Read, Show, Eq, Ord, Data, Typeable)
+
+instance Pretty PrivacyState where
+    pPrint = text . show
 
 instance Eq (Assertion formula) where
     a == b = compare a b == EQ

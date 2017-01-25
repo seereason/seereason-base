@@ -15,15 +15,23 @@ import Data.Data (Data(..))
 import Data.Function (on)
 import Data.IxSet (inferIxSet, noCalcs)
 import Data.SafeCopy -- (base, extension, deriveSafeCopy)
+import Data.Monoid ((<>))
 import qualified Data.Set.Extra as Set
 import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
 import Ontology.Types.Assertion (AssertionId, PrivacyState(Proposed))
 import Test.QuickCheck (Arbitrary(arbitrary))
-import Text.PrettyPrint (Doc, text)
+import Text.PrettyPrint (Doc, text, hang)
+import Text.PrettyPrint.HughesPJClass (Pretty(pPrint), vcat)
 import Web.Routes.TH (derivePathInfo)
 
--- |A Theorem is a list of assertions.  These are passed to
+instance Pretty UserId where
+    pPrint (UserId n) = pPrint "(UserId " <> text (show n ++ ")")
+
+instance Pretty TheoremId where
+    pPrint (TheoremId n) = pPrint "(TheoremId " <> text (show n ++ ")")
+
+-- | A Theorem is a list of assertions.  These are passed to
 -- the theorem prover.
 data Theorem =
     Theorem { theoremOwner :: UserId
@@ -32,7 +40,15 @@ data Theorem =
             , theoremPrivacy :: PrivacyState
             } deriving (Data, Typeable, Show)
 
--- |Only one theorem including a given list of assertions can be
+instance Pretty Theorem where
+    pPrint Theorem{..} =
+        hang (text "Threorem") 1
+             (vcat [text "theoremOwner: " <> pPrint theoremOwner,
+                    text "theoremId: " <> pPrint theoremId,
+                    text "argument: " <> pPrint argument,
+                    text "theoremPrivacy: " <> pPrint theoremPrivacy])
+
+-- | Only one theorem including a given list of assertions can be
 -- entered into the system.  (Should this be a set?  Or a set and
 -- a conclusion assertion?)
 instance Ord Theorem where

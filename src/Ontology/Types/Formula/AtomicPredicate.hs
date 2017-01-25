@@ -112,6 +112,9 @@ prettyAtomicPredicate style x =
 instance (Pretty description, Ord description) => Pretty (AtomicPredicate description) where
     pPrint = prettyAtomicPredicate AsPredicate
 
+instance Pretty UserId where
+    pPrint = prettyUserId
+
 prettyUserId :: UserId -> Doc
 prettyUserId u = text ("U" ++ show (_unUserId u))
 

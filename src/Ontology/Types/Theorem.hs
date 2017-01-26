@@ -1,9 +1,9 @@
-{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, TemplateHaskell, TypeFamilies, UndecidableInstances #-}
+{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, RecordWildCards, TemplateHaskell, TypeFamilies, UndecidableInstances #-}
 {-# OPTIONS -Wall #-}
 module Ontology.Types.Theorem
-    (
+    ( prettyUserId
     -- * TheoremId, Theorem
-      Theorem(Theorem, theoremOwner, theoremId, argument, theoremPrivacy)
+    , Theorem(Theorem, theoremOwner, theoremId, argument, theoremPrivacy)
     , TheoremId(unTheoremId)
     , findTheoremIds
     , unsafeTheoremId
@@ -25,8 +25,11 @@ import Text.PrettyPrint (Doc, text, hang)
 import Text.PrettyPrint.HughesPJClass (Pretty(pPrint), vcat)
 import Web.Routes.TH (derivePathInfo)
 
+prettyUserId :: UserId -> Doc
+prettyUserId u = text ("U" ++ show (_unUserId u))
+
 instance Pretty UserId where
-    pPrint (UserId n) = pPrint "(UserId " <> text (show n ++ ")")
+    pPrint = prettyUserId
 
 instance Pretty TheoremId where
     pPrint (TheoremId n) = pPrint "(TheoremId " <> text (show n ++ ")")

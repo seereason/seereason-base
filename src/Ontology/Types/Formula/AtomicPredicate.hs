@@ -4,7 +4,6 @@
 module Ontology.Types.Formula.AtomicPredicate
     ( AtomicPredicate(..)
     , prettyAtomicPredicate
-    , prettyUserId
     , prettyNumberLit
     , compare2
     , Ordering2(..)
@@ -27,7 +26,7 @@ import Ontology.Types.Assertion (AssertionId, prettyAssertionId)
 import Ontology.Types.Belief (Belief(..))
 import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
 import Ontology.Types.Subject (SubjectId, PredicateStyle(AsPredicate), prettySubjectId)
-import Ontology.Types.Theorem (TheoremId, prettyTheoremId)
+import Ontology.Types.Theorem (TheoremId, prettyUserId, prettyTheoremId)
 import Text.PrettyPrint (Doc, text, (<>))
 import Text.Printf (printf)
 
@@ -111,15 +110,6 @@ prettyAtomicPredicate style x =
 
 instance (Pretty description, Ord description) => Pretty (AtomicPredicate description) where
     pPrint = prettyAtomicPredicate AsPredicate
-
-instance Pretty UserId where
-    pPrint = prettyUserId
-
-prettyUserId :: UserId -> Doc
-prettyUserId u = text ("U" ++ show (_unUserId u))
-
-instance Pretty UserId where
-    pPrint = prettyUserId
 
 instance (Pretty description, Ord description, Data description, Show description) => IsPredicate (AtomicPredicate description)
 

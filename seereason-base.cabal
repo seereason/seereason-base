@@ -15,13 +15,14 @@ flag local-logic-classes
   Default: False
 
 Library
+ Default-Language: Haskell2010
  Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-authenticate < 2, happstack-scaffolding,
                    ixset, json, mtl >= 2, pretty, QuickCheck, safecopy, set-extra, stm, syb,
                    text, time, web-routes, web-routes-hsp, web-routes-th
  Hs-Source-Dirs: src
  -- Hs-Source-Dirs: src, ../logic-classes
  -- Build-Depends: applicative-extras, template-haskell
- GHC-options: -threaded -Wall -O2 -fwarn-tabs
+ GHC-options: -Wall -O2 -fwarn-tabs
  Exposed-Modules:  GenI.URL
                    JSON.Generic2
                    Ontology.Arity
@@ -90,6 +91,7 @@ Library
    Build-Depends: atp-haskell, logic-classes
 
 Executable geni-client
+ Default-Language: Haskell2010
  -- Hs-Source-Dirs: src, ../logic-classes
  Main-Is: src/GenIClient.hs
  GHC-Options: -threaded -O2 -rtsopts

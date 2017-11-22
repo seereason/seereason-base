@@ -16,7 +16,7 @@ flag local-logic-classes
 
 Library
  Default-Language: Haskell2010
- Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-authenticate < 2, happstack-scaffolding,
+ Build-Depends:    acid-state, base, bytestring, containers, fgl, userid, happstack-auth, happstack-scaffolding,
                    ixset, json, mtl >= 2, pretty, QuickCheck, safecopy, set-extra, stm, syb,
                    text, time, web-routes, web-routes-hsp, web-routes-th
  Hs-Source-Dirs: src
@@ -99,7 +99,7 @@ Executable geni-client
   base,
   bytestring,
   containers,
-  happstack-authenticate,
+  happstack-auth,
   happstack-scaffolding,
   http-conduit,
   ixset,
@@ -128,7 +128,7 @@ Test-Suite seereason-base-tests
  Build-Depends:
   base,
   containers,
-  happstack-authenticate,
+  happstack-auth,
   HUnit,
   ixset,
   json,

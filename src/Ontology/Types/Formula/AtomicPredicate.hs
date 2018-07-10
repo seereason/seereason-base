@@ -27,6 +27,7 @@ import Ontology.Types.Belief (Belief(..))
 import Ontology.Types.DocumentId (DocumentId, prettyDocumentId)
 import Ontology.Types.Subject (SubjectId, PredicateStyle(AsPredicate), prettySubjectId)
 import Ontology.Types.Theorem (TheoremId, prettyUserId, prettyTheoremId)
+import Prelude hiding ((<>))
 import Text.PrettyPrint (Doc, text, (<>))
 import Text.Printf (printf)
 

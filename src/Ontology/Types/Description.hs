@@ -21,6 +21,7 @@ import Data.IxSet (toList, (@=))
 import Ontology.Types (DocumentId(..), prettyDocumentId, SubjectId(..))
 import Ontology.Types.Document (Document(text), Documents)
 import Ontology.Types.Formula.AtomicPredicate (prettyNumberLit)
+import Prelude hiding ((<>))
 import Text.PrettyPrint (hsep, (<>))
 import qualified Text.PrettyPrint as P
 

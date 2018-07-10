@@ -23,6 +23,7 @@ import qualified Data.Set.Extra as Set
 import Data.Time.Clock (UTCTime(..) {-, secondsToDiffTime-})
 import Data.Typeable (Typeable)
 import Data.UserId (UserId(..))
+import Prelude hiding ((<>))
 import Test.QuickCheck (Arbitrary(arbitrary))
 import Text.PrettyPrint (Doc, text, (<>))
 import Text.PrettyPrint.HughesPJClass (Pretty(pPrint), vcat)

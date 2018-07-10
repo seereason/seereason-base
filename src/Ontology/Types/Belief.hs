@@ -15,6 +15,7 @@ import Data.Time.Clock (UTCTime(..))
 import Data.Typeable (Typeable)
 --import Happstack.Data (Default(defaultValue), deriveNewDataNoDefault)
 import Ontology.Types.Assertion (AssertionId)
+import Prelude hiding ((<>))
 import Text.PrettyPrint (text, (<>))
 
 -- |A belief is the association of an assertion with a truth value
